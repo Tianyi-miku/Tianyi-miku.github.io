@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>vue2 源码查看思路 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>vue2 源码查看思路</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/5/2
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="1-下载"><a href="#1-下载" class="headerlink" title="1 下载"></a>1 下载</h1><p>先在github中把vue的源码下下来。</p>
+<span id="more"></span>
+
+<p>大概目录介绍如下：</p>
+<pre><code>benchmarks                  主要用于代码性能分析的工具
+compiler-sfc                单位转换的工具
+dist                        输出打包之后的一些源代码
+examples                    API 应用例子
+packages                    代码用的一些软件包
+scripts                     一些脚本，比如文件目录重定向，基础配置，版本生成等。
+src                         源代码存放目录
+test                        测试脚本
+types                       类型定义文件
+.babelrc.js                 babel转码
+.editorconfig               编辑器自定义
+.eslintignore               忽略eslint
+.eslintrc.js                配置eslint
+.flowconfig                 检测类型工具
+package.json                配置依赖
+</code></pre>
+<p>大概看一下目录，有些是比较熟悉的。</p>
+<h1 id="2-运行"><a href="#2-运行" class="headerlink" title="2 运行"></a>2 运行</h1><p>在运行一个vue 项目之前，先找到入口，打开package.json。</p>
+<pre><code> &quot;dev&quot;: &quot;rollup -w -c scripts/config.js --environment TARGET:full-dev&quot;,
+</code></pre>
+<p>看到启动是这么一行，rollup是一个vue用的打包器，比webpake配置简单一些，有兴趣的可以看一下它的官网Rollup 中文文档 | Rollup 中文文档。</p>
+<p>打开源码中scripts&#x2F;config 。</p>
+<p>可以看到builds中有cjs与esm 俩个状态，后面还有增加的ssr服务端渲染模式。</p>
+<p>cjs 形式的模块就是为 browserify和 webpack 1 提供的，他们在加载模块的时候不能直接加载 ES Module。而 webpack2+以及 Rollup 是可以直接加载 ES Module 的，所以就有了 es 形式的模块输出。</p>
+<p>而其中完整版比运行时版本多了一个compiler。compiler单独抽离也是减小了库的体积，而且允许你在代码运行的时候去现场编译模板，在不配合构建工具的情况下可以直接使用。</p>
+<p>在我们文件执行npm run dev 时候，将会找到上图文件entry：’web&#x2F;entry-runtime-with-compiler.ts’</p>
+<p>打开文件。</p>
+<pre><code>import Vue from &#39;./runtime-with-compiler&#39;
+import * as vca from &#39;v3&#39;
+import &#123; extend &#125; from &#39;shared/util&#39;
+​
+extend(Vue, vca)
+​
+import &#123; effect &#125; from &#39;v3/reactivity/effect&#39;
+Vue.effect = effect
+​
+export default Vue
+</code></pre>
+<p>看见这里的导出的Vue只是引入了v3。</p>
+<p>继续点击引入Vue 的地方，打开. &#x2F;runtime&#x2F;index 打开 core&#x2F;index 直到打开src&#x2F;core&#x2F;instance&#x2F;index.ts</p>
+<pre><code>import &#123; initMixin &#125; from &#39;./init&#39;
+import &#123; stateMixin &#125; from &#39;./state&#39;
+import &#123; renderMixin &#125; from &#39;./render&#39;
+import &#123; eventsMixin &#125; from &#39;./events&#39;
+import &#123; lifecycleMixin &#125; from &#39;./lifecycle&#39;
+import &#123; warn &#125; from &#39;../util/index&#39;
+import type &#123; GlobalAPI &#125; from &#39;types/global-api&#39;
+​
+function Vue(options) &#123;
+  if (__DEV__ &amp;&amp; !(this instanceof Vue)) &#123;
+    warn(&#39;Vue is a constructor and should be called with the `new` keyword&#39;)
+  &#125;
+  this._init(options)
+&#125;
+​
+//@ts-expect-error Vue has function type
+initMixin(Vue)
+//@ts-expect-error Vue has function type
+stateMixin(Vue)
+//@ts-expect-error Vue has function type
+eventsMixin(Vue)
+//@ts-expect-error Vue has function type
+lifecycleMixin(Vue)
+//@ts-expect-error Vue has function type
+renderMixin(Vue)
+​
+export default Vue as unknown as GlobalAPI
+</code></pre>
+<p>​<br>打开initMixin可以看到在vue原型上定义了一个init方法</p>
+<pre><code>export function initMixin(Vue: typeof Component) &#123;
+  Vue.prototype._init = function (options?: Record&lt;string, any&gt;) &#123;
+  .......
+  &#125;
+</code></pre>
+<p>结合上面一开始Vue中调用了这个函数，大概看出来是一个初始化的方法。</p>
+<pre><code>function Vue (options) &#123;
+ .......
+  this._init(options)
+&#125;
+同理打开剩下的文件。stateMixin中
+
+ const dataDef: any = &#123;&#125;
+  dataDef.get = function () &#123;
+    return this._data               
+  &#125;
+  const propsDef: any = &#123;&#125;          
+  propsDef.get = function () &#123;
+    return this._props
+  &#125;
+  if (__DEV__) &#123;
+    dataDef.set = function () &#123;
+      warn(
+        &#39;Avoid replacing instance root $data. &#39; +
+          &#39;Use nested data properties instead.&#39;,
+        this
+      )
+    &#125;
+    propsDef.set = function () &#123;
+      warn(`$props is readonly.`, this)
+    &#125;
+  &#125;
+  Object.defineProperty(Vue.prototype, &#39;$data&#39;, dataDef)         
+  Object.defineProperty(Vue.prototype, &#39;$props&#39;, propsDef)
+</code></pre>
+<p>上述定义了Vue.prototype.$data 与 $props。访问的其实是自身的data与props属性</p>
+<pre><code>Vue.prototype.$set = set     
+Vue.prototype.$delete = del
+Vue.prototype.$watch
+
+eventsMixin中，定义了$on,$once,$off,$emit
+
+lifecycleMixin中定义了 _update $forceUpdate $destroy
+</code></pre>
+<p>renderMixin 挂载以下方法</p>
+<pre><code> Vue.prototype.$nextTick 
+ Vue.prototype._render 
+ 调用installRenderHelpers方法挂载
+ target 为 Vue.prototype 
+ target._o = markOnce
+ target._n = toNumber
+ target._s = toString
+ target._l = renderList
+ target._t = renderSlot
+ target._q = looseEqual
+ target._i = looseIndexOf
+ target._m = renderStatic
+ target._f = resolveFilter
+ target._k = checkKeyCodes
+ target._b = bindObjectProps
+ target._v = createTextVNode
+ target._e = createEmptyVNode
+ target._u = resolveScopedSlots
+ target._g = bindObjectListeners
+ target._d = bindDynamicKeys
+ target._p = prependModifier
+</code></pre>
+<p>​<br>导出的Vue 在core&#x2F;instance&#x2F;index.js下被引用</p>
+<pre><code>import Vue from &#39;./instance/index&#39;
+import &#123; initGlobalAPI &#125; from &#39;./global-api/index&#39;
+import &#123; isServerRendering &#125; from &#39;core/util/env&#39;
+import &#123; FunctionalRenderContext &#125; from &#39;core/vdom/create-functional-component&#39;
+import &#123; version &#125; from &#39;v3&#39;
+​
+initGlobalAPI(Vue)
+​
+Object.defineProperty(Vue.prototype, &#39;$isServer&#39;, &#123;
+  get: isServerRendering
+&#125;)
+​
+Object.defineProperty(Vue.prototype, &#39;$ssrContext&#39;, &#123;
+  get() &#123;
+    /* istanbul ignore next */
+    return this.$vnode &amp;&amp; this.$vnode.ssrContext
+  &#125;
+&#125;)
+​
+// expose FunctionalRenderContext for ssr runtime helper installation
+Object.defineProperty(Vue, &#39;FunctionalRenderContext&#39;, &#123;
+  value: FunctionalRenderContext
+&#125;)
+​
+Vue.version = version
+​
+export default Vue
+</code></pre>
+<p>这里引用了initGlobalAPI，并且声明了$isServer，$ssrContext方法。</p>
+<p>打开initGlobalAPI</p>
+<pre><code> Object.defineProperty(Vue, &#39;config&#39;, configDef)
+   Vue.util = &#123;
+    warn,
+    extend,
+    mergeOptions,
+    defineReactive
+  &#125;
+   Vue.set = set
+  Vue.delete = del
+  Vue.nextTick = nextTick
+  ASSET_TYPES.forEach(type =&gt; &#123;
+    Vue.options[type + &#39;s&#39;] = Object.create(null)
+&#125;)
+ASSET_TYPES 为 export const ASSET_TYPES = [&#39;component&#39;, &#39;directive&#39;, &#39;filter&#39;] as const
+</code></pre>
+<p>组装后为</p>
+<p>Vue.options &#x3D; {<br>    components: Object.create(null),<br>    directives: Object.create(null),<br>    filters: Object.create(null),<br>    _base: Vue<br>}</p>
+<p>紧接着builtInComponents 为 KeepAlive, Vue extend (to,from)继承</p>
+<pre><code> extend(Vue.options.components, builtInComponents)  
+ initUse(Vue)
+ initMixin(Vue)
+ initExtend(Vue)
+ initAssetRegisters(Vue)
+</code></pre>
+<p>上代码分别定义了</p>
+<ol>
+<li>Vue.use 插件</li>
+</ol>
+<p>2  .mixin 混入</p>
+<p>3 . extend 继承 与 Vue.cid静态值。</p>
+<p>4 . 注册了 Vue.component 组件 Vue.directive 指令 Vue.filter 过滤器</p>
+<p>回顾一下这两个文件，大概是：instance&#x2F;index.js 创建Vue函数，并且添加属性和方法。</p>
+<p>core&#x2F;index.js添加全局的静态的方法和属性。</p>
+<p>继续来到上一层，来到了platforms&#x2F;web&#x2F;runtime&#x2F;index.js文件。</p>
+<pre><code>Vue.config.mustUseProp = mustUseProp
+Vue.config.isReservedTag = isReservedTag
+Vue.config.isReservedAttr = isReservedAttr
+Vue.config.getTagNamespace = getTagNamespace
+Vue.config.isUnknownElement = isUnknownElement
+​
+// install platform runtime directives &amp; components
+extend(Vue.options.directives, platformDirectives)
+extend(Vue.options.components, platformComponents)
+​
+// install platform patch function
+Vue.prototype.__patch__ = inBrowser ? patch : noop
+</code></pre>
+<p>这里主要是设置Vue.config，Vue.options.directives与Vue.options.components。</p>
+<p>继承之后，结合上面的options　，现在的Vue.options为</p>
+<pre><code>Vue.options = &#123;
+    components: &#123;
+        KeepAlive,
+        Transition,
+        TransitionGroup
+    &#125;,
+    directives: &#123;
+        model,
+        show
+    &#125;,
+    filters: Object.create(null),
+    _base: Vue
+&#125;
+</code></pre>
+<p>接着判断是否浏览器，patch的话是填充虚拟dom的方法，后面再看看patch 具体干了什么。</p>
+<p>Vue.prototype.<strong>patch</strong> &#x3D; inBrowser ? patch : noop<br>挂载Vue.prototype.$mount方法</p>
+<p>​</p>
+<pre><code>Vue.prototype.$mount = function (
+  el?: string | Element,
+  hydrating?: boolean
+): Component &#123;
+  el = el &amp;&amp; inBrowser ? query(el) : undefined
+  return mountComponent(this, el, hydrating)
+&#125;
+</code></pre>
+<p>看到这里，大概就明白其实就是初始化Vue 然后依次调用initMixin，stateMixin，eventsMixin，lifecycleMixin，renderMixin。</p>
+<p>这样Vue构造函数基本上就了解了一个运行思路了。</p>
+<p>​</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>
