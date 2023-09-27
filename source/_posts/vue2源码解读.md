@@ -234,12 +234,14 @@ ASSET_TYPES 为 export const ASSET_TYPES = ['component', 'directive', 'filter'] 
 
 组装后为
 
+```
 Vue.options = {
     components: Object.create(null),
     directives: Object.create(null),
     filters: Object.create(null),
     _base: Vue
 }
+```
 
 紧接着builtInComponents 为 KeepAlive, Vue extend (to,from)继承
 
@@ -254,17 +256,12 @@ Vue.options = {
 上代码分别定义了
 
 1. Vue.use 插件
-
-2  .mixin 混入
-
-3 . extend 继承 与 Vue.cid静态值。
-
-4 . 注册了 Vue.component 组件 Vue.directive 指令 Vue.filter 过滤器
+2. mixin 混入
+3. extend 继承 与 Vue.cid静态值。
+4. 注册了 Vue.component 组件 Vue.directive 指令 Vue.filter 过滤器
 
 回顾一下这两个文件，大概是：instance/index.js 创建Vue函数，并且添加属性和方法。
-
 core/index.js添加全局的静态的方法和属性。
-
 继续来到上一层，来到了platforms/web/runtime/index.js文件。
 
 ```
