@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Categories | Skymiku</title>
+        <title>百度离线地图 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -29,6 +29,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -149,14 +153,20 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div id="archives">
-    
-    <div class="categories-tags">
+                <div class="article">
+    <div>
+        <h1>百度离线地图</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2021/3/12
+        </span>
         
-        
-        
-        <span>
-            <a href="/categories/%E4%B8%9A%E5%8A%A1/" style="background: #00bcd4">
+        <span class="category">
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -165,18 +175,70 @@
         </span>
         
         
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/" style="background: #03a9f4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                学习
-            </a>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/baidumap/" style="color: #03a9f4">baidumap</a>
+            </span>
+            
         </span>
         
-        
     </div>
+    
+    <div class="content" v-pre>
+        <h1 id="baiduOfflineMap"><a href="#baiduOfflineMap" class="headerlink" title="baiduOfflineMap"></a>baiduOfflineMap</h1><p>百度离线地图</p>
+<h1 id="在项目中使用"><a href="#在项目中使用" class="headerlink" title="在项目中使用"></a>在项目中使用</h1><p>将文件夹复制到项目中 <a target="_blank" rel="noopener" href="https://github.com/Tianyi-miku/baiduOfflineMap">文件地址</a></p>
+<span id="more"></span>
+
+<pre><code>  &lt;script type=&quot;text/javascript&quot; src=&quot;./map/webgl.js&quot;&gt;&lt;/script&gt;
+  &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;./map/bmap.css&quot;&gt;
+</code></pre>
+<p>将map中的webgl.js 与 bmap.css 引入项目html</p>
+<h1 id="pvd"><a href="#pvd" class="headerlink" title="pvd"></a>pvd</h1><p>瓦片地址放置位置，这里是矢量地图，可以在网上下载所需要的地图，放入其中。</p>
+<h1 id="custom"><a href="#custom" class="headerlink" title="custom"></a>custom</h1><p>mapstyle 地图样式自定义。</p>
+<h1 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h1><p>一般使用nginx代理。将项目中的nginx目录下html文件夹中新建一个baidumap，将map文件夹放进去。</p>
+<pre><code> proxy: &#123; 
+  &quot;/map&quot;: &#123;
+        target: `http://weizhi`,
+        changeOrigin: true,
+        pathRewrite: &#123; &#39;^/map&#39;: &#39;map&#39; &#125;,
+        ws: false,
+      &#125;,
+    &#125;
+</code></pre>
+<p>将map作为关键词，代理到nginx终端。</p>
+<p>nginx配置</p>
+<pre><code>  server &#123;
+            listen       3000;   #端口号
+            server_name  192.168.1.2;  #服务器地址
+            charset utf-8;
+            
+            location /map &#123;
+                root   E:/nginx-1.23.1/html/baidumap;  #这里填map文件夹所在的文件目录
+                index  index.html index.htm;
+            &#125;
+            
+        &#125;
+</code></pre>
+<p>map<a target="_blank" rel="noopener" href="https://github.com/Tianyi-miku/baiduOfflineMap">源码</a></p>
+<p>​</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
     
 </div>
 
@@ -208,6 +270,29 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
         
      
           
