@@ -9,11 +9,11 @@ type: about
 |  网站  | 帐号                                                                      |
 | :----: | :------------------------------------------------------------------------ |
 |   QQ   | [1249850908](http://wpa.qq.com/msgrd?v=3&uin=1249850908&site=qq&menu=yes) |
-| GitHub | [argvchs](https://github.com/Tianyi-miku.github)                          |
+| GitHub | [argvchs](https://github.com/Tianyi-miku)                          |
 
 ##  语言
 
--   jS  Node.js  solidty
+-   jS  Node.js  solidity
 
 ## 架构
 -   react vue angular
