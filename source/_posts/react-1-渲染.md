@@ -57,7 +57,7 @@ categories: 学习
 
 打印一下，可以看出虚拟Dom对象长这样的。
 
-![Alt text](../img/image1.png)
+![Alt text](../../img/image1.png)
 ```
     vitrualDom = {
         $$typeof:Symbol(react.element),
