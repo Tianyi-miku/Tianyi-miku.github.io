@@ -162,7 +162,7 @@
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2022/5/2
+            2022/5/7
         </span>
         
         <span class="category">
@@ -183,12 +183,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
+                <a href="/tags/vue2/" style="color: #00a596">vue2</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
             </span>
             
         </span>
@@ -383,7 +383,13 @@ export default Vue
 ASSET_TYPES 为 export const ASSET_TYPES = [&#39;component&#39;, &#39;directive&#39;, &#39;filter&#39;] as const
 </code></pre>
 <p>组装后为</p>
-<p>Vue.options &#x3D; {<br>    components: Object.create(null),<br>    directives: Object.create(null),<br>    filters: Object.create(null),<br>    _base: Vue<br>}</p>
+<pre><code>Vue.options = &#123;
+    components: Object.create(null),
+    directives: Object.create(null),
+    filters: Object.create(null),
+    _base: Vue
+&#125;
+</code></pre>
 <p>紧接着builtInComponents 为 KeepAlive, Vue extend (to,from)继承</p>
 <pre><code> extend(Vue.options.components, builtInComponents)  
  initUse(Vue)
@@ -394,13 +400,11 @@ ASSET_TYPES 为 export const ASSET_TYPES = [&#39;component&#39;, &#39;directive&
 <p>上代码分别定义了</p>
 <ol>
 <li>Vue.use 插件</li>
+<li>mixin 混入</li>
+<li>extend 继承 与 Vue.cid静态值。</li>
+<li>注册了 Vue.component 组件 Vue.directive 指令 Vue.filter 过滤器</li>
 </ol>
-<p>2  .mixin 混入</p>
-<p>3 . extend 继承 与 Vue.cid静态值。</p>
-<p>4 . 注册了 Vue.component 组件 Vue.directive 指令 Vue.filter 过滤器</p>
-<p>回顾一下这两个文件，大概是：instance&#x2F;index.js 创建Vue函数，并且添加属性和方法。</p>
-<p>core&#x2F;index.js添加全局的静态的方法和属性。</p>
-<p>继续来到上一层，来到了platforms&#x2F;web&#x2F;runtime&#x2F;index.js文件。</p>
+<p>回顾一下这两个文件，大概是：instance&#x2F;index.js 创建Vue函数，并且添加属性和方法。<br>core&#x2F;index.js添加全局的静态的方法和属性。<br>继续来到上一层，来到了platforms&#x2F;web&#x2F;runtime&#x2F;index.js文件。</p>
 <pre><code>Vue.config.mustUseProp = mustUseProp
 Vue.config.isReservedTag = isReservedTag
 Vue.config.isReservedAttr = isReservedAttr

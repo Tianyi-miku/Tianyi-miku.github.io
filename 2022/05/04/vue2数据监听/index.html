@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Categories: 业务 | Skymiku</title>
+        <title>vue2响应式数据实现 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -29,6 +29,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -149,27 +153,20 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div id="archives">
-    
-    <div class="categories-tags">
-        
-        
-        
-        <span>
-            <a href="/categories/%E4%B8%9A%E5%8A%A1/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                业务
-            </a>
+                <div class="article">
+    <div>
+        <h1>vue2响应式数据实现</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/5/4
         </span>
         
-        
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/" style="background: #00a596">
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -178,48 +175,113 @@
         </span>
         
         
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+            </span>
+            
+        </span>
+        
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2022/4/17</div>
-            <a href="/2022/04/17/vxetable/">
-                <h3>Vxetable 筛选过滤</h3>
-            </a>
-            <div class="info">
-                
-                <span class="category">
-                    <a href="/categories/%E4%B8%9A%E5%8A%A1/">
-                        <span class="icon">
-                            <i class="fa-solid fa-bookmark fa-fw"></i>
-                        </span>
-                        业务
-                    </a>
-                </span>
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vue3/" style="color: #ff7d73">vue3</a>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vxeTable/" style="color: #03a9f4">vxeTable</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    <div class="content" v-pre>
+        <p>根据vue原理思路，重写捋一遍vue2实现。</p>
+<p>首先 配置环境，主要用到@babel 解析，rollup打包工具配置好环境。</p>
+<p>新建一个html文件，新建index.js，引入。再script中new一个vue。</p>
+<pre><code>   const myVue = new Vue(&#123;
+            data() &#123;
+                return &#123;
+                    name: 13,
+                    skymiku: &#123;
+                        age: 20,
+                        name: &#39;skymiku&#39;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;)
+</code></pre>
+<h2 id="初始化vue"><a href="#初始化vue" class="headerlink" title="初始化vue"></a>初始化vue</h2><p>在index中初始化Vue</p>
+<p>首先声明一个vue函数，我们将Vue在其原型上增加方法。</p>
+<pre><code>import &#123; intiMixin &#125; from &#39;./init&#39;
+
+function Vue(options) &#123;
+    this._init(options)
+&#125;
+
+//扩展功能
+intiMixin(Vue)
+export default Vue;
+</code></pre>
+<p>在init文件中，创建 intimixin函数，接收Vue作为参数，并且新增init初始化方法</p>
+<pre><code>export function intiMixin(Vue) &#123;
+    Vue.prototype._init = function (options) &#123; //初始化
+        let vm = this
+        vm.$options = options //挂载在实例上。
+    &#125;
+&#125;
+</code></pre>
+<p>在vue2中，$代表vue自身的属性，将传过来的参数，赋值到vue上</p>
+<h2 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h2><p>这时候来监听options中的data,声明一个initState函数，如果是对象，循环对象中的key，用Object.defineProperty重写set与get方法</p>
+<pre><code>    Object.defineProperty(data, key, &#123;
+        get() &#123;
+            console.log(&#39;获取数据&#39;);
+            return value
+        &#125;,
+        set(newValue) &#123;
+            console.log(&#39;写入数据了！&#39;);
+            if (newValue !== value) &#123;
+                value = newValue
+            &#125;
+        &#125;
+    &#125;)
+</code></pre>
+<p>如果是数组，则重写数组的7个更改方法！ </p>
+<pre><code>//数组
+ value.__proto__ = oldportotype
+</code></pre>
+<pre><code>const func = [&#39;push&#39;, &#39;shift&#39;, &#39;unshift&#39;, &#39;pop&#39;, &#39;srot&#39;, &#39;splice&#39;, &#39;reverse&#39;]
+export const oldportotype = Array.prototype
+
+func.forEach(key=&gt;&#123;
+        oldportotype[key] = (...arg) =&gt; &#123;
+        switch (key) &#123;
+            case &#39;push&#39;:
+                console.log(&#39;push&#39;);
+                insert = arg
+                break;
+            case &#39;splice&#39;:
+                insert = arg.slice(2)
+                break;
+            default:
+                break;
+        &#125;
+    &#125;
+&#125;)
+</code></pre>
+<p>将数组的隐式原型链覆盖，就监听到了数组的变化。</p>
+
     </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
     
 </div>
 
@@ -251,6 +313,29 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
         
      
           

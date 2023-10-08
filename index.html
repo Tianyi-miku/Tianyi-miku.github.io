@@ -172,8 +172,404 @@
         
 
 <div class="post">
-    <a href="/2022/05/02/vue2%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">
+    <a href="/2023/01/02/solidity/">
+        <h2 class="post-title">solidity学习 一</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/1/2
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <h2 id="solidity-基础"><a href="#solidity-基础" class="headerlink" title="solidity 基础"></a>solidity 基础</h2><ol>
+<li>存储类型</li>
+</ol>
+<p>基本类型包括布尔类型，整数型,地址，字节数组，枚举。</p>
+<pre><code>    bool public _bool = true;
+    int public _int = -1;
+    uint public _uint = 1;
+    address public _address = 0x7A58c0Be72BE218B41C608b7Fe7C5bB630736C71;
+       bytes1 public _byte = _byte32[0]; // bytes1: 0x4d
+     // 将uint 0， 1， 2表示为Buy, Hold, Sell
+    enum ActionSet &#123; Buy, Hold, Sell &#125;
+</code></pre>
+<p>引用类型包括结构体，与数组。<br>类型：storage memory 与Calldata<br>storage存储在链上，消耗gas多。</p>
+<p>memory 与 calldata存储在临时内存，  </p>
+<ol start="2">
+<li>函数类型</li>
+</ol>
+<p>pure 既不能读取，也不能写入。<br>view 可以读取，不能写入<br>payable（可支付的）</p>
+<p>函数描述</p>
+<p>pubilic 公开的,内部外部都可以访问<br>private 私有的，继承的合约也不能访问<br>external 只能从外部访问（但是内部也可以通过this.function()调用）<br>internal 内部的，继承合约可以访问</p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/solidity/" style="color: #00a596">solidity</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/tags/web3/" style="color: #ff7d73">web3</a>
+        </span>
+        
+    </div>
+    <a href="/2023/01/02/solidity/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2022/06/04/vue2%E8%99%9A%E6%8B%9FDOM/">
+        <h2 class="post-title">vue2虚拟dom</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/6/4
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <h2 id="模板编译，构建ast树"><a href="#模板编译，构建ast树" class="headerlink" title="模板编译，构建ast树"></a>模板编译，构建ast树</h2><p>首先，有模板拿模板，没有模板，拿到页面dom元素。</p>
+<p>通过正则，去匹配页面标签和元素，如： <div></div>之类的。</p>
+<p>将template转换为Ast树。</p>
+<p>匹配元素的时候，一边匹配，一边删除,文本，标签，不同的用不同的正则匹配。解析到的时候，将其属性挂载在上面。</p>
+<p>通过父元素存入栈第一个，然后循环子元素入栈出栈,更新最后一个出栈元素,从而构建出ast树。</p>
+<h2 id="通过ast树生成字符串"><a href="#通过ast树生成字符串" class="headerlink" title="通过ast树生成字符串"></a>通过ast树生成字符串</h2><p>Ast树通过代码去拼接字符串代码，字符串中的变量，通过正则去匹配，匹配成功然后放入字符串中。</p>
+<p>这一步主要是拼接成想要的字符串。生成类似：</p>
+<pre><code>_c(&#39;div&#39;,&#123;id:&quot;app&quot;&#125; _v..._s..)
+</code></pre>
+<h2 id="生成render-with-new-function"><a href="#生成render-with-new-function" class="headerlink" title="生成render with + new function"></a>生成render with + new function</h2><p>生成好的字符串，通过 with function 实现取值。模板编译原理都是通过with +new function来实现的。</p>
+<pre><code>code = `with(this)&#123;return `$&#123;code&#125;`&#125;`
+let render = new Function(code)
+</code></pre>
+<h2 id="创建虚拟节点"><a href="#创建虚拟节点" class="headerlink" title="创建虚拟节点"></a>创建虚拟节点</h2><p>通过判断标签，文本等调用不同函数调用creatVNode ,创建虚拟Dom节点。</p>
+<p>调用render 执行取值会触发get 方法！</p>
+<p>ast 描述的是语法本身，可以描述html css js </p>
+<p>虚拟Dom描述的是Dom 元素，可以自定义属性！</p>
+<h2 id="渲染-update"><a href="#渲染-update" class="headerlink" title="渲染 update"></a>渲染 update</h2><p>patch 通过diff算法去新建或者更新真实Dom！</p>
+<p>nodeType 判断是否真实dom，如果没有真实dom先新建 creatElm()。</p>
+<p>有的话通过diff算法更新。</p>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>创建响应式数据 &#x3D;》 模板转换为Ast语法树 &#x3D;》 Ast语法树生成render函数 （编译） &#x3D;》 数据更新之后只渲染render函数 </p>
+<p>Render会产生虚拟节点 （定位响应式数据） &#x3D;》 虚拟dom 生成真实dom</p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+        </span>
+        
+    </div>
+    <a href="/2022/06/04/vue2%E8%99%9A%E6%8B%9FDOM/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2022/06/02/vue2%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7/">
+        <h2 class="post-title">vue2计算属性</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/6/2
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <h2 id="依赖收集"><a href="#依赖收集" class="headerlink" title="依赖收集"></a>依赖收集</h2><p>之前说到每一个属性触发get 都有一个dep函数。</p>
+<p>因为页面要对新增的属性增加收集，数组嵌套也要循环去收集。</p>
+<p>所以在Observe中，每个对象都声明一个new dep;</p>
+<p>在get中，给每个对象也都添加dep.depend()方法，这样就能实现依赖收集了。</p>
+<p>嵌套的数组，因为前面只讲了重写了方法，并没有对修改的具体内容进行收集，也是通过这里新添加dep.depend()方法，去收集依赖的。</p>
+<p>$Set原理也是基于此，这样，数据更新的时候，也会重新渲染页面！</p>
+<h2 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h2><p>计算属性不会收集依赖，只会让自己的依赖属性去收集依赖。dirty为false与true控制是否触发依赖get. 流程如下：</p>
+<p>渲染Watcher执行的时候，遇到computed，生成一个计算属性watcher，存入Watcher执行栈中。</p>
+<p>计算属性Watcher先去取值触发get方法。然后对象属性当中dep存放的就是计算属性的Watcher，这时候修改了属性之后，更新的只是计算属性中的watcher。</p>
+<p>计算属性计算完之后，缓存计算结果,，如果值不变，下次不会再渲染，直接取缓存结果。</p>
+<p>这时候为了让dep中也有渲染的watcher，循环去找属性的dep依赖的watcher，添加到dep中来！这样才能使修改属性后，组件中属性也能同步渲染！</p>
+<p>流程：第一次，渲染Wacher入栈，渲染到computed的值，添加computed watcher ，computed watcher 先找到自己依赖的参数，触发计算，缓存计算结果。然后Wather栈中还有渲染watcher，同时添加到参数中的dep，渲染wathcer也能找到属性中对应的dep,实现页面渲染！</p>
+<p>页面修改computed 依赖的参数后，依赖的参数收集的watcher通知 computed 的值改变了，设置dirty为true，表示要重新计算。这时候依赖的参数watcher通知页面中的属性更新，重新计算拿到新的值，最后将dirty设置为false，如果下次拿computed的值，而依赖的参数没变，就会取缓存。</p>
+<h2 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h2><p>渲染watcher遇到Watch的值，创建一个watch Watcher 放入 watcher执行栈。</p>
+<p>先将页面中的老值存着，然后触发get获取到新的值 将新老值返回给watch.</p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
+        </span>
+        
+    </div>
+    <a href="/2022/06/02/vue2%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2022/05/07/vue2%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/">
         <h2 class="post-title">vue2 源码查看思路</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/5/7
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <h1 id="1-下载"><a href="#1-下载" class="headerlink" title="1 下载"></a>1 下载</h1><p>先在github中把vue的源码下下来。</p>
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+        </span>
+        
+    </div>
+    <a href="/2022/05/07/vue2%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2022/05/04/vue2%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC/">
+        <h2 class="post-title">vue2响应式数据实现</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/5/4
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <p>根据vue原理思路，重写捋一遍vue2实现。</p>
+<p>首先 配置环境，主要用到@babel 解析，rollup打包工具配置好环境。</p>
+<p>新建一个html文件，新建index.js，引入。再script中new一个vue。</p>
+<pre><code>   const myVue = new Vue(&#123;
+            data() &#123;
+                return &#123;
+                    name: 13,
+                    skymiku: &#123;
+                        age: 20,
+                        name: &#39;skymiku&#39;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;)
+</code></pre>
+<h2 id="初始化vue"><a href="#初始化vue" class="headerlink" title="初始化vue"></a>初始化vue</h2><p>在index中初始化Vue</p>
+<p>首先声明一个vue函数，我们将Vue在其原型上增加方法。</p>
+<pre><code>import &#123; intiMixin &#125; from &#39;./init&#39;
+
+function Vue(options) &#123;
+    this._init(options)
+&#125;
+
+//扩展功能
+intiMixin(Vue)
+export default Vue;
+</code></pre>
+<p>在init文件中，创建 intimixin函数，接收Vue作为参数，并且新增init初始化方法</p>
+<pre><code>export function intiMixin(Vue) &#123;
+    Vue.prototype._init = function (options) &#123; //初始化
+        let vm = this
+        vm.$options = options //挂载在实例上。
+    &#125;
+&#125;
+</code></pre>
+<p>在vue2中，$代表vue自身的属性，将传过来的参数，赋值到vue上</p>
+<h2 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h2><p>这时候来监听options中的data,声明一个initState函数，如果是对象，循环对象中的key，用Object.defineProperty重写set与get方法</p>
+<pre><code>    Object.defineProperty(data, key, &#123;
+        get() &#123;
+            console.log(&#39;获取数据&#39;);
+            return value
+        &#125;,
+        set(newValue) &#123;
+            console.log(&#39;写入数据了！&#39;);
+            if (newValue !== value) &#123;
+                value = newValue
+            &#125;
+        &#125;
+    &#125;)
+</code></pre>
+<p>如果是数组，则重写数组的7个更改方法！ </p>
+<pre><code>//数组
+ value.__proto__ = oldportotype
+</code></pre>
+<pre><code>const func = [&#39;push&#39;, &#39;shift&#39;, &#39;unshift&#39;, &#39;pop&#39;, &#39;srot&#39;, &#39;splice&#39;, &#39;reverse&#39;]
+export const oldportotype = Array.prototype
+
+func.forEach(key=&gt;&#123;
+        oldportotype[key] = (...arg) =&gt; &#123;
+        switch (key) &#123;
+            case &#39;push&#39;:
+                console.log(&#39;push&#39;);
+                insert = arg
+                break;
+            case &#39;splice&#39;:
+                insert = arg.slice(2)
+                break;
+            default:
+                break;
+        &#125;
+    &#125;
+&#125;)
+</code></pre>
+<p>将数组的隐式原型链覆盖，就监听到了数组的变化。</p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/vue2/" style="color: #00a596">vue2</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+        </span>
+        
+    </div>
+    <a href="/2022/05/04/vue2%E6%95%B0%E6%8D%AE%E7%9B%91%E5%90%AC/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2022/05/02/vue2%20Diff%E7%AE%97%E6%B3%95/">
+        <h2 class="post-title">vue2 diff算法</h2>
     </a>
     <div class="category-and-date">
         
@@ -198,7 +594,24 @@
     <div class="description">
         <div class="content" v-pre>
             
-            <h1 id="1-下载"><a href="#1-下载" class="headerlink" title="1 下载"></a>1 下载</h1><p>先在github中把vue的源码下下来。</p>
+            <h2 id="虚拟节点与真实节点比对"><a href="#虚拟节点与真实节点比对" class="headerlink" title="虚拟节点与真实节点比对"></a>虚拟节点与真实节点比对</h2><p>为什么需要diff算法。</p>
+<p>组件更新的时候，每次重新创建和替换真实Dom，会浪费性能。</p>
+<p>这时候要尽可能复用，不多生成真实节点。比较两个虚拟dom，通过比较，patch需要修改的节点。</p>
+<h1 id="diff算法"><a href="#diff算法" class="headerlink" title="diff算法"></a>diff算法</h1><p>平级比较！一层一层的对应比较，父节点与父节点比较。如果第一层改变，则直接替换。</p>
+<p>节点不一致，直接替换。</p>
+<p>节点一致，比对属性，判断有没有key，如果是节点判断tag是否一致。父节点比较完成。</p>
+<p>如果是文本，对比之后覆盖或不做操作。</p>
+<p>如果是style，直接比对循环比对元素。</p>
+<p>父节点比对完成，比对子节点。如果新的父节点有子节点，旧的没有，直接把虚拟子节点转换成真实节点，插入父节点。</p>
+<p>如果新的没有，旧的有，直接删除。</p>
+<p>如果旧的有子节点，新的也有子节点。</p>
+<p>子节点优化：（1）头头尾尾比对<br>通过双指针，来比较数组常用操作，如：push, pop。<br>记住旧的头尾与新的头尾，循环对应比较，子节点的子节点也要递归。<br>双方有一个头尾指针，对比一次指针向后或者向前移动，头指针超过尾指针的，停止比较。<br>新的节点多的部分，直接创建真实dom插入。<br>如果结束时，少，则多余的删除。</p>
+<p>（2）交叉比对<br>尾尾，头头比对不对，头尾交叉比对。<br>交叉比对上了，直接把旧的移动元素到新位置，指针移动，继续（1）（2）流程。</p>
+<p>动态列表为什么需要key。</p>
+<p>经过上面的比对，如果是一个动态列表，如果没有key，或者索引是index，动态列表更新的时候，key都是一致的。索引前后都是从0开始，就会认为头头是一致的，比对直接从头开始复用覆盖！</p>
+<p>（3）乱序</p>
+<p>新的直接一个个循环去父节点上面比对，比对和上面指针一样！找到了就复用，找不到就新增，多余的就删除！</p>
+
             
         </div>
     </div>
@@ -212,16 +625,16 @@
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
+            <a href="/tags/vue2/" style="color: #00a596">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
         </span>
         
     </div>
-    <a href="/2022/05/02/vue2%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB/" class="go-post">阅读全文</a>
+    <a href="/2022/05/02/vue2%20Diff%E7%AE%97%E6%B3%95/" class="go-post">阅读全文</a>
 </div>
 
 <div class="post">
@@ -265,16 +678,210 @@
         
         <span class="tag">
             
-            <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
+            <a href="/tags/vue3/" style="color: #00bcd4">vue3</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/vxeTable/" style="color: #ffa2c4">vxeTable</a>
+            <a href="/tags/vxeTable/" style="color: #03a9f4">vxeTable</a>
         </span>
         
     </div>
     <a href="/2022/04/17/vxetable/" class="go-post">阅读全文</a>
+</div>
+
+<div class="post">
+    <a href="/2022/04/02/vue2%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86%E4%BB%A5%E5%8F%8A%E5%BC%82%E6%AD%A5%E6%B8%B2%E6%9F%93/">
+        <h2 class="post-title">vue2依赖收集</h2>
+    </a>
+    <div class="category-and-date">
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/4/2
+        </span>
+        
+        
+    </div>
+    <div class="description">
+        <div class="content" v-pre>
+            
+            <h2 id="对象依赖收集"><a href="#对象依赖收集" class="headerlink" title="对象依赖收集"></a>对象依赖收集</h2><p>在响应式数据收集的时候，也就是Object.defineProperty get 的时候，会加一个被观察者dep, 全局有一个Dep类。</p>
+<p>在渲染的时候watcher 里面会调用render方法。在Render取值之前，会将Dep静态属性target的值指向wathcer。当然如果页面上没有这个值，就不会触发render取值，也就不会触发依赖收集。</p>
+<p>在render中实现取值的时候，触发get。get中判断全局静态属性target。</p>
+<p>如果有值，让dep记住watcher.然后将watcher保存在dep中的subs数组里面。</p>
+<p>最后删除Dep 中全局tagert。</p>
+<h2 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h2><p>当set 值发生变化的时候，调用dep中的notify 去通知更新组件！</p>
+<p>notify中，循环Watcher去更新每一个组件！</p>
+<h2 id="类似例子："><a href="#类似例子：" class="headerlink" title="类似例子："></a>类似例子：</h2><p>响应式数据创建时候添加dep</p>
+<pre><code>function proxy(obj, key, value) &#123;
+    let dep = new Dep()
+    Object.defineProperty(obj, key, &#123;
+        get() &#123;
+            if (Dep.target) &#123;  //这里查看到属性的Watcher，Dep target是一开始渲染的时候，声明的全局属性，指向对应的watcher.
+                dep.depend()
+            &#125;
+            return value
+        &#125;,
+        set(newValue) &#123;
+            value = newValue
+            dep.notify() //通知更新
+        &#125;
+    &#125;)
+&#125;
+</code></pre>
+<p>页面渲染的时候，调用watcher中的render取值</p>
+<pre><code>let id = 0
+class watcher &#123;
+    constructor() &#123;
+        id = id++
+        this.deps = []
+        this.depId = new Set()
+        this.get()         //渲染的时候调用Render 会调用get 取值,在defineProperty中可以看到dep 中的Watcher
+    &#125;
+
+    get() &#123;
+        Dep.target = this  //创建渲染watcher时候，将Dep中的target放入watcher，
+        vm._update(vm.render()) //vm是虚拟dom
+        Dep.target = null
+    &#125;
+    addDep(dep) &#123;
+        id = id
+        this.deps.push(dep)
+        dep.addSub(this)
+    &#125;
+
+    _update() &#123;
+        this.get() //重新渲染
+    &#125;
+&#125;
+</code></pre>
+<p>dep修改数据的时候，通知更新</p>
+<pre><code>let depid = 0
+class Dep &#123;
+    constructor() &#123;
+        this.depid = depid++
+        this.subs = []
+    &#125;
+
+    depend() &#123;
+        Dep.target.addDep(this)
+    &#125; //存入Watcher
+
+    addSub(watcher) &#123;
+        this.subs.push(watcher)
+    &#125;
+
+    notify() &#123;
+        this.subs.forEach(watcher =&gt; watcher._update())
+    &#125;
+&#125;
+</code></pre>
+<h2 id="异步渲染"><a href="#异步渲染" class="headerlink" title="异步渲染"></a>异步渲染</h2><p>异步渲染是要解决多次赋值，多次渲染页面，要实现只渲染一次!</p>
+<p>watcher更新之前，先将watcher存在一个队列中，判断是否已经存在相同的watcher,不存在再加入队列。</p>
+<pre><code>let queue = []
+let has = &#123;&#125;
+let padding = false
+
+function queueWatcher(watcher) &#123;
+    const id = watcher.id
+    if (!has[id]) &#123;
+        queue.push(watcher);
+        has[id] = true;
+
+        if (!padding) &#123;
+            setTimeout(() =&gt; &#123;         //vue中用nexttick
+                flushSchedulerQueue()
+                padding = true
+            &#125;, 0);
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h2 id="nexttick"><a href="#nexttick" class="headerlink" title="nexttick"></a>nexttick</h2><p>nexttick 有内部调用和外部直接调用，这里也是用队列执行，谁在前面先执行谁的。</p>
+<pre><code>let callback = []
+let waiting = false
+
+function flushCallbacks() &#123;
+    let cbs = callback.slice(0)
+    waiting = false
+    callback = []
+    cbs.forEach(cb =&gt; cb())
+&#125;
+
+function nextTick(cb) &#123;
+    callback.push(cb);
+    if (!waiting) &#123;
+        timerFc()  //优雅降级 promise =&gt; MutationObserve =&gt; setimmediate =&gt;settimeout
+        waiting = true
+    &#125;
+&#125;
+</code></pre>
+<p>nexttick异步为优雅降级，先判断浏览器是否支持promise，再到H5的mutationObserve 在到ie的setimmediate 最后是开线程settimeout</p>
+<pre><code>
+let timerFc;
+if (Promise) &#123;
+    timerFc = () =&gt; &#123;
+        Promise.resolve().then(flushCallbacks)
+    &#125;
+&#125; else if (MutationObserver) &#123;
+    let observer = new MutationObserver()
+    let textNode = document.createTextNode(1)
+    observer.observe(textNode, &#123;
+        characterData: true
+    &#125;)
+    timerFc = () =&gt; &#123;
+        textNode.textContent = 2
+    &#125;
+&#125; else if (setImmediate) &#123;
+    setImmediate(flushCallbacks)
+&#125; else &#123;
+    timerFc = setTimeout(() =&gt; &#123;
+        flushCallbacks
+    &#125;, 0);
+&#125;
+</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>1.首先响应式数据中，每一个get方法中 都有一个通过Dep构造函数，生成dep函数。</p>
+<p>2.在浏览器解析完ast树，用渲染watcher去触发render函数，将watcher存放在全局Dep构造函数中的target中，维护成一个栈。</p>
+<p>3.调用render函数，会触发响应式数据中的get方法。</p>
+<p>4.get 方法中将全局中Dep target取出，就是对应的Wather。然后调用wacher中存放dep的函数，这样就实现了watcher与数据的绑定！！</p>
+<p>5.为了优化渲染，页面组件多次赋值，执行一次。将渲染render之前触发的watcher放入队列中，去重。这样就达到了只渲染一次。</p>
+<p>6.这里为了实现异步渲染，暴露一个nexttick方法实现更新。原理是通过优雅降级的方式，实现异步。promise &#x3D;&gt; MutationObserver &#x3D;&gt; setimmediate &#x3D;&gt; settimeout</p>
+
+            
+        </div>
+    </div>
+    <div class="post-tags">
+        
+        <span class="icon">
+            <i class="fa-solid fa-tags fa-fw"></i>
+        </span>
+        
+        
+        
+        <span class="tag">
+            
+            <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
+        </span>
+        
+        <span class="tag">
+            
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+        </span>
+        
+    </div>
+    <a href="/2022/04/02/vue2%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86%E4%BB%A5%E5%8F%8A%E5%BC%82%E6%AD%A5%E6%B8%B2%E6%9F%93/" class="go-post">阅读全文</a>
 </div>
 
 
