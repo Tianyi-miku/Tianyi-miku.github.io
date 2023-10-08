@@ -183,12 +183,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
+                <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
             </span>
             
         </span>
@@ -202,6 +202,9 @@
 <p>在get中，给每个对象也都添加dep.depend()方法，这样就能实现依赖收集了。</p>
 <p>嵌套的数组，因为前面只讲了重写了方法，并没有对修改的具体内容进行收集，也是通过这里新添加dep.depend()方法，去收集依赖的。</p>
 <p>$Set原理也是基于此，这样，数据更新的时候，也会重新渲染页面！</p>
+<span id="more"></span>
+
+
 <h2 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h2><p>计算属性不会收集依赖，只会让自己的依赖属性去收集依赖。dirty为false与true控制是否触发依赖get. 流程如下：</p>
 <p>渲染Watcher执行的时候，遇到computed，生成一个计算属性watcher，存入Watcher执行栈中。</p>
 <p>计算属性Watcher先去取值触发get方法。然后对象属性当中dep存放的就是计算属性的Watcher，这时候修改了属性之后，更新的只是计算属性中的watcher。</p>

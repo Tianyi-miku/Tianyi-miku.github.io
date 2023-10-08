@@ -183,12 +183,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
+                <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
             </span>
             
         </span>
@@ -199,6 +199,8 @@
         <h2 id="虚拟节点与真实节点比对"><a href="#虚拟节点与真实节点比对" class="headerlink" title="虚拟节点与真实节点比对"></a>虚拟节点与真实节点比对</h2><p>为什么需要diff算法。</p>
 <p>组件更新的时候，每次重新创建和替换真实Dom，会浪费性能。</p>
 <p>这时候要尽可能复用，不多生成真实节点。比较两个虚拟dom，通过比较，patch需要修改的节点。</p>
+<span id="more"></span>
+
 <h1 id="diff算法"><a href="#diff算法" class="headerlink" title="diff算法"></a>diff算法</h1><p>平级比较！一层一层的对应比较，父节点与父节点比较。如果第一层改变，则直接替换。</p>
 <p>节点不一致，直接替换。</p>
 <p>节点一致，比对属性，判断有没有key，如果是节点判断tag是否一致。父节点比较完成。</p>
