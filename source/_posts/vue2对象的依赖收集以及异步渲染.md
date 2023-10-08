@@ -16,7 +16,7 @@ categories: 学习
 如果有值，让dep记住watcher.然后将watcher保存在dep中的subs数组里面。
 
 最后删除Dep 中全局tagert。
-
+<!-- more -->
 
 ## 更新
 

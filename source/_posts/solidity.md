@@ -12,6 +12,7 @@ categories: 学习
 1. 存储类型 
 
 基本类型包括布尔类型，整数型,地址，字节数组，枚举。
+<!-- more -->
 
 ```
     bool public _bool = true;
