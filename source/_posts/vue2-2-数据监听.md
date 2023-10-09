@@ -7,11 +7,11 @@ tags:
 categories: 学习
 ---
 根据vue原理思路，重写捋一遍vue2实现。
-
+<!-- more -->
 首先 配置环境，主要用到@babel 解析，rollup打包工具配置好环境。
 
 新建一个html文件，新建index.js，引入。再script中new一个vue。
-<!-- more -->
+
 
 ```
    const myVue = new Vue({
