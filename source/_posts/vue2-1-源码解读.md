@@ -12,7 +12,6 @@ categories: 学习
 <!-- more -->
 
 大概目录介绍如下：
-<!-- more -->
 
 ```
 benchmarks                  主要用于代码性能分析的工具
