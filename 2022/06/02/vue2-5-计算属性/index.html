@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>vue2虚拟dom | Skymiku</title>
+        <title>vue2计算属性 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -155,14 +155,14 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>vue2虚拟dom</h1>
+        <h1>vue2计算属性</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2022/6/4
+            2022/6/2
         </span>
         
         <span class="category">
@@ -183,12 +183,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
+                <a href="/tags/vue2/" style="color: #00a596">vue2</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
             </span>
             
         </span>
@@ -196,31 +196,24 @@
     </div>
     
     <div class="content" v-pre>
-        <h2 id="模板编译，构建ast树"><a href="#模板编译，构建ast树" class="headerlink" title="模板编译，构建ast树"></a>模板编译，构建ast树</h2><p>首先，有模板拿模板，没有模板，拿到页面dom元素。</p>
-<p>通过正则，去匹配页面标签和元素，如： <div></div>之类的。</p>
-<p>将template转换为Ast树。</p>
-<p>匹配元素的时候，一边匹配，一边删除,文本，标签，不同的用不同的正则匹配。解析到的时候，将其属性挂载在上面。</p>
-<p>通过父元素存入栈第一个，然后循环子元素入栈出栈,更新最后一个出栈元素,从而构建出ast树。</p>
+        <h2 id="依赖收集"><a href="#依赖收集" class="headerlink" title="依赖收集"></a>依赖收集</h2><p>之前说到每一个属性触发get 都有一个dep函数。</p>
+<p>因为页面要对新增的属性增加收集，数组嵌套也要循环去收集。</p>
+<p>所以在Observe中，每个对象都声明一个new dep;</p>
+<p>在get中，给每个对象也都添加dep.depend()方法，这样就能实现依赖收集了。</p>
+<p>嵌套的数组，因为前面只讲了重写了方法，并没有对修改的具体内容进行收集，也是通过这里新添加dep.depend()方法，去收集依赖的。</p>
+<p>$Set原理也是基于此，这样，数据更新的时候，也会重新渲染页面！</p>
 <span id="more"></span>
 
 
-<h2 id="通过ast树生成字符串"><a href="#通过ast树生成字符串" class="headerlink" title="通过ast树生成字符串"></a>通过ast树生成字符串</h2><p>Ast树通过代码去拼接字符串代码，字符串中的变量，通过正则去匹配，匹配成功然后放入字符串中。</p>
-<p>这一步主要是拼接成想要的字符串。生成类似：</p>
-<pre><code>_c(&#39;div&#39;,&#123;id:&quot;app&quot;&#125; _v..._s..)
-</code></pre>
-<h2 id="生成render-with-new-function"><a href="#生成render-with-new-function" class="headerlink" title="生成render with + new function"></a>生成render with + new function</h2><p>生成好的字符串，通过 with function 实现取值。模板编译原理都是通过with +new function来实现的。</p>
-<pre><code>code = `with(this)&#123;return `$&#123;code&#125;`&#125;`
-let render = new Function(code)
-</code></pre>
-<h2 id="创建虚拟节点"><a href="#创建虚拟节点" class="headerlink" title="创建虚拟节点"></a>创建虚拟节点</h2><p>通过判断标签，文本等调用不同函数调用creatVNode ,创建虚拟Dom节点。</p>
-<p>调用render 执行取值会触发get 方法！</p>
-<p>ast 描述的是语法本身，可以描述html css js </p>
-<p>虚拟Dom描述的是Dom 元素，可以自定义属性！</p>
-<h2 id="渲染-update"><a href="#渲染-update" class="headerlink" title="渲染 update"></a>渲染 update</h2><p>patch 通过diff算法去新建或者更新真实Dom！</p>
-<p>nodeType 判断是否真实dom，如果没有真实dom先新建 creatElm()。</p>
-<p>有的话通过diff算法更新。</p>
-<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><p>创建响应式数据 &#x3D;》 模板转换为Ast语法树 &#x3D;》 Ast语法树生成render函数 （编译） &#x3D;》 数据更新之后只渲染render函数 </p>
-<p>Render会产生虚拟节点 （定位响应式数据） &#x3D;》 虚拟dom 生成真实dom</p>
+<h2 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h2><p>计算属性不会收集依赖，只会让自己的依赖属性去收集依赖。dirty为false与true控制是否触发依赖get. 流程如下：</p>
+<p>渲染Watcher执行的时候，遇到computed，生成一个计算属性watcher，存入Watcher执行栈中。</p>
+<p>计算属性Watcher先去取值触发get方法。然后对象属性当中dep存放的就是计算属性的Watcher，这时候修改了属性之后，更新的只是计算属性中的watcher。</p>
+<p>计算属性计算完之后，缓存计算结果,，如果值不变，下次不会再渲染，直接取缓存结果。</p>
+<p>这时候为了让dep中也有渲染的watcher，循环去找属性的dep依赖的watcher，添加到dep中来！这样才能使修改属性后，组件中属性也能同步渲染！</p>
+<p>流程：第一次，渲染Wacher入栈，渲染到computed的值，添加computed watcher ，computed watcher 先找到自己依赖的参数，触发计算，缓存计算结果。然后Wather栈中还有渲染watcher，同时添加到参数中的dep，渲染wathcer也能找到属性中对应的dep,实现页面渲染！</p>
+<p>页面修改computed 依赖的参数后，依赖的参数收集的watcher通知 computed 的值改变了，设置dirty为true，表示要重新计算。这时候依赖的参数watcher通知页面中的属性更新，重新计算拿到新的值，最后将dirty设置为false，如果下次拿computed的值，而依赖的参数没变，就会取缓存。</p>
+<h2 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h2><p>渲染watcher遇到Watch的值，创建一个watch Watcher 放入 watcher执行栈。</p>
+<p>先将页面中的老值存着，然后触发get获取到新的值 将新老值返回给watch.</p>
 
     </div>
     

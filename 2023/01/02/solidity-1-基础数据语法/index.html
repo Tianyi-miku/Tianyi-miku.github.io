@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Tags: vxeTable | Skymiku</title>
+        <title>solidity学习 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -29,6 +29,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -149,143 +153,83 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div id="archives">
-    
-    <div class="categories-tags">
+                <div class="article">
+    <div>
+        <h1>solidity学习</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/1/2
+        </span>
         
-        
-        
-        <span>
-            <a href="/tags/vue3/" style="background: #ff7d73">
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
                 <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
-                vue3
+                学习
             </a>
         </span>
         
         
-        
-        <span>
-            <a href="/tags/vxeTable/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                vxeTable
-            </a>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/solidity/" style="color: #03a9f4">solidity</a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/web3/" style="color: #ffa2c4">web3</a>
+            </span>
+            
         </span>
-        
-        
-        
-        
-        
-        <span>
-            <a href="/tags/vue2/" style="background: #03a9f4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                vue2
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="background: #ffa2c4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                源码
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/solidity/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                solidity
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/web3/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                web3
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/baidumap/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                baidumap
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/tags/react/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-tags fa-fw"></i>
-                </span>
-                react
-            </a>
-        </span>
-        
         
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2022/4/17</div>
-            <a href="/2022/04/17/vxetable/">
-                <h3>Vxetable 筛选过滤</h3>
-            </a>
-            <div class="info">
-                
-                <span class="category">
-                    <a href="/categories/%E4%B8%9A%E5%8A%A1/">
-                        <span class="icon">
-                            <i class="fa-solid fa-bookmark fa-fw"></i>
-                        </span>
-                        业务
-                    </a>
-                </span>
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vue3/" style="color: #00bcd4">vue3</a>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vxeTable/" style="color: #00a596">vxeTable</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    <div class="content" v-pre>
+        <h2 id="solidity-基础"><a href="#solidity-基础" class="headerlink" title="solidity 基础"></a>solidity 基础</h2><ol>
+<li>存储类型</li>
+</ol>
+<p>基本类型包括布尔类型，整数型,地址，字节数组，枚举。</p>
+<span id="more"></span>
+
+<pre><code>    bool public _bool = true;
+    int public _int = -1;
+    uint public _uint = 1;
+    address public _address = 0x7A58c0Be72BE218B41C608b7Fe7C5bB630736C71;
+       bytes1 public _byte = _byte32[0]; // bytes1: 0x4d
+     // 将uint 0， 1， 2表示为Buy, Hold, Sell
+    enum ActionSet &#123; Buy, Hold, Sell &#125;
+</code></pre>
+<p>引用类型包括结构体，与数组。<br>类型：storage memory 与Calldata<br>storage存储在链上，消耗gas多。</p>
+<p>memory 与 calldata存储在临时内存，  </p>
+<ol start="2">
+<li>函数类型</li>
+</ol>
+<p>pure 既不能读取，也不能写入。<br>view 可以读取，不能写入<br>payable（可支付的）</p>
+<p>函数描述</p>
+<p>pubilic 公开的,内部外部都可以访问<br>private 私有的，继承的合约也不能访问<br>external 只能从外部访问（但是内部也可以通过this.function()调用）<br>internal 内部的，继承合约可以访问</p>
+
     </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
     
 </div>
 
@@ -317,6 +261,29 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
         
      
           

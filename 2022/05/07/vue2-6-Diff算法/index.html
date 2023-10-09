@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>solidity学习 一 | Skymiku</title>
+        <title>vue2 diff算法 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -155,14 +155,14 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>solidity学习 一</h1>
+        <h1>vue2 diff算法</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/1/2
+            2022/5/7
         </span>
         
         <span class="category">
@@ -183,12 +183,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/solidity/" style="color: #03a9f4">solidity</a>
+                <a href="/tags/vue2/" style="color: #00a596">vue2</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/web3/" style="color: #ff7d73">web3</a>
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
             </span>
             
         </span>
@@ -196,28 +196,25 @@
     </div>
     
     <div class="content" v-pre>
-        <h2 id="solidity-基础"><a href="#solidity-基础" class="headerlink" title="solidity 基础"></a>solidity 基础</h2><ol>
-<li>存储类型</li>
-</ol>
-<p>基本类型包括布尔类型，整数型,地址，字节数组，枚举。</p>
+        <h2 id="虚拟节点与真实节点比对"><a href="#虚拟节点与真实节点比对" class="headerlink" title="虚拟节点与真实节点比对"></a>虚拟节点与真实节点比对</h2><p>为什么需要diff算法。</p>
+<p>组件更新的时候，每次重新创建和替换真实Dom，会浪费性能。</p>
+<p>这时候要尽可能复用，不多生成真实节点。比较两个虚拟dom，通过比较，patch需要修改的节点。</p>
 <span id="more"></span>
 
-<pre><code>    bool public _bool = true;
-    int public _int = -1;
-    uint public _uint = 1;
-    address public _address = 0x7A58c0Be72BE218B41C608b7Fe7C5bB630736C71;
-       bytes1 public _byte = _byte32[0]; // bytes1: 0x4d
-     // 将uint 0， 1， 2表示为Buy, Hold, Sell
-    enum ActionSet &#123; Buy, Hold, Sell &#125;
-</code></pre>
-<p>引用类型包括结构体，与数组。<br>类型：storage memory 与Calldata<br>storage存储在链上，消耗gas多。</p>
-<p>memory 与 calldata存储在临时内存，  </p>
-<ol start="2">
-<li>函数类型</li>
-</ol>
-<p>pure 既不能读取，也不能写入。<br>view 可以读取，不能写入<br>payable（可支付的）</p>
-<p>函数描述</p>
-<p>pubilic 公开的,内部外部都可以访问<br>private 私有的，继承的合约也不能访问<br>external 只能从外部访问（但是内部也可以通过this.function()调用）<br>internal 内部的，继承合约可以访问</p>
+<h1 id="diff算法"><a href="#diff算法" class="headerlink" title="diff算法"></a>diff算法</h1><p>平级比较！一层一层的对应比较，父节点与父节点比较。如果第一层改变，则直接替换。</p>
+<p>节点不一致，直接替换。</p>
+<p>节点一致，比对属性，判断有没有key，如果是节点判断tag是否一致。父节点比较完成。</p>
+<p>如果是文本，对比之后覆盖或不做操作。</p>
+<p>如果是style，直接比对循环比对元素。</p>
+<p>父节点比对完成，比对子节点。如果新的父节点有子节点，旧的没有，直接把虚拟子节点转换成真实节点，插入父节点。</p>
+<p>如果新的没有，旧的有，直接删除。</p>
+<p>如果旧的有子节点，新的也有子节点。</p>
+<p>子节点优化：（1）头头尾尾比对<br>通过双指针，来比较数组常用操作，如：push, pop。<br>记住旧的头尾与新的头尾，循环对应比较，子节点的子节点也要递归。<br>双方有一个头尾指针，对比一次指针向后或者向前移动，头指针超过尾指针的，停止比较。<br>新的节点多的部分，直接创建真实dom插入。<br>如果结束时，少，则多余的删除。</p>
+<p>（2）交叉比对<br>尾尾，头头比对不对，头尾交叉比对。<br>交叉比对上了，直接把旧的移动元素到新位置，指针移动，继续（1）（2）流程。</p>
+<p>动态列表为什么需要key。</p>
+<p>经过上面的比对，如果是一个动态列表，如果没有key，或者索引是index，动态列表更新的时候，key都是一致的。索引前后都是从0开始，就会认为头头是一致的，比对直接从头开始复用覆盖！</p>
+<p>（3）乱序</p>
+<p>新的直接一个个循环去父节点上面比对，比对和上面指针一样！找到了就复用，找不到就新增，多余的就删除！</p>
 
     </div>
     

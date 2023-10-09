@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>vue2计算属性 | Skymiku</title>
+        <title>vue2响应式数据实现 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -155,14 +155,14 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>vue2计算属性</h1>
+        <h1>vue2响应式数据实现</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2022/6/2
+            2022/5/4
         </span>
         
         <span class="category">
@@ -183,12 +183,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
+                <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
             </span>
             
         </span>
@@ -196,24 +196,82 @@
     </div>
     
     <div class="content" v-pre>
-        <h2 id="依赖收集"><a href="#依赖收集" class="headerlink" title="依赖收集"></a>依赖收集</h2><p>之前说到每一个属性触发get 都有一个dep函数。</p>
-<p>因为页面要对新增的属性增加收集，数组嵌套也要循环去收集。</p>
-<p>所以在Observe中，每个对象都声明一个new dep;</p>
-<p>在get中，给每个对象也都添加dep.depend()方法，这样就能实现依赖收集了。</p>
-<p>嵌套的数组，因为前面只讲了重写了方法，并没有对修改的具体内容进行收集，也是通过这里新添加dep.depend()方法，去收集依赖的。</p>
-<p>$Set原理也是基于此，这样，数据更新的时候，也会重新渲染页面！</p>
+        <p>根据vue原理思路，重写捋一遍vue2实现。</p>
+<p>首先 配置环境，主要用到@babel 解析，rollup打包工具配置好环境。</p>
+<p>新建一个html文件，新建index.js，引入。再script中new一个vue。</p>
 <span id="more"></span>
 
+<pre><code>   const myVue = new Vue(&#123;
+            data() &#123;
+                return &#123;
+                    name: 13,
+                    skymiku: &#123;
+                        age: 20,
+                        name: &#39;skymiku&#39;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;)
+</code></pre>
+<h2 id="初始化vue"><a href="#初始化vue" class="headerlink" title="初始化vue"></a>初始化vue</h2><p>在index中初始化Vue</p>
+<p>首先声明一个vue函数，我们将Vue在其原型上增加方法。</p>
+<pre><code>import &#123; intiMixin &#125; from &#39;./init&#39;
 
-<h2 id="计算属性"><a href="#计算属性" class="headerlink" title="计算属性"></a>计算属性</h2><p>计算属性不会收集依赖，只会让自己的依赖属性去收集依赖。dirty为false与true控制是否触发依赖get. 流程如下：</p>
-<p>渲染Watcher执行的时候，遇到computed，生成一个计算属性watcher，存入Watcher执行栈中。</p>
-<p>计算属性Watcher先去取值触发get方法。然后对象属性当中dep存放的就是计算属性的Watcher，这时候修改了属性之后，更新的只是计算属性中的watcher。</p>
-<p>计算属性计算完之后，缓存计算结果,，如果值不变，下次不会再渲染，直接取缓存结果。</p>
-<p>这时候为了让dep中也有渲染的watcher，循环去找属性的dep依赖的watcher，添加到dep中来！这样才能使修改属性后，组件中属性也能同步渲染！</p>
-<p>流程：第一次，渲染Wacher入栈，渲染到computed的值，添加computed watcher ，computed watcher 先找到自己依赖的参数，触发计算，缓存计算结果。然后Wather栈中还有渲染watcher，同时添加到参数中的dep，渲染wathcer也能找到属性中对应的dep,实现页面渲染！</p>
-<p>页面修改computed 依赖的参数后，依赖的参数收集的watcher通知 computed 的值改变了，设置dirty为true，表示要重新计算。这时候依赖的参数watcher通知页面中的属性更新，重新计算拿到新的值，最后将dirty设置为false，如果下次拿computed的值，而依赖的参数没变，就会取缓存。</p>
-<h2 id="watch"><a href="#watch" class="headerlink" title="watch"></a>watch</h2><p>渲染watcher遇到Watch的值，创建一个watch Watcher 放入 watcher执行栈。</p>
-<p>先将页面中的老值存着，然后触发get获取到新的值 将新老值返回给watch.</p>
+function Vue(options) &#123;
+    this._init(options)
+&#125;
+
+//扩展功能
+intiMixin(Vue)
+export default Vue;
+</code></pre>
+<p>在init文件中，创建 intimixin函数，接收Vue作为参数，并且新增init初始化方法</p>
+<pre><code>export function intiMixin(Vue) &#123;
+    Vue.prototype._init = function (options) &#123; //初始化
+        let vm = this
+        vm.$options = options //挂载在实例上。
+    &#125;
+&#125;
+</code></pre>
+<p>在vue2中，$代表vue自身的属性，将传过来的参数，赋值到vue上</p>
+<h2 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h2><p>这时候来监听options中的data,声明一个initState函数，如果是对象，循环对象中的key，用Object.defineProperty重写set与get方法</p>
+<pre><code>    Object.defineProperty(data, key, &#123;
+        get() &#123;
+            console.log(&#39;获取数据&#39;);
+            return value
+        &#125;,
+        set(newValue) &#123;
+            console.log(&#39;写入数据了！&#39;);
+            if (newValue !== value) &#123;
+                value = newValue
+            &#125;
+        &#125;
+    &#125;)
+</code></pre>
+<p>如果是数组，则重写数组的7个更改方法！ </p>
+<pre><code>//数组
+ value.__proto__ = oldportotype
+</code></pre>
+<pre><code>const func = [&#39;push&#39;, &#39;shift&#39;, &#39;unshift&#39;, &#39;pop&#39;, &#39;srot&#39;, &#39;splice&#39;, &#39;reverse&#39;]
+export const oldportotype = Array.prototype
+
+func.forEach(key=&gt;&#123;
+        oldportotype[key] = (...arg) =&gt; &#123;
+        switch (key) &#123;
+            case &#39;push&#39;:
+                console.log(&#39;push&#39;);
+                insert = arg
+                break;
+            case &#39;splice&#39;:
+                insert = arg.slice(2)
+                break;
+            default:
+                break;
+        &#125;
+    &#125;
+&#125;)
+</code></pre>
+<p>将数组的隐式原型链覆盖，就监听到了数组的变化。</p>
 
     </div>
     
