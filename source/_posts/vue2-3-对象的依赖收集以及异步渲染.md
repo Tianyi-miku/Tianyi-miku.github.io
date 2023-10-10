@@ -7,8 +7,8 @@ tags:
 categories: 学习
 ---
 ## 对象依赖收集
-在响应式数据收集的时候，也就是Object.defineProperty get 的时候，会加一个被观察者dep, 全局有一个Dep类。
-
+在响应式数据收集的时候，也就是Object.defineProperty get 的时候，会加一个被观察者dep, 全局有一个Dep类
+<!-- more -->。
 在渲染的时候watcher 里面会调用render方法。在Render取值之前，会将Dep静态属性target的值指向wathcer。当然如果页面上没有这个值，就不会触发render取值，也就不会触发依赖收集。
 
 在render中实现取值的时候，触发get。get中判断全局静态属性target。
@@ -16,7 +16,7 @@ categories: 学习
 如果有值，让dep记住watcher.然后将watcher保存在dep中的subs数组里面。
 
 最后删除Dep 中全局tagert。
-<!-- more -->
+
 
 ## 更新
 
