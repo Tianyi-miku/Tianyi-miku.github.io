@@ -4,7 +4,7 @@ date: 2022-08-23 17:2:13
 tags:
     - vue3
     - 源码
-categories: 学习
+categories: [学习,笔记]
 ---
 
 在vue2中，依赖收集主要是通过观察订阅者模式来完成的。主要是通过Dep类，render在触发get的时候收集属性对应的watcher，修改属性触发dep.notify方法。

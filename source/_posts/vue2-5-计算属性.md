@@ -4,7 +4,7 @@ date: 2022-06-2 11:16:34
 tags:
     - vue2
     - 源码
-categories: 学习
+categories: [学习,笔记]
 ---
 ## 依赖收集
 

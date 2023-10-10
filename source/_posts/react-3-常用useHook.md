@@ -3,7 +3,7 @@ title: react常用hook
 date: 2023-04-15 21:15:25
 tags:
     - react
-categories: 学习
+categories: [学习,笔记]
 ---
 # react中useState
 

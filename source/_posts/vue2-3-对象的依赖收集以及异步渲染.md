@@ -4,7 +4,7 @@ date: 2022-04-2 18:05:13
 tags:
     - vue2
     - 源码
-categories: 学习
+categories: [学习,笔记]
 ---
 ## 对象依赖收集
 在响应式数据收集的时候，也就是Object.defineProperty get 的时候，会加一个被观察者dep, 全局有一个Dep类

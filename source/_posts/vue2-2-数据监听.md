@@ -4,7 +4,7 @@ date: 2022-05-4 18:05:13
 tags:
     - vue2
     - 源码
-categories: 学习
+categories: [学习,笔记]
 ---
 根据vue原理思路，重写捋一遍vue2实现。
 <!-- more -->

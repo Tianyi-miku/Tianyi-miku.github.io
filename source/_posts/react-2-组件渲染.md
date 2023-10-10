@@ -3,7 +3,7 @@ title: react组件渲染
 date: 2023-04-18 20:28:09
 tags:
     - react
-categories: 学习
+categories: [学习,笔记]
 ---
 # 组件渲染
 组件渲染与之前写的一致

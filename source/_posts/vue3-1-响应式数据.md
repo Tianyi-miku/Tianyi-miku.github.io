@@ -4,7 +4,7 @@ date: 2022-05-12 12:05:13
 tags:
     - vue3
     - 源码
-categories: 学习
+categories: [学习,笔记]
 ---
 
 ## vue3 响应式数据

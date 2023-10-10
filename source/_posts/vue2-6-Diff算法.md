@@ -4,7 +4,7 @@ date: 2022-05-7 18:05:13
 tags:
     - vue2
     - 源码
-categories: 学习
+categories: [学习,笔记]
 ---
 ## 虚拟节点与真实节点比对
 
