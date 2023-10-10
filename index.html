@@ -152,7 +152,7 @@
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div id="home-head">
-    <div id="home-background" ref="homeBackground" data-images="/images/background1.jpg,/images/background.jpg"></div>
+    <div id="home-background" ref="homeBackground" data-images="/images/background1.jpg,/images/background2.jpg,/images/background3.jpg,/images/background.jpg"></div>
     <div id="home-info" @click="homeClick">
         <span class="loop"></span>
         <span class="loop"></span>
@@ -212,7 +212,7 @@
         
         <span class="tag">
             
-            <a href="/tags/react/" style="color: #03a9f4">react</a>
+            <a href="/tags/react/" style="color: #ffa2c4">react</a>
         </span>
         
     </div>
@@ -309,7 +309,7 @@
         
         <span class="tag">
             
-            <a href="/tags/react/" style="color: #ff7d73">react</a>
+            <a href="/tags/react/" style="color: #00a596">react</a>
         </span>
         
     </div>
@@ -359,7 +359,7 @@
         
         <span class="tag">
             
-            <a href="/tags/react/" style="color: #ffa2c4">react</a>
+            <a href="/tags/react/" style="color: #ff7d73">react</a>
         </span>
         
     </div>
@@ -410,12 +410,12 @@
         
         <span class="tag">
             
-            <a href="/tags/solidity/" style="color: #ffa2c4">solidity</a>
+            <a href="/tags/solidity/" style="color: #00a596">solidity</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/web3/" style="color: #03a9f4">web3</a>
+            <a href="/tags/web3/" style="color: #ff7d73">web3</a>
         </span>
         
     </div>
@@ -450,10 +450,6 @@
         <div class="content" v-pre>
             
             <h2 id="模板编译，构建ast树"><a href="#模板编译，构建ast树" class="headerlink" title="模板编译，构建ast树"></a>模板编译，构建ast树</h2><p>首先，有模板拿模板，没有模板，拿到页面dom元素。</p>
-<p>通过正则，去匹配页面标签和元素，如： <div></div>之类的。</p>
-<p>将template转换为Ast树。</p>
-<p>匹配元素的时候，一边匹配，一边删除,文本，标签，不同的用不同的正则匹配。解析到的时候，将其属性挂载在上面。</p>
-<p>通过父元素存入栈第一个，然后循环子元素入栈出栈,更新最后一个出栈元素,从而构建出ast树。</p>
             
         </div>
     </div>
@@ -467,12 +463,12 @@
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #00a596">vue2</a>
+            <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
         </span>
         
     </div>
@@ -507,11 +503,6 @@
         <div class="content" v-pre>
             
             <h2 id="依赖收集"><a href="#依赖收集" class="headerlink" title="依赖收集"></a>依赖收集</h2><p>之前说到每一个属性触发get 都有一个dep函数。</p>
-<p>因为页面要对新增的属性增加收集，数组嵌套也要循环去收集。</p>
-<p>所以在Observe中，每个对象都声明一个new dep;</p>
-<p>在get中，给每个对象也都添加dep.depend()方法，这样就能实现依赖收集了。</p>
-<p>嵌套的数组，因为前面只讲了重写了方法，并没有对修改的具体内容进行收集，也是通过这里新添加dep.depend()方法，去收集依赖的。</p>
-<p>$Set原理也是基于此，这样，数据更新的时候，也会重新渲染页面！</p>
             
         </div>
     </div>
@@ -525,12 +516,12 @@
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #00a596">vue2</a>
+            <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
         </span>
         
     </div>
@@ -578,12 +569,12 @@
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
+            <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
         </span>
         
     </div>
@@ -591,8 +582,8 @@
 </div>
 
 <div class="post">
-    <a href="/2022/05/07/vue2%20Diff%E7%AE%97%E6%B3%95/">
-        <h2 class="post-title">vue2 diff算法</h2>
+    <a href="/2022/05/12/vue3-1-%E5%93%8D%E5%BA%94%E5%BC%8F%E6%95%B0%E6%8D%AE/">
+        <h2 class="post-title">vue3 响应式数据</h2>
     </a>
     <div class="category-and-date">
         
@@ -609,7 +600,7 @@
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2022/5/7
+            2022/5/12
         </span>
         
         
@@ -617,9 +608,8 @@
     <div class="description">
         <div class="content" v-pre>
             
-            <h2 id="虚拟节点与真实节点比对"><a href="#虚拟节点与真实节点比对" class="headerlink" title="虚拟节点与真实节点比对"></a>虚拟节点与真实节点比对</h2><p>为什么需要diff算法。</p>
-<p>组件更新的时候，每次重新创建和替换真实Dom，会浪费性能。</p>
-<p>这时候要尽可能复用，不多生成真实节点。比较两个虚拟dom，通过比较，patch需要修改的节点。</p>
+            <h2 id="vue3-响应式数据"><a href="#vue3-响应式数据" class="headerlink" title="vue3 响应式数据"></a>vue3 响应式数据</h2><p>在vue2中，主要是使用Object.defineProperty来重写对象中的get 与 set 方法。数组则是采用重写数组的方法来实现数据拦截。</p>
+<p>而在vue3中，主要是使用Proxy。</p>
             
         </div>
     </div>
@@ -633,16 +623,16 @@
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #00a596">vue2</a>
+            <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
         </span>
         
     </div>
-    <a href="/2022/05/07/vue2%20Diff%E7%AE%97%E6%B3%95/" class="go-post">阅读全文</a>
+    <a href="/2022/05/12/vue3-1-%E5%93%8D%E5%BA%94%E5%BC%8F%E6%95%B0%E6%8D%AE/" class="go-post">阅读全文</a>
 </div>
 
 <div class="post">
@@ -688,12 +678,12 @@
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
+            <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
         </span>
         
     </div>

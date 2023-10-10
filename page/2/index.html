@@ -152,7 +152,7 @@
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div id="home-head">
-    <div id="home-background" ref="homeBackground" data-images="/images/background1.jpg,/images/background.jpg"></div>
+    <div id="home-background" ref="homeBackground" data-images="/images/background1.jpg,/images/background2.jpg,/images/background3.jpg,/images/background.jpg"></div>
     <div id="home-info" @click="homeClick">
         <span class="loop"></span>
         <span class="loop"></span>
@@ -199,8 +199,6 @@
         <div class="content" v-pre>
             
             <p>根据vue原理思路，重写捋一遍vue2实现。</p>
-<p>首先 配置环境，主要用到@babel 解析，rollup打包工具配置好环境。</p>
-<p>新建一个html文件，新建index.js，引入。再script中new一个vue。</p>
             
         </div>
     </div>
@@ -214,12 +212,12 @@
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #00a596">vue2</a>
+            <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
         </span>
         
     </div>
@@ -267,12 +265,12 @@
         
         <span class="tag">
             
-            <a href="/tags/vue3/" style="color: #ff7d73">vue3</a>
+            <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/vxeTable/" style="color: #00bcd4">vxeTable</a>
+            <a href="/tags/vxeTable/" style="color: #ffa2c4">vxeTable</a>
         </span>
         
     </div>
@@ -306,11 +304,7 @@
     <div class="description">
         <div class="content" v-pre>
             
-            <h2 id="对象依赖收集"><a href="#对象依赖收集" class="headerlink" title="对象依赖收集"></a>对象依赖收集</h2><p>在响应式数据收集的时候，也就是Object.defineProperty get 的时候，会加一个被观察者dep, 全局有一个Dep类。</p>
-<p>在渲染的时候watcher 里面会调用render方法。在Render取值之前，会将Dep静态属性target的值指向wathcer。当然如果页面上没有这个值，就不会触发render取值，也就不会触发依赖收集。</p>
-<p>在render中实现取值的时候，触发get。get中判断全局静态属性target。</p>
-<p>如果有值，让dep记住watcher.然后将watcher保存在dep中的subs数组里面。</p>
-<p>最后删除Dep 中全局tagert。</p>
+            <h2 id="对象依赖收集"><a href="#对象依赖收集" class="headerlink" title="对象依赖收集"></a>对象依赖收集</h2><p>在响应式数据收集的时候，也就是Object.defineProperty get 的时候，会加一个被观察者dep, 全局有一个Dep类</p>
             
         </div>
     </div>
@@ -378,7 +372,7 @@
         
         <span class="tag">
             
-            <a href="/tags/baidumap/" style="color: #03a9f4">baidumap</a>
+            <a href="/tags/baidumap/" style="color: #ff7d73">baidumap</a>
         </span>
         
     </div>

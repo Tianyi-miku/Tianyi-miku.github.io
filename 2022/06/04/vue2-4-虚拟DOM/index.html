@@ -183,7 +183,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
+                <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
             </span>
             
             <span class="tag">
@@ -197,13 +197,12 @@
     
     <div class="content" v-pre>
         <h2 id="模板编译，构建ast树"><a href="#模板编译，构建ast树" class="headerlink" title="模板编译，构建ast树"></a>模板编译，构建ast树</h2><p>首先，有模板拿模板，没有模板，拿到页面dom元素。</p>
+<span id="more"></span>
+
 <p>通过正则，去匹配页面标签和元素，如： <div></div>之类的。</p>
 <p>将template转换为Ast树。</p>
 <p>匹配元素的时候，一边匹配，一边删除,文本，标签，不同的用不同的正则匹配。解析到的时候，将其属性挂载在上面。</p>
 <p>通过父元素存入栈第一个，然后循环子元素入栈出栈,更新最后一个出栈元素,从而构建出ast树。</p>
-<span id="more"></span>
-
-
 <h2 id="通过ast树生成字符串"><a href="#通过ast树生成字符串" class="headerlink" title="通过ast树生成字符串"></a>通过ast树生成字符串</h2><p>Ast树通过代码去拼接字符串代码，字符串中的变量，通过正则去匹配，匹配成功然后放入字符串中。</p>
 <p>这一步主要是拼接成想要的字符串。生成类似：</p>
 <pre><code>_c(&#39;div&#39;,&#123;id:&quot;app&quot;&#125; _v..._s..)
