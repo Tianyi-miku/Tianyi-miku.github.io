@@ -1,0 +1,778 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>讯飞语音使用 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>讯飞语音使用</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2021/7/18
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E6%8F%92%E4%BB%B6/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                插件
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/%E8%AF%AD%E9%9F%B3%E8%AF%86%E5%88%AB/" style="color: #ff7d73">语音识别</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>​<br>首先先登录讯飞开放平台-以语音交互为核心的人工智能开放平台，在控制台中创建自己的app，并且拿到APPID。</p>
+<span id="more"></span>
+<p>下载crypto-js 与线程worker</p>
+<p>npm install crypto-js</p>
+<p>npm install worker-loader</p>
+<p>官网中有示例文件，稍微改造一下，封装成组件就能使用了。</p>
+<p>transcode.worker.js文件</p>
+<pre><code>(function()&#123;
+  self.onmessage = function(e)&#123;
+    transAudioData.transcode(e.data)
+  &#125;
+
+  let transAudioData = &#123;
+    transcode(audioData) &#123;
+      let output = transAudioData.to16kHz(audioData)
+      output = transAudioData.to16BitPCM(output)
+      output = Array.from(new Uint8Array(output.buffer))
+      self.postMessage(output)
+      // return output
+    &#125;,
+    to16kHz(audioData) &#123;
+      var data = new Float32Array(audioData)
+      var fitCount = Math.round(data.length * (16000 / 44100))
+      var newData = new Float32Array(fitCount)
+      var springFactor = (data.length - 1) / (fitCount - 1)
+      newData[0] = data[0]
+      for (let i = 1; i &lt; fitCount - 1; i++) &#123;
+        var tmp = i * springFactor
+        var before = Math.floor(tmp).toFixed()
+        var after = Math.ceil(tmp).toFixed()
+        var atPoint = tmp - before
+        newData[i] = data[before] + (data[after] - data[before]) * atPoint
+      &#125;
+      newData[fitCount - 1] = data[data.length - 1]
+      return newData
+    &#125;,
+    to16BitPCM(input) &#123;
+      var dataLength = input.length * (16 / 8)
+      var dataBuffer = new ArrayBuffer(dataLength)
+      var dataView = new DataView(dataBuffer)
+      var offset = 0
+      for (var i = 0; i &lt; input.length; i++, offset += 2) &#123;
+        var s = Math.max(-1, Math.min(1, input[i]))
+        dataView.setInt16(offset, s &lt; 0 ? s * 0x8000 : s * 0x7fff, true)
+      &#125;
+      return dataView
+    &#125;,
+  &#125;
+&#125;)()
+</code></pre>
+<p>index.js 中将IatRecorder 方法导出，appId 就是官网的APPID，这里我把它封装成一个文件，好修改一点。</p>
+<pre><code>/**
+ * Created by lycheng on 2019/8/1.
+ *
+ * 语音听写流式 WebAPI 接口调用示例 接口文档（必看）：https://doc.xfyun.cn/rest_api/语音听写（流式版）.html
+ * webapi 听写服务参考帖子（必看）：http://bbs.xfyun.cn/forum.php?mod=viewthread&amp;tid=38947&amp;extra=
+ * 语音听写流式WebAPI 服务，热词使用方式：登陆开放平台https://www.xfyun.cn/后，找到控制台--我的应用---语音听写---个性化热词，上传热词
+ * 注意：热词只能在识别的时候会增加热词的识别权重，需要注意的是增加相应词条的识别率，但并不是绝对的，具体效果以您测试为准。
+ * 错误码链接：
+ * https://www.xfyun.cn/doc/asr/voicedictation/API.html#%E9%94%99%E8%AF%AF%E7%A0%81
+ * https://www.xfyun.cn/document/error-code （code返回错误码时必看）
+ * 语音听写流式WebAPI 服务，方言或小语种试用方法：登陆开放平台https://www.xfyun.cn/后，在控制台--语音听写（流式）--方言/语种处添加
+ * 添加后会显示该方言/语种的参数值
+ *
+ */
+
+// 1. websocket连接：判断浏览器是否兼容，获取websocket url并连接，这里为了方便本地生成websocket url
+// 2. 获取浏览器录音权限：判断浏览器是否兼容，获取浏览器录音权限，
+// 3. js获取浏览器录音数据
+// 4. 将录音数据处理为文档要求的数据格式：采样率16k或8K、位长16bit、单声道；该操作属于纯数据处理，使用webWork处理
+// 5. 根据要求（采用base64编码，每次发送音频间隔40ms，每次发送音频字节数1280B）将处理后的数据通过websocket传给服务器，
+// 6. 实时接收websocket返回的数据并进行处理
+
+// ps: 该示例用到了es6中的一些语法，建议在chrome下运行
+
+import CryptoJS from &#39;crypto-js&#39;
+import &#39;./jquery.js&#39;
+import TransWorker from &#39;./transcode.worker.js&#39;
+import appId from &#39;./../.././../app.config&#39;
+
+let transWorker = new TransWorker()
+//APPID，APISecret，APIKey在控制台-我的应用-语音听写（流式版）页面获取
+const APPID = appId.APPID
+const API_SECRET = appId.API_SECRET
+const API_KEY = appId.API_KEY
+
+/**
+ * 获取websocket url
+ * 该接口需要后端提供，这里为了方便前端处理
+ */
+function getWebSocketUrl() &#123;
+  return new Promise((resolve, reject) =&gt; &#123;
+    // 请求地址根据语种不同变化
+    var url = &#39;wss://iat-api.xfyun.cn/v2/iat&#39;
+    var host = &#39;iat-api.xfyun.cn&#39;
+    var apiKey = API_KEY
+    var apiSecret = API_SECRET
+    var date = new Date().toGMTString()
+    var algorithm = &#39;hmac-sha256&#39;
+    var headers = &#39;host date request-line&#39;
+    var signatureOrigin = `host: $&#123;host&#125;\ndate: $&#123;date&#125;\nGET /v2/iat HTTP/1.1`
+    var signatureSha = CryptoJS.HmacSHA256(signatureOrigin, apiSecret)
+    var signature = CryptoJS.enc.Base64.stringify(signatureSha)
+    var authorizationOrigin = `api_key=&quot;$&#123;apiKey&#125;&quot;, algorithm=&quot;$&#123;algorithm&#125;&quot;, headers=&quot;$&#123;headers&#125;&quot;, signature=&quot;$&#123;signature&#125;&quot;`
+    var authorization = btoa(authorizationOrigin)
+    url = `$&#123;url&#125;?authorization=$&#123;authorization&#125;&amp;date=$&#123;date&#125;&amp;host=$&#123;host&#125;`
+    resolve(url)
+  &#125;)
+&#125;
+export default class IatRecorder &#123;
+  constructor(&#123; language, accent, appId &#125; = &#123;&#125;) &#123;
+    let self = this
+    this.status = &#39;null&#39;
+    this.language = language || &#39;zh_cn&#39;
+    this.accent = accent || &#39;mandarin&#39;
+    this.appId = appId || APPID
+    // 记录音频数据
+    this.audioData = []
+    // 记录听写结果
+    this.resultText = &#39;&#39;
+    // wpgs下的听写结果需要中间状态辅助记录
+    this.resultTextTemp = &#39;&#39;
+    transWorker.onmessage = function (event) &#123;
+      self.audioData.push(...event.data)
+    &#125;
+  &#125;
+  // 修改录音听写状态
+  setStatus(status) &#123;
+    this.onWillStatusChange &amp;&amp;
+      this.status !== status &amp;&amp;
+      this.onWillStatusChange(this.status, status)
+    this.status = status
+  &#125;
+  setResultText(&#123; resultText, resultTextTemp &#125; = &#123;&#125;) &#123;
+    this.onTextChange &amp;&amp; this.onTextChange(resultTextTemp || resultText || &#39;&#39;)
+    resultText !== undefined &amp;&amp; (this.resultText = resultText)
+    resultTextTemp !== undefined &amp;&amp; (this.resultTextTemp = resultTextTemp)
+  &#125;
+  // 修改听写参数
+  setParams(&#123; language, accent &#125; = &#123;&#125;) &#123;
+    language &amp;&amp; (this.language = language)
+    accent &amp;&amp; (this.accent = accent)
+  &#125;
+  // 连接websocket
+  connectWebSocket() &#123;
+    return getWebSocketUrl().then((url) =&gt; &#123;
+      let iatWS
+      if (&#39;WebSocket&#39; in window) &#123;
+        iatWS = new WebSocket(url)
+      &#125; else if (&#39;MozWebSocket&#39; in window) &#123;
+        iatWS = new MozWebSocket(url)
+      &#125; else &#123;
+        alert(&#39;浏览器不支持WebSocket&#39;)
+        return
+      &#125;
+      this.webSocket = iatWS
+      this.setStatus(&#39;init&#39;)
+      iatWS.onopen = (e) =&gt; &#123;
+        this.setStatus(&#39;ing&#39;)
+        // 重新开始录音
+        setTimeout(() =&gt; &#123;
+          this.webSocketSend()
+        &#125;, 500)
+      &#125;
+      iatWS.onmessage = (e) =&gt; &#123;
+        this.result(e.data)
+      &#125;
+      iatWS.onerror = (e) =&gt; &#123;
+        this.recorderStop()
+      &#125;
+      iatWS.onclose = (e) =&gt; &#123;
+        this.recorderStop()
+      &#125;
+    &#125;)
+  &#125;
+  // 初始化浏览器录音
+  recorderInit() &#123;
+    navigator.getUserMedia =
+      navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia ||
+      navigator.msGetUserMedia
+
+    // 创建音频环境
+    try &#123;
+      this.audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)()
+      this.audioContext.resume()
+      if (!this.audioContext) &#123;
+        alert(&#39;浏览器不支持webAudioApi相关接口&#39;)
+        return
+      &#125;
+    &#125; catch (e) &#123;
+      if (!this.audioContext) &#123;
+        alert(&#39;浏览器不支持webAudioApi相关接口&#39;)
+        return
+      &#125;
+    &#125;
+
+    // 获取浏览器录音权限
+    if (navigator.mediaDevices &amp;&amp; navigator.mediaDevices.getUserMedia) &#123;
+      navigator.mediaDevices
+        .getUserMedia(&#123;
+          audio: true,
+          video: false,
+        &#125;)
+        .then((stream) =&gt; &#123;
+          getMediaSuccess(stream)
+        &#125;)
+        .catch((e) =&gt; &#123;
+          getMediaFail(e)
+        &#125;)
+    &#125; else if (navigator.getUserMedia) &#123;
+      navigator.getUserMedia(
+        &#123;
+          audio: true,
+          video: false,
+        &#125;,
+        (stream) =&gt; &#123;
+          getMediaSuccess(stream)
+        &#125;,
+        function (e) &#123;
+          getMediaFail(e)
+        &#125;
+      )
+    &#125; else &#123;
+      if (
+        navigator.userAgent.toLowerCase().match(/chrome/) &amp;&amp;
+        location.origin.indexOf(&#39;https://&#39;) &lt; 0
+      ) &#123;
+        alert(
+          &#39;chrome下获取浏览器录音功能，因为安全性问题，需要在localhost或127.0.0.1或https下才能获取权限&#39;
+        )
+      &#125; else &#123;
+        alert(&#39;无法获取浏览器录音功能，请升级浏览器或使用chrome&#39;)
+      &#125;
+      this.audioContext &amp;&amp; this.audioContext.close()
+      return
+    &#125;
+    // 获取浏览器录音权限成功的回调
+    let getMediaSuccess = (stream) =&gt; &#123;
+      console.log(&#39;getMediaSuccess&#39;)
+      // 创建一个用于通过JavaScript直接处理音频
+      this.scriptProcessor = this.audioContext.createScriptProcessor(0, 1, 1)
+      this.scriptProcessor.onaudioprocess = (e) =&gt; &#123;
+        // 去处理音频数据
+        if (this.status === &#39;ing&#39;) &#123;
+          transWorker.postMessage(e.inputBuffer.getChannelData(0))
+        &#125;
+      &#125;
+      // 创建一个新的MediaStreamAudioSourceNode 对象，使来自MediaStream的音频可以被播放和操作
+      this.mediaSource = this.audioContext.createMediaStreamSource(stream)
+      // 连接
+      this.mediaSource.connect(this.scriptProcessor)
+      this.scriptProcessor.connect(this.audioContext.destination)
+      this.connectWebSocket()
+    &#125;
+
+    let getMediaFail = (e) =&gt; &#123;
+      alert(&#39;请求麦克风失败&#39;)
+      console.log(e)
+      this.audioContext &amp;&amp; this.audioContext.close()
+      this.audioContext = undefined
+      // 关闭websocket
+      if (this.webSocket &amp;&amp; this.webSocket.readyState === 1) &#123;
+        this.webSocket.close()
+      &#125;
+    &#125;
+  &#125;
+  recorderStart() &#123;
+    if (!this.audioContext) &#123;
+      this.recorderInit()
+    &#125; else &#123;
+      this.audioContext.resume()
+      this.connectWebSocket()
+    &#125;
+  &#125;
+  // 暂停录音
+  recorderStop() &#123;
+    // safari下suspend后再次resume录音内容将是空白，设置safari下不做suspend
+    if (
+      !(
+        /Safari/.test(navigator.userAgent) &amp;&amp; !/Chrome/.test(navigator.userAgen)
+      )
+    ) &#123;
+      this.audioContext &amp;&amp; this.audioContext.suspend()
+    &#125;
+    this.setStatus(&#39;end&#39;)
+  &#125;
+  // 处理音频数据
+  // transAudioData(audioData) &#123;
+  //   audioData = transAudioData.transaction(audioData)
+  //   this.audioData.push(...audioData)
+  // &#125;
+  // 对处理后的音频数据进行base64编码，
+  toBase64(buffer) &#123;
+    var binary = &#39;&#39;
+    var bytes = new Uint8Array(buffer)
+    var len = bytes.byteLength
+    for (var i = 0; i &lt; len; i++) &#123;
+      binary += String.fromCharCode(bytes[i])
+    &#125;
+    return window.btoa(binary)
+  &#125;
+  // 向webSocket发送数据
+  webSocketSend() &#123;
+    if (this.webSocket.readyState !== 1) &#123;
+      return
+    &#125;
+    let audioData = this.audioData.splice(0, 1280)
+    var params = &#123;
+      common: &#123;
+        app_id: this.appId,
+      &#125;,
+      business: &#123;
+        language: this.language, //小语种可在控制台--语音听写（流式）--方言/语种处添加试用
+        domain: &#39;iat&#39;,
+        accent: this.accent, //中文方言可在控制台--语音听写（流式）--方言/语种处添加试用
+        vad_eos: 5000,
+        dwa: &#39;wpgs&#39;, //为使该功能生效，需到控制台开通动态修正功能（该功能免费）
+      &#125;,
+      data: &#123;
+        status: 0,
+        format: &#39;audio/L16;rate=16000&#39;,
+        encoding: &#39;raw&#39;,
+        audio: this.toBase64(audioData),
+      &#125;,
+    &#125;
+    this.webSocket.send(JSON.stringify(params))
+    this.handlerInterval = setInterval(() =&gt; &#123;
+      // websocket未连接
+      if (this.webSocket.readyState !== 1) &#123;
+        this.audioData = []
+        clearInterval(this.handlerInterval)
+        return
+      &#125;
+      if (this.audioData.length === 0) &#123;
+        if (this.status === &#39;end&#39;) &#123;
+          this.webSocket.send(
+            JSON.stringify(&#123;
+              data: &#123;
+                status: 2,
+                format: &#39;audio/L16;rate=16000&#39;,
+                encoding: &#39;raw&#39;,
+                audio: &#39;&#39;,
+              &#125;,
+            &#125;)
+          )
+          this.audioData = []
+          clearInterval(this.handlerInterval)
+        &#125;
+        return false
+      &#125;
+      audioData = this.audioData.splice(0, 1280)
+      // 中间帧
+      this.webSocket.send(
+        JSON.stringify(&#123;
+          data: &#123;
+            status: 1,
+            format: &#39;audio/L16;rate=16000&#39;,
+            encoding: &#39;raw&#39;,
+            audio: this.toBase64(audioData),
+          &#125;,
+        &#125;)
+      )
+    &#125;, 40)
+  &#125;
+  result(resultData) &#123;
+    // 识别结束
+    let jsonData = JSON.parse(resultData)
+    if (jsonData.data &amp;&amp; jsonData.data.result) &#123;
+      let data = jsonData.data.result
+      let str = &#39;&#39;
+      let resultStr = &#39;&#39;
+      let ws = data.ws
+      for (let i = 0; i &lt; ws.length; i++) &#123;
+        str = str + ws[i].cw[0].w
+      &#125;
+      // 开启wpgs会有此字段(前提：在控制台开通动态修正功能)
+      // 取值为 &quot;apd&quot;时表示该片结果是追加到前面的最终结果；取值为&quot;rpl&quot; 时表示替换前面的部分结果，替换范围为rg字段
+      if (data.pgs) &#123;
+        if (data.pgs === &#39;apd&#39;) &#123;
+          // 将resultTextTemp同步给resultText
+          this.setResultText(&#123;
+            resultText: this.resultTextTemp,
+          &#125;)
+        &#125;
+        // 将结果存储在resultTextTemp中
+        this.setResultText(&#123;
+          resultTextTemp: this.resultText + str,
+        &#125;)
+      &#125; else &#123;
+        this.setResultText(&#123;
+          resultText: this.resultText + str,
+        &#125;)
+      &#125;
+    &#125;
+    if (jsonData.code === 0 &amp;&amp; jsonData.data.status === 2) &#123;
+      this.webSocket.close()
+    &#125;
+    if (jsonData.code !== 0) &#123;
+      this.webSocket.close()
+      console.log(`$&#123;jsonData.code&#125;:$&#123;jsonData.message&#125;`)
+    &#125;
+  &#125;
+  start() &#123;
+    this.recorderStart()
+    this.setResultText(&#123; resultText: &#39;&#39;, resultTextTemp: &#39;&#39; &#125;)
+  &#125;
+  stop() &#123;
+    this.recorderStop()
+  &#125;
+&#125;
+</code></pre>
+<p> appId就是官网参数</p>
+<pre><code>//讯飞语音appId,网址https://www.xfyun.cn/customerLevel?ch=levelznx
+const appId = &#123;
+  APPID: &#39;xxxxxxx&#39;,
+  API_SECRET: &#39;xxxxxxx&#39;,
+  API_KEY: &#39;xxxxxxx&#39;,
+&#125;
+export default appId
+</code></pre>
+<p>导出的方法，封装成vue组件，这里我用的是elment 的组件，可以自行更换。</p>
+<pre><code>&lt;template&gt;
+  &lt;div class=&quot;body&quot;&gt;
+    &lt;p&gt;&#123;&#123; searchData &#125;&#125;&lt;/p&gt;
+    &lt;el-button
+      icon=&quot;el-icon-turn-off-microphone&quot;
+      @click=&quot;translationEnd&quot;
+      v-show=&quot;start&quot;
+      :loading=&quot;loading&quot;
+    &gt;
+      停止
+    &lt;/el-button&gt;
+    &lt;el-button
+      icon=&quot;el-icon-microphone&quot;
+      @click=&quot;translationStart&quot;
+      type=&quot;primary&quot;
+      v-show=&quot;!start&quot;
+      :loading=&quot;loading&quot;
+    &gt;
+      开始
+    &lt;/el-button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import IatRecorder from &#39;@/assets/js/index.js&#39;
+const iatRecorder = new IatRecorder()
+export default &#123;
+  data() &#123;
+    return &#123;
+      searchData: &#39;&#39;,
+      start: false,
+      loading: false,
+    &#125;
+  &#125;,
+  mounted() &#123;&#125;,
+  created() &#123;&#125;,
+  methods: &#123;
+    translationStart() &#123;
+      this.start = true
+      iatRecorder.start()
+    &#125;,
+    translationEnd() &#123;
+      let that = this
+      this.loading = true
+      that.start = false
+      iatRecorder.onTextChange = function (text) &#123;
+        let inputText = text
+        console.log(text);
+        this.searchData = inputText.substring(0, inputText.length - 1) //文字处理，因为不知道为什么识别输出的后面都带‘。’，这个方法是去除字符串最后一位
+        that.$emit(&#39;text&#39;, this.searchData)
+        that.loading = false
+        iatRecorder.stop()
+      &#125;
+    &#125;,
+  &#125;,
+&#125;
+&lt;/script&gt;
+&lt;style scoped&gt;
+.body &#123;
+  user-select: none;
+  display: flex;
+  margin: 0 10px 0 10px;
+&#125;
+.el-icon-microphone &#123;
+  font-size: 25px;
+  color: #cccccc;
+&#125;
+.el-icon-turn-off-microphone &#123;
+  font-size: 25px;
+  color: #cccccc;
+&#125;
+&lt;/style&gt;
+</code></pre>
+<p>最后在页面上使用即可！</p>
+<p>最后vue.config.js配置worker线程。</p>
+<pre><code>  config.module
+      .rule(&#39;worker&#39;)
+      .test(/\.worker\.js$/)
+      .use(&#39;worker&#39;)
+      .loader(&#39;worker-loader&#39;)
+      .options(&#123;
+        inline: &#39;fallback&#39;,
+      &#125;)
+</code></pre>
+<p>​</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>
