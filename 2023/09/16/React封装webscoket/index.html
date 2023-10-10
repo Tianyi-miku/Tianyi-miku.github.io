@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Categories: 框架 | Skymiku</title>
+        <title>React优雅封装webscoket | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -29,6 +29,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -149,25 +153,20 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div id="archives">
-    
-    <div class="categories-tags">
-        
-        
-        
-        <span>
-            <a href="/categories/%E6%8F%92%E4%BB%B6/" style="background: #ffa2c4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                插件
-            </a>
+                <div class="article">
+    <div>
+        <h1>React优雅封装webscoket</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/9/16
         </span>
         
-        
-        
-        <span>
-            <a href="/categories/%E4%B8%9A%E5%8A%A1/" style="background: #00bcd4">
+        <span class="category">
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -176,93 +175,162 @@
         </span>
         
         
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                学习
-            </a>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/react/" style="color: #03a9f4">react</a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/webscoket/" style="color: #ffa2c4">webscoket</a>
+            </span>
+            
         </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E6%A1%86%E6%9E%B6/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                框架
-            </a>
-        </span>
-        
-        
-        
-        
-        
-        <span>
-            <a href="/categories/%E6%8F%92%E4%BB%B6/%E4%B8%9A%E5%8A%A1/" style="background: #03a9f4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                业务
-            </a>
-        </span>
-        
         
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2021/9/16</div>
-            <a href="/2021/09/16/%E4%B9%BE%E5%9D%A4%E5%BE%AE%E5%89%8D%E7%AB%AF%E4%BD%BF%E7%94%A8/">
-                <h3>qiankun框架简单使用</h3>
-            </a>
-            <div class="info">
-                
-                <span class="category">
-                    <a href="/categories/%E6%A1%86%E6%9E%B6/">
-                        <span class="icon">
-                            <i class="fa-solid fa-bookmark fa-fw"></i>
-                        </span>
-                        框架
-                    </a>
-                </span>
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vue3/" style="color: #ff7d73">vue3</a>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/react/" style="color: #ff7d73">react</a>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/qiankun/" style="color: #03a9f4">qiankun</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    <div class="content" v-pre>
+        <p>在react中优雅使用webscoket,最好用到自定义hoc。</p>
+<span id="more"></span>
+
+<p>首先定义一个useSocket()方法，传入一些我们需要的配置文件。例如：</p>
+<pre><code>type SocketOptions = &#123;
+  url: URL | string; // 连接的url地址
+  type: &#39;&#39;; // 链接的类型
+  onOpen?: Function; // 自定义onopen回调函数
+  onError?: Function; // 自定义onerror回调函数
+  onClose?: Function; // 自定义onclose回调函数
+  onMessage?: Function; // 自定义onmessage回调函数
+  reconnect?: boolean; // 是否开启失败重连
+  reconnectCount?: number; // 最大失败重连次数
+  heartCheck?: boolean; // 是否开启心跳检测
+  showMsg?: boolean; // 是否显示错误提示
+&#125;;
+</code></pre>
+<p>新建webscoket，并且setState返回回来的数据。</p>
+<pre><code>function useSocket(options: SocketOptions) &#123;
+   let websocket: any = React.useRef&lt;WebSocket&gt;();
+   const [socketData, setsocketData] = useState()
+
+   const createWebSocket = () =&gt;&#123;&#125; //连接函数
+   ...
+
+  return React.useMemo&lt;any&gt;(() =&gt; (&#123;
+    websocket,
+    socketData,
+    createWebSocket
+  &#125;), [websocket, socketData, createWebSocket]);
+&#125;
+</code></pre>
+<p>重写连接websocket，心跳回调函数</p>
+<pre><code>  const timeoutObj: any = React.useRef(null); // 心跳检测定时器
+  const lockReconnect = React.useRef&lt;boolean&gt;(false); // 锁住重连
+  const reconnectFunc = React.useCallback(
+    (callback: Function) =&gt; &#123;
+      if (lockReconnect.current) return;
+      const reconnectCount = options.reconnectCount;
+      if (connectNum.current &lt; reconnectCount) &#123;
+        setTimeout(() =&gt; &#123;
+          callback();
+          connectNum.current = connectNum.current + 1;
+          console.log(`ws失败重连第$&#123;connectNum.current&#125;次`);
+        &#125;, 3000);
+      &#125;
+    &#125;,
+    [lockReconnect, connectNum, options]
+  );
+
+  const resetHeart = React.useCallback(() =&gt; &#123;
+    timeoutObj.current &amp;&amp; clearInterval(timeoutObj.current);
+    timeoutObj.current = null;
+  &#125;, [timeoutObj]);
+
+  const startHeart = React.useCallback(() =&gt; &#123;
+    timeoutObj.current = setInterval(function () &#123;
+      websocket.current.ws &amp;&amp; websocket.current.ws.send(&quot;HeartBeat&quot;);
+    &#125;, 60000);
+  &#125;, [timeoutObj, websocket]);
+
+   const createWebSocket = React.useCallback(() =&gt; &#123;
+    if (!websocket.current) &#123;
+      websocket.current = new WebSocket(options.url);
+      websocket.current.onopen = (res: any) =&gt; &#123;
+        console.log(options.url + &quot;连接成功&quot;);
+        connectNum.current = 0;
+        options?.onOpen &amp;&amp; options.onOpen(res);
+        if (options.heartCheck) &#123;
+          resetHeart();
+          startHeart();
+        &#125;
+      &#125;;
+      websocket.current.onerror = (err: any) =&gt; &#123;
+        options?.onError &amp;&amp; options.onError(err);
+        options?.reconnect &amp;&amp; reconnectFunc(() =&gt; createWebSocket());
+        if (options.showMsg) &#123;
+          console.log(&#39;websocket连接错误&#39;)
+        &#125;
+      &#125;;
+      websocket.current.onclose = (res: any) =&gt; &#123;
+        options?.onClose &amp;&amp; options.onClose(res);
+        if (options.showMsg) &#123;
+          console.log(&#39;websocket连接错误&#39;)
+        &#125;
+      &#125;;
+      websocket.current.onmessage = function (event: any) &#123;
+        setsocketData(event.data)
+      &#125;;
+    &#125;
+  &#125;,
+    [
+      websocket,
+      options,
+      connectNum,
+      reconnectFunc,
+      resetHeart,
+      startHeart,
+    ]);
+</code></pre>
+<p>这样，一个监听Webscoket数据来源的就封装好了。</p>
+<p>使用：</p>
+<pre><code>  const socket = useSocket(&#123;
+    type: &#39;type&#39;,
+    url: &#39;url&#39;
+  &#125;)
+
+  useEffect(() =&gt; &#123;
+    socket.createWebSocket()
+    return () =&gt; &#123;
+    &#125;
+  &#125;, [socket])
+
+   //监听socketData
+   useEffect(() =&gt; &#123;
+    if (socket.socketData) &#123;
+    &#125;
+    return () =&gt; &#123;
+    &#125;
+    // eslint-disable-next-line
+  &#125;, [socket.socketData])
+</code></pre>
+<p>这样，就封装好了一个Webscoket，需要修改配置的话，也可以直接在option里或者代码里面修改。</p>
+
     </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
     
 </div>
 
@@ -294,6 +362,29 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
         
      
           
