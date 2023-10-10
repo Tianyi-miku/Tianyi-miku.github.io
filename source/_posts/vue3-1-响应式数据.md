@@ -77,3 +77,10 @@ function shallowReadonly(target) {
 vue2对数组重写方法，没有实现对索引和长度监听，所以在vue2中，key在做diff算法的时候就很重要了。
 
 但是vue3中,数组也不用重写方法，而是访问的时候直接返回reactive（）数据，做的懒代理。
+
+
+## ref
+
+ref采用Object.defineProperty实现。基本类型转为对象来拦截！所以要.value来取值。
+
+当然如果是对象，则将value转为reactive!
