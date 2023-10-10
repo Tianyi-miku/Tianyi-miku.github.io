@@ -4,7 +4,7 @@ date: 2022-04-17 12:05:13
 tags:
     - vue3
     - vxeTable
-categories: 插件
+categories: [业务,插件]
 ---
 大量数据需要用到表格展示，又要在前端做筛选过滤排序。
 考虑到表格性能原因，最终选择了vxe-table 
