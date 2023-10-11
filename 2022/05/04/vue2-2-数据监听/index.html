@@ -183,12 +183,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
+                <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
             </span>
             
         </span>
@@ -271,6 +271,8 @@ func.forEach(key=&gt;&#123;
 &#125;)
 </code></pre>
 <p>将数组的隐式原型链覆盖，就监听到了数组的变化。</p>
+<p>vue2中的$set方法，也是基于此。</p>
+<p>set数组相当于splice数组，会触发重写的方法。而对象，则是向上直接添加响应式属性，再通知页面更新。</p>
 
     </div>
     

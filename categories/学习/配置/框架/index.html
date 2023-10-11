@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>react组件渲染 | Skymiku</title>
+        <title>Categories: 框架 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -29,10 +29,6 @@
 
 
 <script src="/js/lib/preview.js"></script>
-
-
-
-
 
 
 
@@ -153,20 +149,25 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div class="article">
-    <div>
-        <h1>react组件渲染</h1>
-    </div>
-    <div class="info">
-        <span class="date">
-            <span class="icon">
-                <i class="fa-solid fa-calendar fa-fw"></i>
-            </span>
-            2023/4/18
+                <div id="archives">
+    
+    <div class="categories-tags">
+        
+        
+        
+        <span>
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/" style="background: #00a596">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                业务
+            </a>
         </span>
         
-        <span class="category">
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+        
+        
+        <span>
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/" style="background: #00bcd4">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -175,94 +176,110 @@
         </span>
         
         
-        <span class="tags">
-            <span class="icon">
-                <i class="fa-solid fa-tags fa-fw"></i>
-            </span>
-            
-            
-            <span class="tag">
-                
-                <a href="/tags/react/" style="color: #00bcd4">react</a>
-            </span>
-            
+        
+        <span>
+            <a href="/categories/%E5%BE%AE%E5%89%8D%E7%AB%AF/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                微前端
+            </a>
         </span>
+        
+        
+        
+        <span>
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/%E6%8F%92%E4%BB%B6/" style="background: #03a9f4">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                插件
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%85%8D%E7%BD%AE/" style="background: #00a596">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                配置
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E7%AC%94%E8%AE%B0/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                笔记
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%85%8D%E7%BD%AE/%E6%A1%86%E6%9E%B6/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                框架
+            </a>
+        </span>
+        
+        
+        
         
     </div>
     
-    <div class="content" v-pre>
-        <h1 id="组件渲染"><a href="#组件渲染" class="headerlink" title="组件渲染"></a>组件渲染</h1><p>组件渲染与之前写的一致<br>都是先创建一个将虚拟dom 通过render函数将虚拟dom 通过creatElement转化为真实dom。</p>
-<span id="more"></span>
-
-<h1 id="组件中的prop"><a href="#组件中的prop" class="headerlink" title="组件中的prop"></a>组件中的prop</h1><p>函数组件中，渲染时，父组件调用子组件函数，将属性值装入prop,作为一个只读属性传入。</p>
-<p>例如在src中新建一个componets文件夹，modle组件引入index.js</p>
-<p><img src="/../../img/image3.png" alt="Alt text"></p>
-<pre><code>import React from &#39;react&#39;;
-import &#39;./index.css&#39;;
-import Child from &quot;./compoents/modle.tsx&quot;
-import ReactDOM from &#39;react-dom/client&#39;;
-
-const root = ReactDOM.createRoot(document.getElementById(&#39;root&#39;));
-root.render(
-  &lt;&gt;
-    &lt;h2 className=&#39;user&#39;&gt;skymiku&lt;/h2&gt;
-    &lt;div className=&#39;title&#39;&gt;react 源码学习以及例子!
-      &lt;div&gt;例如：&lt;/div&gt;
-      &lt;Child title=&#39;标题&#39; value=&#39;10&#39;&gt;&lt;/Child&gt;
-    &lt;/div&gt;
-  &lt;/&gt;
-);
-</code></pre>
-<p>如果在子组件中直接修改属性，页面将会报错。</p>
-<pre><code>import React from &#39;react&#39;
-
-const Child = (prop) =&gt; &#123;
-    //  Cannot assign to read only property &#39;title&#39; of object &#39;#&lt;Object&gt;
-    // prop.title = &#39;标题修改&#39;
-    console.log(Object.isFrozen(prop)); //冻结了！
-    return (
-        &lt;div&gt;
-            &lt;div&gt;&#123;prop.title&#125;&lt;/div&gt;
-            &lt;div&gt;&#123;prop.value&#125;&lt;/div&gt;
-            这是子组件！
-        &lt;/div&gt;
-    )
-&#125;
-export default Child
-</code></pre>
-<p>根据Object.isFrozen(),看到prop对象是被冻结了。所以不能执行修改新增删除等操作。</p>
-<h1 id="组件插槽"><a href="#组件插槽" class="headerlink" title="组件插槽"></a>组件插槽</h1><p>创建虚拟Dom的时候，父组件将children作为子节点传入组件</p>
-<p>父组件:</p>
-<pre><code> &lt;Child title=&#39;标题&#39; value=&#39;10&#39;&gt;
-        &lt;div&gt;插槽！&lt;/div&gt;
- &lt;/Child&gt;
-</code></pre>
-<p>子组件</p>
-<pre><code>   return (
-        &lt;div&gt;
-            &lt;div&gt;&#123;prop.title&#125;&lt;/div&gt;
-            &lt;div&gt;
-                &#123;prop.children&#125;
-            &lt;/div&gt;
-            &lt;div&gt;&#123;prop.value&#125;&lt;/div&gt;
-            这是子组件！
-        &lt;/div&gt;
-    )
-</code></pre>
-<p><img src="/../../img/image4.png" alt="Alt text"></p>
-<p>在React中如果像是vue一样，实现一个具名插槽。<br>可以通过传入属性 如同 solt&#x3D;”top”之类的，在子组件中prop.children,判断名称后自定义显示组件或者调整显示内容。</p>
-
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2023/3/16</div>
+            <a href="/2023/03/16/hardhat%E9%85%8D%E7%BD%AE/">
+                <h3>Hardhat配置</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        学习
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/solidity/" style="color: #03a9f4">solidity</a>
+                    </span>
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/web3/" style="color: #00bcd4">web3</a>
+                    </span>
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/Hardhat/" style="color: #ff7d73">Hardhat</a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
     </div>
-    
-    
-    
-    
-    <div id="comment">
-        <div id="giscus-container" class="giscus"></div>
-    </div>
-    
-    
-    
     
 </div>
 
@@ -294,29 +311,6 @@ export default Child
             
         </div>
         <script src="/js/main.js"></script>
-        
-        
-<script
-    src="https://giscus.app/client.js"
-    data-repo="Tianyi-miku/Tianyi-miku.github.io"
-    data-repo-id="R_kgDOKX9otQ"
-    data-category="Announcements"
-    data-category-id="DIC_kwDOKX9otc4CZpex"
-    data-mapping="pathname"
-    data-strict="0"
-    data-reactions-enabled="1"
-    data-emit-metadata="0"
-    data-input-position="bottom"
-    data-theme="preferred_color_scheme"
-    data-lang="zh-CN"
-    crossorigin
-    async
-></script>
-
-
-
-
-
         
      
           

@@ -183,12 +183,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/solidity/" style="color: #00a596">solidity</a>
+                <a href="/tags/solidity/" style="color: #00bcd4">solidity</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/web3/" style="color: #03a9f4">web3</a>
+                <a href="/tags/web3/" style="color: #ffa2c4">web3</a>
             </span>
             
         </span>
@@ -218,6 +218,26 @@
 <p>pure 既不能读取，也不能写入。<br>view 可以读取，不能写入<br>payable（可支付的）</p>
 <p>函数描述</p>
 <p>pubilic 公开的,内部外部都可以访问<br>private 私有的，继承的合约也不能访问<br>external 只能从外部访问（但是内部也可以通过this.function()调用）<br>internal 内部的，继承合约可以访问</p>
+<pre><code>    function addPure(uint256 _number) external pure returns(uint256 new_number)&#123;
+            new_number = _number+1;
+    &#125;
+     // internal: 内部
+    function minus() internal &#123;
+        number = number - 1;
+    &#125;
+
+    // 合约内的函数可以调用内部函数
+    function minusCall() external &#123;
+        minus();
+    &#125;
+
+    // payable: 递钱，能给合约支付eth的函数
+    function minusPayable() external payable returns(uint256 balance) &#123;
+        minus();    
+        balance = address(this).balance;
+    &#125;
+    
+</code></pre>
 
     </div>
     

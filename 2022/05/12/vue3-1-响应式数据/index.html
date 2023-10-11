@@ -183,12 +183,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue3/" style="color: #00bcd4">vue3</a>
+                <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
             </span>
             
         </span>
@@ -254,6 +254,8 @@ function shallowReadonly(target) &#123;
 <p>当然核心还是proxy，比起vue2中的来说，它只有在取值的时候，才会触发get方法，不用一开始就循环属性拦截。并且，不存在的属性的时候，他也能监听！</p>
 <p>vue2对数组重写方法，没有实现对索引和长度监听，所以在vue2中，key在做diff算法的时候就很重要了。</p>
 <p>但是vue3中,数组也不用重写方法，而是访问的时候直接返回reactive（）数据，做的懒代理。</p>
+<h2 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h2><p>ref采用Object.defineProperty实现。基本类型转为对象来拦截！所以要.value来取值。</p>
+<p>当然如果是对象，则将value转为reactive!</p>
 
     </div>
     
