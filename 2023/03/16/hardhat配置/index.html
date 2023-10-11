@@ -183,7 +183,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/solidity/" style="color: #00bcd4">solidity</a>
+                <a href="/tags/solidity/" style="color: #00a596">solidity</a>
             </span>
             
             <span class="tag">
@@ -214,6 +214,64 @@
 <pre><code>npx hardhat init
 </code></pre>
 <p>这时候会提示新建哪种项目，选择typescripte框架，等待下载完成</p>
+<p>打开README.MD文件</p>
+<pre><code class="shell">npx hardhat help
+npx hardhat test
+REPORT_GAS=true npx hardhat test
+npx hardhat node
+npx hardhat run scripts/deploy.ts
+</code></pre>
+<p>这样一个hardhat基本框架就搭建好了。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>打开hardhat.config.ts,solidity一次性可配置多个编译版本。</p>
+<pre><code>const config: HardhatUserConfig = &#123;
+  solidity: &#123;
+    compilers: [
+      &#123; version: &quot;0.8.9&quot; &#125;,
+      &#123; version: &quot;0.4.16&quot; &#125;,
+      &#123; version: &quot;0.4.24&quot; &#125;,
+    ],
+  &#125;,
+&#125;;
+</code></pre>
+<p>网络配置，这里示例配置了本地环境，sepolia与polygon链、PRIVATE_KEY就是私钥。</p>
+<pre><code>  defaultNetwork: &quot;sepolia&quot;, //默认网络环境
+  networks: &#123;
+    localhost: &#123;
+      url: &#39;http://127.0.0.1:8545/&#39;,
+      chainId: 31337,
+      accounts: [PRIVATE_KEY],
+    &#125;,
+    sepolia: &#123;
+      url: SEPOLIA_RPC_URL,
+      accounts: [PRIVATE_KEY],
+      chainId: 11155111,
+      timeout: 80000,
+    &#125;,
+    polygon: &#123;
+      url: polygon_RPC_URL,
+      accounts: [PRIVATE_KEY],
+      chainId: 80001,
+      timeout: 80000,
+    &#125;
+  &#125;,
+</code></pre>
+<p>区块链浏览器配置,API key是在链上申请的key</p>
+<pre><code>  etherscan: &#123;
+    apiKey: &#123;
+      sepolia: SEPOLIA_APIKEY,
+      polygonMumbai: polygon_ApiKey
+    &#125;
+  &#125;,
+</code></pre>
+<p>gasReporter配置，gas显示费用。默认输出gas-report.txt文件。</p>
+<pre><code>  gasReporter: &#123;
+    enabled: true,
+    currency: &quot;USD&quot;,
+    outputFile: &quot;gas-report.txt&quot;,
+    noColors: true,
+    coinmarketcap: COINMARKETCAP_API_KEY,
+  &#125;,
+</code></pre>
 
     </div>
     
