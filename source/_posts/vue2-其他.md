@@ -9,7 +9,11 @@ categories: [学习,笔记]
 
 ## Vue.use
 
-vue.use就是引入插件，所有的插件都是函数，将Vue作为参数，传入到插件函数中，实现方法后，在全局Vue上就能看到。如同vue router vuex。
+vue.use就是引入插件，所有的插件都是函数。
+
+将Vue作为参数，传入到函数中，实现内部方法后，在全局Vue上就能使用。
+
+如同vue router vuex。
 <!-- more -->
 
 ## Vue.extend
