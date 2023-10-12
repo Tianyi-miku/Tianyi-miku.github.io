@@ -3,7 +3,7 @@ title: webpack概念
 date: 2021-03-27 18:55:19
 tags:
     - webpack
-categories: [打包,配置]
+categories: [学习,配置,打包]
 ---
 
 ## 入口

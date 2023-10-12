@@ -84,3 +84,35 @@ vue2对数组重写方法，没有实现对索引和长度监听，所以在vue2
 ref采用Object.defineProperty实现。基本类型转为对象来拦截！所以要.value来取值。
 
 当然如果是对象，则将value转为reactive!
+
+
+伪代码
+```
+function reactive(obj) {
+  return new Proxy(obj, {
+    get(target, key) {
+      track(target, key)
+      return target[key]
+    },
+    set(target, key, value) {
+      target[key] = value
+      trigger(target, key)
+    }
+  })
+}
+
+function ref(value) {
+  const refObject = {
+    get value() {
+      track(refObject, 'value')
+      return value
+    },
+    set value(newValue) {
+      value = newValue
+      trigger(refObject, 'value')
+    }
+  }
+  return refObject
+}
+
+```
