@@ -36,7 +36,7 @@ npx hardhat run scripts/deploy.ts
 ```
 这样一个hardhat基本框架就搭建好了。
 
-## 配置
+## 基础配置
 
 打开hardhat.config.ts,solidity一次性可配置多个编译版本。
 ```
@@ -97,3 +97,12 @@ gasReporter配置，gas显示费用。默认输出gas-report.txt文件。
   },
 ```
 
+## 其他配置
+
+因为网络原因，一般来说国内要配置翻墙代理
+```
+//翻墙代理-必须
+const { ProxyAgent, setGlobalDispatcher } = require("undici");
+const proxyAgent = new ProxyAgent('http://127.0.0.1:7890'); // change to yours
+setGlobalDispatcher(proxyAgent);
+```
