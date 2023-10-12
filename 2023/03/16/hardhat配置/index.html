@@ -183,12 +183,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/solidity/" style="color: #00a596">solidity</a>
+                <a href="/tags/solidity/" style="color: #00bcd4">solidity</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/web3/" style="color: #03a9f4">web3</a>
+                <a href="/tags/web3/" style="color: #ffa2c4">web3</a>
             </span>
             
             <span class="tag">
@@ -222,7 +222,7 @@ npx hardhat node
 npx hardhat run scripts/deploy.ts
 </code></pre>
 <p>这样一个hardhat基本框架就搭建好了。</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>打开hardhat.config.ts,solidity一次性可配置多个编译版本。</p>
+<h2 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h2><p>打开hardhat.config.ts,solidity一次性可配置多个编译版本。</p>
 <pre><code>const config: HardhatUserConfig = &#123;
   solidity: &#123;
     compilers: [
@@ -271,6 +271,12 @@ npx hardhat run scripts/deploy.ts
     noColors: true,
     coinmarketcap: COINMARKETCAP_API_KEY,
   &#125;,
+</code></pre>
+<h2 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h2><p>因为网络原因，一般来说国内要配置翻墙代理</p>
+<pre><code>//翻墙代理-必须
+const &#123; ProxyAgent, setGlobalDispatcher &#125; = require(&quot;undici&quot;);
+const proxyAgent = new ProxyAgent(&#39;http://127.0.0.1:7890&#39;); // change to yours
+setGlobalDispatcher(proxyAgent);
 </code></pre>
 
     </div>

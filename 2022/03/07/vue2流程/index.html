@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Categories: 插件 | Skymiku</title>
+        <title>vue2 流程 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -29,6 +29,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -149,25 +153,20 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div id="archives">
-    
-    <div class="categories-tags">
-        
-        
-        
-        <span>
-            <a href="/categories/%E4%B8%9A%E5%8A%A1/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                业务
-            </a>
+                <div class="article">
+    <div>
+        <h1>vue2 流程</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/3/7
         </span>
         
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/" style="background: #03a9f4">
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -176,157 +175,58 @@
         </span>
         
         
-        
-        <span>
-            <a href="/categories/%E5%BE%AE%E5%89%8D%E7%AB%AF/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                微前端
-            </a>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+            </span>
+            
         </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E4%B8%9A%E5%8A%A1/%E6%8F%92%E4%BB%B6/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                插件
-            </a>
-        </span>
-        
-        
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%85%8D%E7%BD%AE/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                配置
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E7%AC%94%E8%AE%B0/" style="background: #03a9f4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                笔记
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%85%8D%E7%BD%AE/%E6%A1%86%E6%9E%B6/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                框架
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/solidity/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                solidity
-            </a>
-        </span>
-        
         
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2022/4/17</div>
-            <a href="/2022/04/17/vxetable/">
-                <h3>Vxetable 筛选过滤</h3>
-            </a>
-            <div class="info">
-                
-                <span class="category">
-                    <a href="/categories/%E4%B8%9A%E5%8A%A1/">
-                        <span class="icon">
-                            <i class="fa-solid fa-bookmark fa-fw"></i>
-                        </span>
-                        业务
-                    </a>
-                </span>
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vue3/" style="color: #ff7d73">vue3</a>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vxeTable/" style="color: #03a9f4">vxeTable</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    <div class="content" v-pre>
+        <h2 id="init"><a href="#init" class="headerlink" title="init"></a>init</h2><p>首先是初始化一个inti函数，挂载在Vue上，然后调用。</p>
+<span id="more"></span>
+
+<p>1.先将event事件绑定，父子组件关系确认。</p>
+<p>然后触发beforcreate方法。</p>
+<p>2.injections，提供inject与provide上下文，类似于react中context。接着声明响应式数据</p>
+<p>触发creat方法</p>
+<p>3.触发$mount方法模板转译。</p>
+<p>调用beformount方法</p>
+<p>4.渲染</p>
+<p>创建一个el，渲染到页面。这时候渲染wather收集依赖，遇到更新的时候重新渲染。</p>
+<p>5.销毁</p>
+<p>触发destroyed,移除dom，事件以及响应式数据。</p>
+<h2 id="总结流程"><a href="#总结流程" class="headerlink" title="总结流程"></a>总结流程</h2><p>1.先初始化组件方法，父子组件关系</p>
+<p>2.初始化响应式数据，计算属性方法以及上下文。</p>
+<p>3.查看用户是否传入了el，如果是模板将会编译，最终都是拿到render</p>
+<p>4.渲染的时候watcher调用render触发依赖收集，所有的响应式数据dep属性都会挂载，以便后面更新时候找到对应的watcher。</p>
+<p>5.更新时候diff算法。</p>
+<p>6.销毁时候移除所有属性以及方法。</p>
+
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2021/7/18</div>
-            <a href="/2021/07/18/%E8%AE%AF%E9%A3%9E%E8%AF%AD%E9%9F%B3%E4%BD%BF%E7%94%A8/">
-                <h3>讯飞语音使用</h3>
-            </a>
-            <div class="info">
-                
-                <span class="category">
-                    <a href="/categories/%E4%B8%9A%E5%8A%A1/">
-                        <span class="icon">
-                            <i class="fa-solid fa-bookmark fa-fw"></i>
-                        </span>
-                        业务
-                    </a>
-                </span>
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/%E8%AF%AD%E9%9F%B3%E8%AF%86%E5%88%AB/" style="color: #ff7d73">语音识别</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
     </div>
+    
+    
+    
     
 </div>
 
@@ -358,6 +258,29 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
         
      
           

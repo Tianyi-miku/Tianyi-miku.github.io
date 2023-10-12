@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Categories: 插件 | Skymiku</title>
+        <title>vue2方法 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -29,6 +29,10 @@
 
 
 <script src="/js/lib/preview.js"></script>
+
+
+
+
 
 
 
@@ -149,25 +153,20 @@
 </transition>
 
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
-                <div id="archives">
-    
-    <div class="categories-tags">
-        
-        
-        
-        <span>
-            <a href="/categories/%E4%B8%9A%E5%8A%A1/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                业务
-            </a>
+                <div class="article">
+    <div>
+        <h1>vue2方法</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/7/4
         </span>
         
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/" style="background: #03a9f4">
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -176,157 +175,53 @@
         </span>
         
         
-        
-        <span>
-            <a href="/categories/%E5%BE%AE%E5%89%8D%E7%AB%AF/" style="background: #00a596">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                微前端
-            </a>
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
+            </span>
+            
+            <span class="tag">
+                
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
+            </span>
+            
         </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E4%B8%9A%E5%8A%A1/%E6%8F%92%E4%BB%B6/" style="background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                插件
-            </a>
-        </span>
-        
-        
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%85%8D%E7%BD%AE/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                配置
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E7%AC%94%E8%AE%B0/" style="background: #03a9f4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                笔记
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%85%8D%E7%BD%AE/%E6%A1%86%E6%9E%B6/" style="background: #ff7d73">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                框架
-            </a>
-        </span>
-        
-        
-        
-        <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/solidity/" style="background: #00bcd4">
-                <span class="icon">
-                    <i class="fa-solid fa-bookmark fa-fw"></i>
-                </span>
-                solidity
-            </a>
-        </span>
-        
         
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2022/4/17</div>
-            <a href="/2022/04/17/vxetable/">
-                <h3>Vxetable 筛选过滤</h3>
-            </a>
-            <div class="info">
-                
-                <span class="category">
-                    <a href="/categories/%E4%B8%9A%E5%8A%A1/">
-                        <span class="icon">
-                            <i class="fa-solid fa-bookmark fa-fw"></i>
-                        </span>
-                        业务
-                    </a>
-                </span>
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vue3/" style="color: #ff7d73">vue3</a>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vxeTable/" style="color: #03a9f4">vxeTable</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    <div class="content" v-pre>
+        <h2 id="Vue-use"><a href="#Vue-use" class="headerlink" title="Vue.use"></a>Vue.use</h2><p>vue.use就是引入插件，所有的插件都是函数。</p>
+<p>将Vue作为参数，传入到函数中，实现内部方法后，在全局Vue上就能使用。</p>
+<p>如同vue router vuex。</p>
+<span id="more"></span>
+
+<h2 id="Vue-extend"><a href="#Vue-extend" class="headerlink" title="Vue.extend"></a>Vue.extend</h2><p>所有组件都是Vue.extend创建的。</p>
+<p>可以通过传入选项，手动挂载组件！</p>
+<h2 id="Vue-filter"><a href="#Vue-filter" class="headerlink" title="Vue.filter"></a>Vue.filter</h2><p>过滤器。根据名称去找到对应的函数，对数据加工后，返回处理的数据。不会改变原数据。</p>
+<p>因为编译浪费，vue3已经抛弃此方法。</p>
+<h2 id="v-once"><a href="#v-once" class="headerlink" title="v-once"></a>v-once</h2><p>标记静态节点，下次直接跳过渲染。vue3是memo!</p>
+<h2 id="Vue-mixin"><a href="#Vue-mixin" class="headerlink" title="Vue.mixin"></a>Vue.mixin</h2><p>混入。局部混入或全局，mergeOption方法，用于复用逻辑。在vue3中，不需要这个了,用的compositionAPi。</p>
+<h2 id="solt"><a href="#solt" class="headerlink" title="solt"></a>solt</h2><p>插槽，普通插槽 具名插槽 作用域插槽。</p>
+<p>普通插槽父组件渲染直接替换，作用域插槽子组件渲染，内部函数替换。</p>
+<h2 id="async"><a href="#async" class="headerlink" title=".async"></a>.async</h2><p>v-model默认绑定一个，.async可以多个。 vue3移除。</p>
+
     </div>
     
-    <div class="timeline">
-        <div class="timeline-tail"></div>
-        <div class="timeline-content">
-            <div class="item-time">2021/7/18</div>
-            <a href="/2021/07/18/%E8%AE%AF%E9%A3%9E%E8%AF%AD%E9%9F%B3%E4%BD%BF%E7%94%A8/">
-                <h3>讯飞语音使用</h3>
-            </a>
-            <div class="info">
-                
-                <span class="category">
-                    <a href="/categories/%E4%B8%9A%E5%8A%A1/">
-                        <span class="icon">
-                            <i class="fa-solid fa-bookmark fa-fw"></i>
-                        </span>
-                        业务
-                    </a>
-                </span>
-                
-                
-                <span class="tags">
-                    <span class="icon">
-                        <i class="fa-solid fa-tags fa-fw"></i>
-                    </span>
-                    
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
-                    </span>
-                    
-                    <span class="tag">
-                        
-                        <a href="/tags/%E8%AF%AD%E9%9F%B3%E8%AF%86%E5%88%AB/" style="color: #ff7d73">语音识别</a>
-                    </span>
-                    
-                </span>
-                
-            </div>
-        </div>
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
     </div>
+    
+    
+    
     
 </div>
 
@@ -358,6 +253,29 @@
             
         </div>
         <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
         
      
           
