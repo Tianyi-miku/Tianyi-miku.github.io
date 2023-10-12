@@ -15,7 +15,7 @@ categories: [学习,笔记]
 
 例如在src中新建一个componets文件夹，modle组件引入index.js
 
-![Alt text](../../img/image3.png)
+![Alt text](/img/image3.png)
 
 ```
 import React from 'react';
@@ -84,7 +84,7 @@ export default Child
     )
 ```
 
-![Alt text](../../img/image4.png)
+![Alt text](/img/image4.png)
 
 在React中如果像是vue一样，实现一个具名插槽。
 可以通过传入属性 如同 solt="top"之类的，在子组件中prop.children,判断名称后自定义显示组件或者调整显示内容。

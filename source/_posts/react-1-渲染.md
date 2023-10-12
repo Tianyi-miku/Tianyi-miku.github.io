@@ -36,7 +36,7 @@ categories: [学习,笔记]
 
 
  打开bable在线网站
-![Alt text](../../img/image.png)
+![Alt text](/img/image.png)
  
  如图所示，插件将jsx编译为React.creatEelment(...)这种格式。
  ```    
@@ -57,7 +57,7 @@ categories: [学习,笔记]
 
 打印一下，可以看出虚拟Dom对象长这样的。
 
-![Alt text](../../img/image1.png)
+![Alt text](/img/image1.png)
 ```
     vitrualDom = {
         $$typeof:Symbol(react.element),
@@ -182,7 +182,7 @@ function each(obj, callback) {
 
 将index中的root.render换成我们的render函数
 
-![Alt text](../../img/image2.png)
+![Alt text](/img/image2.png)
 
 这样，就大概熟悉了React中，虚拟dom的创建与转换真实Dom的流程了。
 
