@@ -9,6 +9,7 @@ categories: [学习,配置,打包]
 ## 插件
 
  html-webpack-plugin：编译HTML
+ <!-- more -->
 
 clean-webpack-plugin：清空打包内容
 
