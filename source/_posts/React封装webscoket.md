@@ -13,9 +13,9 @@ categories: 业务
 首先定义一个useSocket()方法，传入一些我们需要的配置文件。例如：
 
 ```
-type SocketOptions = {
+export type SocketOptions = {
   url: URL | string; // 连接的url地址
-  type: ''; // 链接的类型
+  type: 'situation' | 'single'; // 应用类型
   onOpen?: Function; // 自定义onopen回调函数
   onError?: Function; // 自定义onerror回调函数
   onClose?: Function; // 自定义onclose回调函数
@@ -48,12 +48,22 @@ function useSocket(options: SocketOptions) {
 重写连接websocket，心跳回调函数
 
 ```
-  const timeoutObj: any = React.useRef(null); // 心跳检测定时器
+  options.reconnect = options?.reconnect || true; // 默认开启失败重连
+  options.heartCheck = options?.heartCheck || true; // 默认开启心跳检测
+  let websocket: any = React.useRef<WebSocket>();
+
+  const [socketData, setsocketData] = useState()
+
+
   const lockReconnect = React.useRef<boolean>(false); // 锁住重连
+  const connectNum = React.useRef<number>(0); // 已重连次数
+  const timeoutObj: any = React.useRef(null); // 心跳检测定时器
+
   const reconnectFunc = React.useCallback(
     (callback: Function) => {
       if (lockReconnect.current) return;
-      const reconnectCount = options.reconnectCount;
+      const reconnectCount = options.reconnectCount || config.wsReconnectNum;
+      // if (!config.IsDev && connectNum.current < reconnectCount) {
       if (connectNum.current < reconnectCount) {
         setTimeout(() => {
           callback();
@@ -64,7 +74,6 @@ function useSocket(options: SocketOptions) {
     },
     [lockReconnect, connectNum, options]
   );
-
   const resetHeart = React.useCallback(() => {
     timeoutObj.current && clearInterval(timeoutObj.current);
     timeoutObj.current = null;
@@ -72,18 +81,18 @@ function useSocket(options: SocketOptions) {
 
   const startHeart = React.useCallback(() => {
     timeoutObj.current = setInterval(function () {
-      websocket.current.ws && websocket.current.ws.send("HeartBeat");
-    }, 60000);
+      websocket.current && websocket.current.send("HeartBeat");
+    }, 6000);
   }, [timeoutObj, websocket]);
 
-   const createWebSocket = React.useCallback(() => {
+  const createWebSocket = React.useCallback(() => {
     if (!websocket.current) {
       websocket.current = new WebSocket(options.url);
       websocket.current.onopen = (res: any) => {
         console.log(options.url + "连接成功");
         connectNum.current = 0;
         options?.onOpen && options.onOpen(res);
-        if (options.heartCheck) {
+        if (!config.IsDev && options.heartCheck) {
           resetHeart();
           startHeart();
         }
@@ -92,13 +101,15 @@ function useSocket(options: SocketOptions) {
         options?.onError && options.onError(err);
         options?.reconnect && reconnectFunc(() => createWebSocket());
         if (options.showMsg) {
-          console.log('websocket连接错误')
+          generalNotification.error("websocket连接错误");
         }
       };
       websocket.current.onclose = (res: any) => {
+        websocket.current && websocket.current.close();
+        websocket.current = ''
         options?.onClose && options.onClose(res);
         if (options.showMsg) {
-          console.log('websocket连接错误')
+          generalNotification.error("websocket连接错误");
         }
       };
       websocket.current.onmessage = function (event: any) {
@@ -114,7 +125,6 @@ function useSocket(options: SocketOptions) {
       resetHeart,
       startHeart,
     ]);
-
 ```
 
 这样，一个监听Webscoket数据来源的就封装好了。
