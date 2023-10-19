@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>vue2使用webwork链接websocket监听数据更新 | Skymiku</title>
+        <title>echarts常用配置 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -163,14 +163,14 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>vue2使用webwork链接websocket监听数据更新</h1>
+        <h1>echarts常用配置</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2019/4/13
+            2021/7/18
         </span>
         
         <span class="category">
@@ -191,12 +191,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
-            </span>
-            
-            <span class="tag">
-                
-                <a href="/tags/websocket/" style="color: #ffa2c4">websocket</a>
+                <a href="/tags/echarts/" style="color: #ffa2c4">echarts</a>
             </span>
             
         </span>
@@ -204,215 +199,37 @@
     </div>
     
     <div class="content" v-pre>
-        <h2 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h2><p>先在store中声明好需要存储的数据，这里用vuex。</p>
-<span id="more"></span>
-<p>​</p>
-<pre><code> state: &#123;
-    testName: &#39;hello&#39;,
-   
-  &#125;,
-mutations: &#123;
-    setTestName(state, name) &#123;
-      state.testName = name
-    &#125;
+        <h2 id="echatrs统计"><a href="#echatrs统计" class="headerlink" title="echatrs统计"></a>echatrs统计</h2><h1 id="title"><a href="#title" class="headerlink" title="title"></a>title</h1><p>标题一般用的比较少，主要设置颜色大小距离。</p>
+<pre><code>title:&#123;
+  show: true, //是否显示
+  text: &#39;标题&#39;,
+  padding: [5,5,5,5], //边距
+  left: 20, //20% auto 都可以 right bottom top 同样 
+  backgroundColor: &#39;rgb(128, 128, 128)&#39;,
+  borderColor: &#39;#ccc&#39;,  // borderWidth 宽度  borderRadius 圆角
+  ...... 
 &#125;
 </code></pre>
-<p>创建一个worker文件，连接websocket。这里用单个的ws，多个可以自己修改。</p>
-<pre><code>let WS
-let lockReconnect = false // 避免重复连接
-const webWorkerSelf = self
-const HeartBeat = &#123;
-  msgType: &#39;U&#39;,
-  msgData: &#123;
-    ip: &#39;127.0.0.1&#39;,
+<h2 id="legend"><a href="#legend" class="headerlink" title="legend"></a>legend</h2><p>选择器，主要用的多的就是距离，点击事件和显示的名称之类的。</p>
+<pre><code>legend:&#123;
+  show: true, //是否显示
+  left: 20,   //20% auto 都可以 right bottom top 同样 
+  with: &#39;auto&#39;, // height 也一样，可以自定义
+  padding: 10,  //边距
+  itemGap: 10,  //多个图例之间间隔
+  textStyle: &#123;
+    color: &#39;red&#39; //文本样式，包括颜色大小距离阴影文字省略等等。
   &#125;,
-  dataType: &#39;keepAlive&#39;,
-
-
-&#125;
-//主线程
-self.addEventListener(
-  &#39;message&#39;,
-  function(e) &#123;
-    const data = e.data
-    switch (data.cmd) &#123;
-      case &#39;sendOnline&#39;:
-        heartCheck.sendOnline()
-        break
-      case &#39;config&#39;:
-        Object.assign(HeartBeat.msgData)
-        break
-      case &#39;start&#39;:
-        self.postMessage(&#123;
-          type: &#39;webWorker&#39;,
-          data: &#39;启动webWorker&#39;
-        &#125;)
-        createWebSocket()
-        break
-      case &#39;stop&#39;:
-        WS.close()
-        self.postMessage(&#123;
-          type: &#39;webWorker&#39;,
-          data: &#39;停止webWorker&#39;
-        &#125;)
-        // 服务器断开链接
-        self.postMessage(&#123;
-          type: &#39;keepalive&#39;,
-          data: &#39;close&#39; + new Date().toTimeString()
-        &#125;)
-        self.close() // 终止worker
-        break
-      default:
+  data: [
+    name: &#39;系列1&#39;, 
+    icon: &#39;circle&#39;,    // 强制设置图形为圆。
+    textStyle: &#123;
+        color: &#39;red&#39;   // 设置单个文本为红色
     &#125;
-  &#125;,
-  false
-)
-
-
-const createWebSocket = function() &#123;
-  if (!WS) &#123;
-    WS = new WebSocket(url)
-    WS.onerror = function(event) &#123;
-      reconnect(url)
-    &#125;
-    WS.onclose = function(event) &#123;
-      reconnect(url)
-    &#125;
-    WS.onopen = event =&gt; &#123;
-      // 服务器开启链接
-      webWorkerSelf.postMessage(&#123;
-        type: &#39;keepalive&#39;,
-        data: &#39;start&#39; + new Date().toTimeString()
-      &#125;)
-      heartCheck.reset().start() // 传递信息
-    &#125;
-    WS.onmessage = e =&gt; &#123;
-      // 如果获取到消息，发送给主线程
-      const data = JSON.parse(e.data)
-      self.postMessage(&#123;
-        type: &#39;webSocket&#39;,
-        data
-      &#125;)
-      heartCheck.reset().start()
-    &#125;
-  &#125;
-&#125;
-/***
- * 心跳检查
- * @type &#123;&#123;timeoutObj: null, start: heartCheck.start, reset: heartCheck.reset, timeout: number&#125;&#125;
- */
-const heartCheck = &#123;
-  timeout: 30 * 1000, // 检查时间
-  timeoutObj: null,
-  serverTimeoutObj: null,
-  reset: function() &#123;
-    clearTimeout(this.timeoutObj)
-    clearTimeout(this.serverTimeoutObj)
-    return this
-  &#125;,
-  // 发送在线信息
-  sendOnline: function() &#123;
-    if (WS.readyState === 1) &#123;
-      WS.send(JSON.stringify(HeartBeat))
-    &#125;
-  &#125;,
-  close: function() &#123;
-    this.serverTimeoutObj = setTimeout(() =&gt; &#123;
-      // 如果超过一定时间还没重置，说明后端主动断开了
-      // 服务器断开链接
-      webWorkerSelf.postMessage(&#123;
-        type: &#39;keepalive&#39;,
-        data: &#39;close&#39; + new Date().toTimeString()
-      &#125;)
-      WS.close() // 如果onclose会执行reconnect，我们执行ws.close()就行了.如果直接执行reconnect 会触发onclose导致重连两次
-    &#125;, this.timeout)
-  &#125;,
-  start: function() &#123;
-    this.timeoutObj = setTimeout(() =&gt; &#123;
-      // 这里发送一个心跳，返回一个心跳消息
-      // onmessage拿到返回的心跳就说明连接正常
-      this.sendOnline()
-      this.close()
-    &#125;, this.timeout)
-  &#125;
-&#125;
-
-/**
- * websocket重连
- */
-function reconnect(url) &#123;
-  if (lockReconnect) return
-  lockReconnect = true
-  // 没连接上会一直重连，设置延迟避免请求过多
-  setTimeout(function() &#123;
-    WS = null
-    createWebSocket()
-    lockReconnect = false
-  &#125;, 2000)
+  ],
+  selector: false, //图例是否显示，
 &#125;
 </code></pre>
-<p>新建一个websocket文件将worker文件引入</p>
-<pre><code>
-&lt;template&gt;
-  &lt;div&gt;&lt;/div&gt;
-&lt;/template&gt;
-
-&lt;script&gt;
-import Worker from &#39;./min.worker.js&#39;
-
-
-
-export default &#123;
-  name: &#39;socketView&#39;,
-  data() &#123;
-    return &#123;
-      webSocket: null
-    &#125;
-  &#125;,
-  created() &#123;
- 
-    this.initWebSocket()
-
-  &#125;,
-
-  methods: &#123;
-    initWebSocket() &#123;
-      const that = this
-      // 用webworker子线程去连接webSocket
-      this.webSocket = new Worker()
- 
-      this.webSocket.postMessage(&#123; cmd: &#39;start&#39; &#125;)
-      this.webSocket.onmessage = function(event) &#123;
-        const &#123; type, data &#125; = event.data
-        if (type === &#39;webSocket&#39;) &#123;
-             //这里调用store中的dispath或者commite储存数据
-    
-        &#125; else if (type === &#39;keepalive&#39;) &#123;
-          //console.log(&#39;keepalive&#39;)
-         
-          if (data === &#39;close&#39;) &#123;
-            //
-            //console.log(&#39;close&#39;)
-          &#125;
-        &#125;
-      &#125;
-    &#125;,
-    
-  &#125;,
-  beforeUnmount() &#123;
-    this.webSocket.postMessage(&#123; cmd: &#39;stop&#39; &#125;)
-    setTimeout(() =&gt; &#123;
-      this.webSocket.terminate()
-      this.webSocket = undefined
-    &#125;)
-  &#125;
-&#125;
-&lt;/script&gt;
-
-&lt;style scoped&gt;&lt;/style&gt;
-</code></pre>
-<p>再在页面中用computed监听数据，就能实现webscoket推送消息实时更新了。</p>
-<p>​</p>
 
     </div>
     

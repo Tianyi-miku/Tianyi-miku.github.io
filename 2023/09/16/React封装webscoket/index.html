@@ -191,7 +191,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/react/" style="color: #ff7d73">react</a>
+                <a href="/tags/react/" style="color: #00bcd4">react</a>
             </span>
             
             <span class="tag">
@@ -208,9 +208,9 @@
 <span id="more"></span>
 
 <p>首先定义一个useSocket()方法，传入一些我们需要的配置文件。例如：</p>
-<pre><code>type SocketOptions = &#123;
+<pre><code>export type SocketOptions = &#123;
   url: URL | string; // 连接的url地址
-  type: &#39;&#39;; // 链接的类型
+  type: &#39;situation&#39; | &#39;single&#39;; // 应用类型
   onOpen?: Function; // 自定义onopen回调函数
   onError?: Function; // 自定义onerror回调函数
   onClose?: Function; // 自定义onclose回调函数
@@ -237,12 +237,22 @@
 &#125;
 </code></pre>
 <p>重写连接websocket，心跳回调函数</p>
-<pre><code>  const timeoutObj: any = React.useRef(null); // 心跳检测定时器
+<pre><code>  options.reconnect = options?.reconnect || true; // 默认开启失败重连
+  options.heartCheck = options?.heartCheck || true; // 默认开启心跳检测
+  let websocket: any = React.useRef&lt;WebSocket&gt;();
+
+  const [socketData, setsocketData] = useState()
+
+
   const lockReconnect = React.useRef&lt;boolean&gt;(false); // 锁住重连
+  const connectNum = React.useRef&lt;number&gt;(0); // 已重连次数
+  const timeoutObj: any = React.useRef(null); // 心跳检测定时器
+
   const reconnectFunc = React.useCallback(
     (callback: Function) =&gt; &#123;
       if (lockReconnect.current) return;
-      const reconnectCount = options.reconnectCount;
+      const reconnectCount = options.reconnectCount || config.wsReconnectNum;
+      // if (!config.IsDev &amp;&amp; connectNum.current &lt; reconnectCount) &#123;
       if (connectNum.current &lt; reconnectCount) &#123;
         setTimeout(() =&gt; &#123;
           callback();
@@ -253,7 +263,6 @@
     &#125;,
     [lockReconnect, connectNum, options]
   );
-
   const resetHeart = React.useCallback(() =&gt; &#123;
     timeoutObj.current &amp;&amp; clearInterval(timeoutObj.current);
     timeoutObj.current = null;
@@ -261,18 +270,18 @@
 
   const startHeart = React.useCallback(() =&gt; &#123;
     timeoutObj.current = setInterval(function () &#123;
-      websocket.current.ws &amp;&amp; websocket.current.ws.send(&quot;HeartBeat&quot;);
-    &#125;, 60000);
+      websocket.current &amp;&amp; websocket.current.send(&quot;HeartBeat&quot;);
+    &#125;, 6000);
   &#125;, [timeoutObj, websocket]);
 
-   const createWebSocket = React.useCallback(() =&gt; &#123;
+  const createWebSocket = React.useCallback(() =&gt; &#123;
     if (!websocket.current) &#123;
       websocket.current = new WebSocket(options.url);
       websocket.current.onopen = (res: any) =&gt; &#123;
         console.log(options.url + &quot;连接成功&quot;);
         connectNum.current = 0;
         options?.onOpen &amp;&amp; options.onOpen(res);
-        if (options.heartCheck) &#123;
+        if (!config.IsDev &amp;&amp; options.heartCheck) &#123;
           resetHeart();
           startHeart();
         &#125;
@@ -281,13 +290,15 @@
         options?.onError &amp;&amp; options.onError(err);
         options?.reconnect &amp;&amp; reconnectFunc(() =&gt; createWebSocket());
         if (options.showMsg) &#123;
-          console.log(&#39;websocket连接错误&#39;)
+          generalNotification.error(&quot;websocket连接错误&quot;);
         &#125;
       &#125;;
       websocket.current.onclose = (res: any) =&gt; &#123;
+        websocket.current &amp;&amp; websocket.current.close();
+        websocket.current = &#39;&#39;
         options?.onClose &amp;&amp; options.onClose(res);
         if (options.showMsg) &#123;
-          console.log(&#39;websocket连接错误&#39;)
+          generalNotification.error(&quot;websocket连接错误&quot;);
         &#125;
       &#125;;
       websocket.current.onmessage = function (event: any) &#123;
