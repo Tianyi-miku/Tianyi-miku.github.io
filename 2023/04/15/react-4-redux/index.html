@@ -49,6 +49,14 @@
     </canvas>
     <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
     <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
         <div id="layout">
             <transition name="fade">
                 <div id="loading" v-show="loading">
@@ -183,7 +191,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/react/" style="color: #00bcd4">react</a>
+                <a href="/tags/react/" style="color: #03a9f4">react</a>
             </span>
             
         </span>
@@ -196,6 +204,61 @@
 </code></pre>
 <span id="more"></span>
 
+<p>接着下载Redux</p>
+<pre><code>npm install redux
+</code></pre>
+<p>这里的redux与vuex很像，都是通过存放单一状态树，然后通过ation来更新。</p>
+<h2 id="在顶部引入存储"><a href="#在顶部引入存储" class="headerlink" title="在顶部引入存储"></a>在顶部引入存储</h2><pre><code>import store from &#39;./app/store&#39;
+
+ReactDOM.render(
+  &lt;Provider store=&#123;store&#125;&gt;
+    &lt;App /&gt;
+  &lt;/Provider&gt;,
+  document.getElementById(&#39;root&#39;)
+)
+</code></pre>
+<h2 id="创建单个存储示例。"><a href="#创建单个存储示例。" class="headerlink" title="创建单个存储示例。"></a>创建单个存储示例。</h2><pre><code>import &#123; createSlice &#125; from &#39;@reduxjs/toolkit&#39;
+
+export const counterSlice = createSlice(&#123;
+  name: &#39;counter&#39;,
+  initialState: &#123;
+    value: 0
+  &#125;,
+  reducers: &#123;
+    increment: state =&gt; &#123;
+      // Redux Toolkit 允许我们在 reducers 写 &quot;可变&quot; 逻辑。它
+      // 并不是真正的改变状态值，因为它使用了 Immer 库
+      // 可以检测到“草稿状态“ 的变化并且基于这些变化生产全新的
+      // 不可变的状态
+      state.value += 1
+    &#125;,
+    decrement: state =&gt; &#123;
+      state.value -= 1
+    &#125;,
+    incrementByAmount: (state, action) =&gt; &#123;
+      state.value += action.payload
+    &#125;
+  &#125;
+&#125;)
+// 每个 case reducer 函数会生成对应的 Action creators
+export const &#123; increment, decrement, incrementByAmount &#125; = counterSlice.actions
+
+export default counterSlice.reducer
+</code></pre>
+<h2 id="添加到Store"><a href="#添加到Store" class="headerlink" title="添加到Store"></a>添加到Store</h2><pre><code>import &#123; configureStore &#125; from &#39;@reduxjs/toolkit&#39;
+import counterReducer from &#39;../features/counter/counterSlice&#39;
+
+export default configureStore(&#123;
+  reducer: &#123;
+    counter: counterReducer
+  &#125;
+&#125;)
+</code></pre>
+<h2 id="在组件中使用："><a href="#在组件中使用：" class="headerlink" title="在组件中使用："></a>在组件中使用：</h2><pre><code>  const count = useSelector(state =&gt; state.counter.value)
+  const dispatch = useDispatch()
+  dispatch(increment())
+</code></pre>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>在应用顶层用provider注入Store，创建单一存储树，用对应的dispatch来管理更新状态。</p>
 
     </div>
     

@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>vue3 compositionApi一般使用 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>vue3 compositionApi一般使用</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2019/12/22
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/vue3/" style="color: #ff7d73">vue3</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>在vue2项目中，一般我们用这种方式给子组件传递参数。父组件：</p>
+<span id="more"></span>
+<pre><code>&lt;template&gt;
+  &lt;div id=&quot;app&quot;&gt;
+    &lt;HelloWorld msg=&quot;Welcome to Your Vue.js App&quot;/&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import HelloWorld from &#39;./components/HelloWorld.vue&#39;
+
+export default &#123;
+  name: &#39;App&#39;,
+  components: &#123;
+    HelloWorld
+  &#125;,
+&#125;
+&lt;/script&gt;
+</code></pre>
+<p>子组件：</p>
+<pre><code>&lt;template&gt;
+  &lt;div class=&quot;hello&quot;&gt;
+    &lt;h1&gt;&#123;&#123; msg &#125;&#125;&lt;/h1&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import Vue from &#39;vue&#39;
+export default &#123;
+  name: &#39;HelloWorld&#39;,
+  props: &#123;
+    msg: String
+  &#125;,
+&#125;
+&lt;/script&gt;
+</code></pre>
+<p>但是如果参数一多，或者复杂，来回传递的工作就增加了。</p>
+<p>在vue3中。我们可以这样使用。</p>
+<p>首先先生成一个vue3项目。</p>
+<p>新建一个ts或者js文件，我们这里叫AppHook，当然随便什么名字都行，上面声明你说需要的响应式数据。</p>
+<pre><code>import &#123;  reactive &#125; from &quot;vue&quot;;
+type AppStats = &#123;
+  people: &#123;
+    name: string;
+    sex: string;
+    age: number;
+  &#125;;
+&#125;;
+
+export const myAppState = reactive&lt;AppStats&gt;(&#123;
+  people: &#123;
+    name: &quot;王小二&quot;,
+    sex: &quot;男&quot;,
+    age: 10,
+  &#125;,
+&#125;);
+</code></pre>
+<p>然后，我们就可以直接在子组件或者父组件中引用他们。</p>
+<p>父组件：</p>
+<pre><code>&lt;template&gt;
+  &lt;HelloWorld&gt;&lt;/HelloWorld&gt;
+  &#123;&#123; people.name &#125;&#125;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+import &#123; myAppState &#125; from &quot;./AppHook&quot;;
+import HelloWorld from &quot;./components/HelloWorld.vue&quot;;
+const &#123; people &#125; = myAppState;
+&lt;/script&gt;
+</code></pre>
+<p>helloworld子组件</p>
+<pre><code>&lt;template&gt;
+  &lt;div class=&quot;hello&quot;&gt;
+    &lt;button @click=&quot;changeName&quot;&gt;改名称&lt;/button&gt;
+
+    &lt;button @click=&quot;changeAge&quot;&gt;改年纪&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+&lt;script lang=&quot;ts&quot; setup&gt;
+import &#123; myAppState &#125; from &quot;@/AppHook&quot;;
+
+const &#123; people &#125; = myAppState;
+const changeName = () =&gt; &#123;
+  people.name = &quot;张小花&quot;;
+&#125;;
+const changeAge = () =&gt; &#123;
+  people.age = 5;
+&#125;;
+&lt;/script&gt;
+</code></pre>
+<p>在子组件点击修改名称，发现父组件的值直接改变了，这样就少了传值的功夫。</p>
+<p>而且，可以在里面直接使用computed 与watch。</p>
+<p>在Apphook里面添加</p>
+<pre><code>export const addAge = computed(() =&gt; &#123;
+  console.log(`$&#123;myAppState.people.name&#125;年纪改变了`);
+  return myAppState.people.age + 1;
+&#125;);
+</code></pre>
+<p> 在父组件中</p>
+<pre><code>&lt;template&gt;
+  &lt;HelloWorld&gt;&lt;/HelloWorld&gt;
+  &#123;&#123; people.name &#125;&#125;
+  &#123;&#123; addAge &#125;&#125;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot; setup&gt;
+import &#123; myAppState, addAge &#125; from &quot;./AppHook&quot;;
+import HelloWorld from &quot;./components/HelloWorld.vue&quot;;
+const &#123; people &#125; = myAppState;
+&lt;/script&gt;
+
+&lt;style&gt;
+</code></pre>
+<p>运行发现 点击修改年纪发现computed确实运行了。</p>
+<p>watch同理:</p>
+<pre><code>watch(myAppState.people, (newQuestion, oldQuestion) =&gt; &#123;
+  console.log(`watch改变了！`);
+&#125;);
+</code></pre>
+<p>点击修改，发现确实触发了Watch</p>
+<p>这样使用，在平时开发中少了很多监听prop中的值，或者是 父子传值，子孙传值之类麻烦的事情。</p>
+<p>甚至你可以抛弃vuex之类全局储存的插件，直接使用全局的响应式数据。只是开发时候要注意，避免代码混乱。​</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>

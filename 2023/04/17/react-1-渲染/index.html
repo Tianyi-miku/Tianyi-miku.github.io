@@ -49,6 +49,14 @@
     </canvas>
     <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
     <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
         <div id="layout">
             <transition name="fade">
                 <div id="loading" v-show="loading">
@@ -214,7 +222,7 @@
 </ul>
 <p> 意思就是与createRoot()相同,创建根节点。</p>
 <h1 id="render-函数"><a href="#render-函数" class="headerlink" title="render 函数"></a>render 函数</h1><p> render函数是将虚拟dom转换为真实dom的一个函数。利用babeljs中的 babel-preset-react-app 将虚拟dom中的对象，转换为了真实dom。</p>
-<p> 打开bable在线网站<br><img src="/../../img/image.png" alt="Alt text"></p>
+<p> 打开bable在线网站<br><img src="/img/image.png" alt="Alt text"></p>
 <p> 如图所示，插件将jsx编译为React.creatEelment(…)这种格式。</p>
 <pre><code>   React.createElement(
    React.Fragment,
@@ -231,7 +239,7 @@
    );
 </code></pre>
 <p>打印一下，可以看出虚拟Dom对象长这样的。</p>
-<p><img src="/../../img/image1.png" alt="Alt text"></p>
+<p><img src="/img/image1.png" alt="Alt text"></p>
 <pre><code>    vitrualDom = &#123;
         $$typeof:Symbol(react.element),
         key：null,
@@ -341,7 +349,7 @@ function each(obj, callback) &#123;
 &#125;
 </code></pre>
 <p>将index中的root.render换成我们的render函数</p>
-<p><img src="/../../img/image2.png" alt="Alt text"></p>
+<p><img src="/img/image2.png" alt="Alt text"></p>
 <p>这样，就大概熟悉了React中，虚拟dom的创建与转换真实Dom的流程了。</p>
 
     </div>

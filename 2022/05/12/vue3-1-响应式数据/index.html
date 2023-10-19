@@ -49,6 +49,14 @@
     </canvas>
     <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
     <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
         <div id="layout">
             <transition name="fade">
                 <div id="loading" v-show="loading">
@@ -183,12 +191,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue3/" style="color: #ff7d73">vue3</a>
+                <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
             </span>
             
         </span>
@@ -256,6 +264,34 @@ function shallowReadonly(target) &#123;
 <p>但是vue3中,数组也不用重写方法，而是访问的时候直接返回reactive（）数据，做的懒代理。</p>
 <h2 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h2><p>ref采用Object.defineProperty实现。基本类型转为对象来拦截！所以要.value来取值。</p>
 <p>当然如果是对象，则将value转为reactive!</p>
+<p>伪代码</p>
+<pre><code>function reactive(obj) &#123;
+  return new Proxy(obj, &#123;
+    get(target, key) &#123;
+      track(target, key)
+      return target[key]
+    &#125;,
+    set(target, key, value) &#123;
+      target[key] = value
+      trigger(target, key)
+    &#125;
+  &#125;)
+&#125;
+
+function ref(value) &#123;
+  const refObject = &#123;
+    get value() &#123;
+      track(refObject, &#39;value&#39;)
+      return value
+    &#125;,
+    set value(newValue) &#123;
+      value = newValue
+      trigger(refObject, &#39;value&#39;)
+    &#125;
+  &#125;
+  return refObject
+&#125;
+</code></pre>
 
     </div>
     

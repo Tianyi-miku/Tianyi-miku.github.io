@@ -45,6 +45,14 @@
     </canvas>
     <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
     <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
         <div id="layout">
             <transition name="fade">
                 <div id="loading" v-show="loading">
@@ -156,7 +164,7 @@
         
         
         <span>
-            <a href="/categories/%E4%B8%9A%E5%8A%A1/" style="background: #00a596">
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/" style="background: #ff7d73">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -180,7 +188,7 @@
         
         
         <span>
-            <a href="/categories/%E5%BE%AE%E5%89%8D%E7%AB%AF/" style="background: #03a9f4">
+            <a href="/categories/%E5%BE%AE%E5%89%8D%E7%AB%AF/" style="background: #00bcd4">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -191,7 +199,7 @@
         
         
         <span>
-            <a href="/categories/%E4%B8%9A%E5%8A%A1/%E6%8F%92%E4%BB%B6/" style="background: #ffa2c4">
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/%E6%8F%92%E4%BB%B6/" style="background: #00a596">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -224,7 +232,7 @@
         
         
         <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%85%8D%E7%BD%AE/%E6%A1%86%E6%9E%B6/" style="background: #ffa2c4">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%85%8D%E7%BD%AE/%E6%A1%86%E6%9E%B6/" style="background: #00a596">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
@@ -235,11 +243,33 @@
         
         
         <span>
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/solidity/" style="background: #00a596">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/solidity/" style="background: #00bcd4">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
                 solidity
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/%E9%85%8D%E7%BD%AE/%E6%89%93%E5%8C%85/" style="background: #03a9f4">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                打包
+            </a>
+        </span>
+        
+        
+        
+        <span>
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/JS/" style="background: #ffa2c4">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                JS
             </a>
         </span>
         
@@ -273,12 +303,12 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/solidity/" style="color: #ff7d73">solidity</a>
+                        <a href="/tags/solidity/" style="color: #00a596">solidity</a>
                     </span>
                     
                     <span class="tag">
                         
-                        <a href="/tags/web3/" style="color: #00a596">web3</a>
+                        <a href="/tags/web3/" style="color: #ff7d73">web3</a>
                     </span>
                     
                     <span class="tag">
@@ -319,7 +349,7 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/react/" style="color: #03a9f4">react</a>
+                        <a href="/tags/react/" style="color: #00a596">react</a>
                     </span>
                     
                 </span>
@@ -355,7 +385,7 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/react/" style="color: #ffa2c4">react</a>
+                        <a href="/tags/react/" style="color: #03a9f4">react</a>
                     </span>
                     
                 </span>
@@ -391,7 +421,7 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/react/" style="color: #00bcd4">react</a>
+                        <a href="/tags/react/" style="color: #00a596">react</a>
                     </span>
                     
                 </span>
@@ -427,7 +457,7 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/react/" style="color: #03a9f4">react</a>
+                        <a href="/tags/react/" style="color: #ff7d73">react</a>
                     </span>
                     
                 </span>
@@ -463,7 +493,7 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/solidity/" style="color: #ffa2c4">solidity</a>
+                        <a href="/tags/solidity/" style="color: #ff7d73">solidity</a>
                     </span>
                     
                     <span class="tag">
@@ -473,7 +503,7 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/Hardhat/" style="color: #ffa2c4">Hardhat</a>
+                        <a href="/tags/Hardhat/" style="color: #ff7d73">Hardhat</a>
                     </span>
                     
                 </span>
@@ -509,12 +539,12 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/solidity/" style="color: #ff7d73">solidity</a>
+                        <a href="/tags/solidity/" style="color: #00bcd4">solidity</a>
                     </span>
                     
                     <span class="tag">
                         
-                        <a href="/tags/web3/" style="color: #00a596">web3</a>
+                        <a href="/tags/web3/" style="color: #03a9f4">web3</a>
                     </span>
                     
                 </span>
@@ -550,7 +580,7 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
+                        <a href="/tags/vue3/" style="color: #ffa2c4">vue3</a>
                     </span>
                     
                     <span class="tag">
@@ -591,12 +621,12 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/vue3/" style="color: #ff7d73">vue3</a>
+                        <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
                     </span>
                     
                     <span class="tag">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
                     </span>
                     
                 </span>
@@ -637,7 +667,7 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
                     </span>
                     
                 </span>
@@ -673,12 +703,12 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
+                        <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
                     </span>
                     
                     <span class="tag">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
+                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
                     </span>
                     
                 </span>
@@ -714,12 +744,12 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
+                        <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
                     </span>
                     
                     <span class="tag">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
+                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
                     </span>
                     
                 </span>
@@ -755,12 +785,12 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/vue2/" style="color: #00a596">vue2</a>
+                        <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
                     </span>
                     
                     <span class="tag">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
+                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
                     </span>
                     
                 </span>
@@ -796,12 +826,12 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
+                        <a href="/tags/vue3/" style="color: #ffa2c4">vue3</a>
                     </span>
                     
                     <span class="tag">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
                     </span>
                     
                 </span>
@@ -837,12 +867,12 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
+                        <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
                     </span>
                     
                     <span class="tag">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
+                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
                     </span>
                     
                 </span>
@@ -878,12 +908,12 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/vue2/" style="color: #00a596">vue2</a>
+                        <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
                     </span>
                     
                     <span class="tag">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
                     </span>
                     
                 </span>
@@ -924,7 +954,7 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
                     </span>
                     
                 </span>
@@ -960,12 +990,228 @@
                     
                     <span class="tag">
                         
-                        <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
+                        <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
                     </span>
                     
                     <span class="tag">
                         
-                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
+                        <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2021/3/28</div>
+            <a href="/2021/03/28/webpack%E5%B8%B8%E7%94%A8/">
+                <h3>webpack常用配置</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        学习
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/webpack/" style="color: #03a9f4">webpack</a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2021/3/27</div>
+            <a href="/2021/03/27/webpcak%E6%A6%82%E5%BF%B5/">
+                <h3>webpack概念</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        学习
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/webpack/" style="color: #ffa2c4">webpack</a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2020/4/24</div>
+            <a href="/2020/04/24/js%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+                <h3>js高级程序设计-数据类型</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        学习
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/js/" style="color: #ff7d73">js</a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2020/4/23</div>
+            <a href="/2020/04/23/js%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1-%E5%8F%98%E9%87%8F/">
+                <h3>js高级程序设计-js变量声明</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        学习
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/js/" style="color: #03a9f4">js</a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2020/4/22</div>
+            <a href="/2020/04/22/js%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1HTML/">
+                <h3>js高级程序设计-HTML中的js</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        学习
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/js/" style="color: #00a596">js</a>
+                    </span>
+                    
+                </span>
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time">2019/12/22</div>
+            <a href="/2019/12/22/vue3%E4%BD%BF%E7%94%A8compositionApi/">
+                <h3>vue3 compositionApi一般使用</h3>
+            </a>
+            <div class="info">
+                
+                <span class="category">
+                    <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                        <span class="icon">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </span>
+                        学习
+                    </a>
+                </span>
+                
+                
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    
+                    
+                    <span class="tag">
+                        
+                        <a href="/tags/vue3/" style="color: #00bcd4">vue3</a>
                     </span>
                     
                 </span>

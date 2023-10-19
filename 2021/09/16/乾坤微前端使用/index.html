@@ -49,6 +49,14 @@
     </canvas>
     <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
     <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
         <div id="layout">
             <transition name="fade">
                 <div id="loading" v-show="loading">
@@ -188,12 +196,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
+                <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/react/" style="color: #00bcd4">react</a>
+                <a href="/tags/react/" style="color: #00a596">react</a>
             </span>
             
             <span class="tag">
@@ -304,11 +312,28 @@ export async function unmount() &#123;
 &lt;/template&gt;
 
 &lt;style&gt;
+#app &#123;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+&#125;
+
+#nav &#123;
+  padding: 30px;
+&#125;
+
+#nav a &#123;
+  font-weight: bold;
+  color: #2c3e50;
+&#125;
+
+#nav a.router-link-exact-active &#123;
+  color: #42b983;
+&#125;
+&lt;/style&gt;
 </code></pre>
-<p>#app {<br>  font-family: Avenir, Helvetica, Arial, sans-serif;<br>  -webkit-font-smoothing: antialiased;<br>  -moz-osx-font-smoothing: grayscale;<br>  text-align: center;<br>  color: #2c3e50;<br>}</p>
-<p>#nav {<br>  padding: 30px;<br>}</p>
-<p>#nav a {<br>  font-weight: bold;<br>  color: #2c3e50;<br>}</p>
-<p>#nav a.router-link-exact-active {<br>  color: #42b983;<br>}<br></style></p>
 <p>子应用添加打包配置vue.config.js</p>
 <pre><code>const path = require(&#39;path&#39;);
 const &#123; name &#125; = require(&#39;./package&#39;);
