@@ -70,3 +70,4 @@ const singger = {
 singger.age = '25'
 ```
 
+对于未声明的变量，只能调用typeof。在严格模式下,delete未声明的变量也会报错。
