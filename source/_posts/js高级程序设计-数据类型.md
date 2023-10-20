@@ -160,7 +160,7 @@ symbol也有很多方法，用到的时候自行查看。
 
 ## 复杂类型
 
-Object 对象。
+Object 对象。Array,Funciton等,这里只说Object
 
 ```
 let o = new Object();
