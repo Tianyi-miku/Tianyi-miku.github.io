@@ -110,3 +110,44 @@ let pos = text.search(/at/);
 console.log(pos); // 1
 ......
 ```
+## Global 与 window
+
+全局属性,undefined、NaN 和 Infinity 等特殊值都是 Global 对象的属性所有原生引用类型构造函数，比如 Object 和 Function，也都是
+Global 对象的属性,js没法直接访问Global对象,但是浏览器将Window作为Global的代理
+
+## Math
+
+提供Math对象辅助计算,常用的方法
+```
+Math.E //自然对数的基数 e 的值
+Math.LN10 10 //为底的自然对数
+Math.LN2 2 //为底的自然对数
+Math.LOG2E //以 2 为底 e 的对数
+Math.LOG10E //以 10 为底 e 的对数
+Math.PI //π 的值
+Math.SQRT1_2 //1/2 的平方根
+Math.SQRT2 //2 的平方根
+
+// min()和 max()
+let max = Math.max(3, 54, 32, 16); 
+console.log(max); // 54 
+let min = Math.min(3, 54, 32, 16); 
+console.log(min); // 3
+
+//舍入方法 Math.ceil()、Math.floor()、Math.round()
+Math.ceil(1.1) //2 向上舍入
+Math.floor(1.9) //1 向下舍入
+Math.round(1.9) //2
+Math.round(1.1) //1  四舍五入
+
+//Math.random 随机数 Math.random()方法返回一个 0~1 范围内的随机数
+.......
+```
+
+总结:
+Date 对象提供日期类型
+RegExp 正则表达式类型
+
+内置对象Global 和 Math
+Global在ECMAScript 实现中无法直接访问,但是可以访问代理对象window
+Math 对象包含辅助完成复杂计算的属性和方法,平时开发遇到的多的max ,min, ceil向上取整,floor向下取整,round四舍五入,random随机0-1
