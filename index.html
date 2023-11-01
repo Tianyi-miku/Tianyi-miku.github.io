@@ -220,12 +220,12 @@
         
         <span class="tag">
             
-            <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
+            <a href="/tags/vue3/" style="color: #ffa2c4">vue3</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
         </span>
         
     </div>
@@ -273,12 +273,12 @@
         
         <span class="tag">
             
-            <a href="/tags/vue3/" style="color: #ff7d73">vue3</a>
+            <a href="/tags/vue3/" style="color: #ffa2c4">vue3</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
         </span>
         
     </div>
@@ -316,77 +316,6 @@
 <pre><code>const canvas = document.getElementById(&quot;id&quot;);
 const ctx = canvas.getContext(&quot;2d&quot;);
 </code></pre>
-<h1 id="绘制"><a href="#绘制" class="headerlink" title="绘制"></a>绘制</h1><p>fillRect(x, y, width, height) 绘制填充矩形<br>strokeRect(x, y, width, height) 矩形边框<br>clearRect(x, y, width, height) 清除指定区域</p>
-<pre><code>  const canvas = document.getElementById(&quot;canvas&quot;);
-  const ctx = canvas.getContext(&quot;2d&quot;);
-
-  ctx.fillRect(25, 25, 100, 100);
-  ctx.clearRect(45, 45, 60, 60);
-  ctx.strokeRect(50, 50, 50, 50);
-</code></pre>
-<p>beginPath() 新建路径<br>closePath() 关闭路径<br>lineTo() 连接<br>moveTo() 移动<br>fill() 填充<br>arc(x, y, radius, startAngle, endAngle, anticlockwise) &#x2F;&#x2F;圆弧<br>quadraticCurveTo(cp1x, cp1y, x, y) &#x2F;&#x2F;贝塞尔弧线</p>
-<pre><code>  const canvas = document.getElementById(&quot;canvas&quot;);
-  const ctx = canvas.getContext(&quot;2d&quot;);
-  ctx.beginPath();
-  ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // 绘制圆 anticlockwise 顺时针或者逆时针
-  ctx.stroke();
-</code></pre>
-<h2 id="color"><a href="#color" class="headerlink" title="color"></a>color</h2><p>填充颜色,项目中有时候会用到colormap 插件</p>
-<pre><code>ctx.fillStyle = &quot;orange&quot;; //具体值或者rgba
-ctx.fillRect(0, 37.5, 150, 37.5);
-
- var ctx = document.getElementById(&quot;canvas&quot;).getContext(&quot;2d&quot;);
-  for (var i = 0; i &lt; 6; i++) &#123;
-    for (var j = 0; j &lt; 6; j++) &#123;
-      ctx.fillStyle =
-        &quot;rgb(&quot; +
-        Math.floor(255 - 42.5 * i) +
-        &quot;,&quot; +
-        Math.floor(255 - 42.5 * j) +
-        &quot;,0)&quot;;
-      ctx.fillRect(j * 25, i * 25, 25, 25);
-    &#125;
-  &#125;
-</code></pre>
-<p>globalAlpha 设置透明度</p>
-<pre><code>  ctx.globalAlpha = 0.2;
-</code></pre>
-<h1 id="line"><a href="#line" class="headerlink" title="line"></a>line</h1><p>lineWidth &#x2F;&#x2F;线宽度<br>lineCap &#x2F;&#x2F;线头样式 butt，round，square<br>lineJoin &#x2F;&#x2F;线链接样子 round,bevel,miter<br>miterLimit &#x2F;&#x2F;线限制<br>setLineDash &#x2F;&#x2F;虚线<br>Shadows &#x2F;&#x2F;阴影</p>
-<pre><code>ctx.shadowOffsetX = 2;
-ctx.shadowOffsetY = 2;
-ctx.shadowBlur = 2;
-ctx.shadowColor = &quot;rgba(0, 0, 0, 0.5)&quot;;
-</code></pre>
-<p>渐变 Gradients createLinearGradient(x1, y1, x2, y2) createRadialGradient(x1, y1, r1, x2, y2, r2) ….<br>Patterns</p>
-<pre><code>var img = new Image();
-img.src = &quot;someimage.png&quot;;
-var ptrn = ctx.createPattern(img, &quot;repeat&quot;);
-</code></pre>
-<h1 id="Text"><a href="#Text" class="headerlink" title="Text"></a>Text</h1><p>填充</p>
-<pre><code>var ctx = document.getElementById(&quot;canvas&quot;).getContext(&quot;2d&quot;);
-ctx.font = &quot;48px serif&quot;;
-ctx.fillText(&quot;Hello world&quot;, 10, 50);
-</code></pre>
-<h1 id="img"><a href="#img" class="headerlink" title="img"></a>img</h1><pre><code>function draw() &#123;
-  var ctx = document.getElementById(&quot;canvas&quot;).getContext(&quot;2d&quot;);
-  var img = new Image();
-  img.onload = function () &#123;
-    ctx.drawImage(img, 0, 0);
-    ctx.beginPath();
-    ctx.moveTo(30, 96);
-    ctx.lineTo(70, 66);
-    ctx.lineTo(103, 76);
-    ctx.lineTo(170, 15);
-    ctx.stroke();
-  &#125;;
-  img.src = &quot;backdrop.png&quot;;
-&#125;
-</code></pre>
-<h1 id="Transformations"><a href="#Transformations" class="headerlink" title="Transformations"></a>Transformations</h1><p>save restore<br>save 保存当前状态，restore返回上一步状态</p>
-<p>translat 移动 translate(x, y)<br>rotate 旋转 rotate(angle)<br>scale 缩放 scale(x, y)<br>矩阵变换transform(a, b, c, d, e, f)<br>clip 裁剪</p>
-<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><p>步骤 1.清空 canvas  2.保存 canvas 3.绘制动画 4.恢复 canvas 状态</p>
-<p>定时执行setInterval(function, delay),requestAnimationFrame(callback)</p>
-
             
         </div>
     </div>
@@ -450,12 +379,12 @@ ctx.fillText(&quot;Hello world&quot;, 10, 50);
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #00bcd4">vue2</a>
+            <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
         </span>
         
     </div>
@@ -503,12 +432,12 @@ ctx.fillText(&quot;Hello world&quot;, 10, 50);
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
+            <a href="/tags/vue2/" style="color: #00a596">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00a596">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
         </span>
         
     </div>
@@ -557,12 +486,12 @@ ctx.fillText(&quot;Hello world&quot;, 10, 50);
         
         <span class="tag">
             
-            <a href="/tags/vue3/" style="color: #00a596">vue3</a>
+            <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
         </span>
         
     </div>
@@ -612,12 +541,12 @@ ctx.fillText(&quot;Hello world&quot;, 10, 50);
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
+            <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
         </span>
         
     </div>
@@ -665,12 +594,12 @@ ctx.fillText(&quot;Hello world&quot;, 10, 50);
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
+            <a href="/tags/vue2/" style="color: #00a596">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
         </span>
         
     </div>
@@ -718,7 +647,7 @@ ctx.fillText(&quot;Hello world&quot;, 10, 50);
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #ffa2c4">vue2</a>
+            <a href="/tags/vue2/" style="color: #ff7d73">vue2</a>
         </span>
         
         <span class="tag">
@@ -771,12 +700,12 @@ ctx.fillText(&quot;Hello world&quot;, 10, 50);
         
         <span class="tag">
             
-            <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
+            <a href="/tags/vue2/" style="color: #00a596">vue2</a>
         </span>
         
         <span class="tag">
             
-            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ff7d73">源码</a>
+            <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #ffa2c4">源码</a>
         </span>
         
     </div>
