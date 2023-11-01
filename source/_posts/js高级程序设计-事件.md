@@ -102,3 +102,11 @@ removeChild() replaceChild() innerHTML
 删除之前,最好手工删除它的事件处理程序,不然可能导致还存留内存中
 
 # 事件模拟
+document.createEvent()
+
+UIEvents //界面
+MouseEvents //鼠标
+HTMLEvents //
+
+
+
