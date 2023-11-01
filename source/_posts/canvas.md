@@ -13,7 +13,7 @@ categories: [学习,canvas]
 const canvas = document.getElementById("id");
 const ctx = canvas.getContext("2d");
 ```
-
+<!-- more -->
 # 绘制
 
 fillRect(x, y, width, height) 绘制填充矩形
