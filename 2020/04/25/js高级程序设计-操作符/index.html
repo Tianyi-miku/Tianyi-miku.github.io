@@ -191,7 +191,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/js/" style="color: #00a596">js</a>
+                <a href="/tags/js/" style="color: #00bcd4">js</a>
             </span>
             
         </span>
@@ -201,10 +201,106 @@
     <div class="content" v-pre>
         <p>一般来说用的比较多的操作符 + - * &#x2F; || &amp;&amp; </p>
 <span id="more"></span>
+<p>自增与自减</p>
 <pre><code>let age = 28;
 ++age; //29 等于age = age + 1
 
 --age; //28 等于age = age - 1
+</code></pre>
+<p>转换</p>
+<pre><code>let n = &#39;1&#39;
+let f = &#39;1.1&#39;
+let b = false
+let x = &#39;x&#39;
+
+let xs = 1
+
+n = +n //1
+f = +f //1.1
+b = +b //0
+x = +x //NaN
+
+xs = -xs //-1 减号与加号一致，只是转换为负数。
+</code></pre>
+<p>与、非、或者</p>
+<pre><code>console.log(!false); // true
+console.log(!false &amp;&amp; true); // true
+console.log(!false || false);//false
+</code></pre>
+<p>乘除</p>
+<pre><code>let b = 2 * 2 //4 
+let a = 4 /2  //2
+</code></pre>
+<p>如果其中一个数字超过内存为Infinity或者-Infinity，则结果为NaN，如果是 0 除以 0，则返回 NaN，非 0 的有限值除以 0，返回Infinity或者 -Infinity</p>
+<p>取模</p>
+<pre><code>let b = 26 % 5 //1
+</code></pre>
+<p>指数</p>
+<pre><code>let a = 3 ** 2 //9
+
+let squared = 3; 
+squared **= 2; 
+console.log(squared); //9 **=为赋值。
+</code></pre>
+<p>等于，两个等号会转换，三个等号要数据类型也相等。</p>
+<pre><code>console.log(null == undefined) //true
+console.log(null === undefined) //false
+console.log(&quot;NaN&quot; == NaN)  //NaN与NaN永远不相等
+let result1 = (&quot;55&quot; != 55); // false，转换后相等
+let result2 = (&quot;55&quot; !== 55); // true，不相等，因为数据类型不同
+</code></pre>
+<p>if else, do while </p>
+<pre><code>if (i &gt; 25) &#123; 
+ console.log(&quot;Greater than 25.&quot;); 
+&#125; else&#123;
+
+&#125;
+
+let i = 0; 
+do &#123; 
+ i += 2; 
+&#125; while (i &lt; 10) //小于 10，循环就会重复执行
+</code></pre>
+<p>for 与 for in ,for of</p>
+<pre><code>for(let i=0 ,i&lt;10 ,i ++)&#123;
+
+&#125;
+
+//for in开发中主要用于Object遍历属性，如果用于数组，将会将其所有的可枚举属性遍历，包括原型链上可遍历的。
+var obj = &#123;a:1, b:2, c:3&#125;
+    
+for (let key in obj) &#123;
+  console.log(key)
+&#125;
+
+//for of主要用于数组遍历
+const array1 = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]
+ 
+for (const val of array1) &#123;
+  console.log(val)
+&#125;
+</code></pre>
+<h2 id="常用语句"><a href="#常用语句" class="headerlink" title="常用语句"></a>常用语句</h2><p>break 跳出循环 ，continue 跳出本次循环。</p>
+<pre><code>var obj = &#123;a:1, b:2, c:3&#125;
+    
+for (let key in obj) &#123;
+    if(key === &#39;a&#39;)&#123;
+        break; //跳出循环，continue跳出本次循环继续下一次循环.
+    &#125;
+  console.log(key)
+&#125;
+</code></pre>
+<p>switch case 判断分支语句。</p>
+<pre><code>switch (i) &#123; 
+ case 25: 
+ console.log(&quot;25&quot;); 
+ break; 
+ case 35: 
+ console.log(&quot;35&quot;); 
+ break; 
+ default: 
+ console.log(&quot;Other&quot;); 
+&#125;
 </code></pre>
 
     </div>

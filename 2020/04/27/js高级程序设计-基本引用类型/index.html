@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>js高级程序设计-基本引用类型 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>js高级程序设计-基本引用类型</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2020/4/27
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/js/" style="color: #03a9f4">js</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>引用类型为堆结构存储,复制其引用的时候,复制的是它的指针</p>
+<span id="more"></span>
+<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><pre><code>let data = new Date()
+//Date()在这里就是构造函数，创建一个只有默认属性和方法的简单对象
+
+let y2k = new Date(2000, 0);// 本地时间 2000 年 1 月 1 日零点
+</code></pre>
+<p>Date 常用方法</p>
+<pre><code>new Date().getTime() //毫秒
+new Date().getFullYear() //年
+new Date().getMonth() //月
+new Date().getDate() //日
+.....
+</code></pre>
+<p>当然项目中一般会用到其他插件来快速格式化,类似day.js 或者moment.js</p>
+<p>RegExp 常用</p>
+<pre><code>/g 全局匹配 /i 忽略大小写 /m 多行 
+let pattern1 = /at/g; /g查看所有at
+let pattern2 = /[bc]at/i;// 匹配第一个&quot;bat&quot;或&quot;cat&quot;，忽略大小写
+let pattern2 = /\[bc\]at/i;// 匹配第一个&quot;[bc]at&quot;，忽略大小写
+
+let text = &quot;this has been a short summer&quot;; 
+let pattern = /(.)hort/g; 
+if (pattern.test(text)) &#123; 
+ console.log(RegExp.input); // this has been a short summer 
+ console.log(RegExp.leftContext); // this has been a 
+ console.log(RegExp.rightContext); // summer 
+ console.log(RegExp.lastMatch); // short 
+ console.log(RegExp.lastParen); // s 
+&#125;
+.....
+</code></pre>
+<p>boolean对象</p>
+<pre><code>let falseObject = new Boolean(false); 
+let result = falseObject &amp;&amp; true; 
+console.log(result); // true 
+let falseValue = false; 
+result = falseValue &amp;&amp; true; 
+console.log(result); // false
+</code></pre>
+<p>number对象</p>
+<pre><code>let numberObject = new Number(10);
+typeof numberObject //&#39;object&#39;
+numberObject.toString() //&#39;10&#39;
+</code></pre>
+<p>string 常用</p>
+<pre><code>let stringObject = new String(&quot;hello world&quot;);
+let stringValue = &quot;hello world&quot;; 
+console.log(stringValue.length); // &quot;11&quot;
+let stringValue = &quot;hello &quot;; 
+let result = stringValue.concat(&quot;world&quot;); 
+console.log(result); // &quot;hello world&quot;  拼接,数组拼接也可以用这个
+console.log(stringValue); // &quot;hello&quot;
+
+//slice substring substr区别不大,只是切割起始点不同,具体用到的时候查看
+
+//indexOf()和 lastIndexOf() 
+let stringValue = &quot;hello world&quot;; 
+console.log(stringValue.indexOf(&quot;o&quot;)); // 4 
+console.log(stringValue.lastIndexOf(&quot;o&quot;)); // 7
+console.log(stringValue.indexOf(&quot;o&quot;, 6)); // 7 
+console.log(stringValue.lastIndexOf(&quot;o&quot;, 6)); // 4
+
+//es6 新增startsWith()、endsWith()和 includes()。项目中includes用的比较多,也可以用到数组
+//trim() //删除所有空格
+
+//repeat 复制
+let stringValue = &quot;na &quot;; 
+console.log(stringValue.repeat(16) + &quot;batman&quot;); 
+// na na na na na na na na na na na na na na na na batman
+
+//padStart与padEnd 与数组fill方法类似
+let stringValue = &quot;foo&quot;; 
+console.log(stringValue.padStart(6)); // &quot; foo&quot; 
+console.log(stringValue.padStart(9, &quot;.&quot;)); // &quot;......foo&quot; 
+console.log(stringValue.padEnd(6)); // &quot;foo &quot; 
+console.log(stringValue.padEnd(9, &quot;.&quot;)); // &quot;foo......&quot;
+
+//转换大小写 toLowerCase()、toLocaleLowerCase() toUpperCase()和toLocaleUpperCase()
+let stringValue = &quot;hello world&quot;; 
+console.log(stringValue.toLocaleUpperCase()); // &quot;HELLO WORLD&quot; 
+console.log(stringValue.toUpperCase()); // &quot;HELLO WORLD&quot; 
+console.log(stringValue.toLocaleLowerCase()); // &quot;hello world&quot; 
+console.log(stringValue.toLowerCase()); // &quot;hello world
+
+//match 正则匹配
+let text = &quot;cat, bat, sat, fat&quot;; 
+let pos = text.search(/at/); 
+console.log(pos); // 1
+......
+</code></pre>
+<h2 id="Global-与-window"><a href="#Global-与-window" class="headerlink" title="Global 与 window"></a>Global 与 window</h2><p>全局属性,undefined、NaN 和 Infinity 等特殊值都是 Global 对象的属性所有原生引用类型构造函数，比如 Object 和 Function，也都是<br>Global 对象的属性,js没法直接访问Global对象,但是浏览器将Window作为Global的代理</p>
+<h2 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h2><p>提供Math对象辅助计算,常用的方法</p>
+<pre><code>Math.E //自然对数的基数 e 的值
+Math.LN10 10 //为底的自然对数
+Math.LN2 2 //为底的自然对数
+Math.LOG2E //以 2 为底 e 的对数
+Math.LOG10E //以 10 为底 e 的对数
+Math.PI //π 的值
+Math.SQRT1_2 //1/2 的平方根
+Math.SQRT2 //2 的平方根
+
+// min()和 max()
+let max = Math.max(3, 54, 32, 16); 
+console.log(max); // 54 
+let min = Math.min(3, 54, 32, 16); 
+console.log(min); // 3
+
+//舍入方法 Math.ceil()、Math.floor()、Math.round()
+Math.ceil(1.1) //2 向上舍入
+Math.floor(1.9) //1 向下舍入
+Math.round(1.9) //2
+Math.round(1.1) //1  四舍五入
+
+//Math.random 随机数 Math.random()方法返回一个 0~1 范围内的随机数
+.......
+</code></pre>
+<p>总结:<br>Date 对象提供日期类型<br>RegExp 正则表达式类型</p>
+<p>内置对象Global 和 Math<br>Global在ECMAScript 实现中无法直接访问,但是可以访问代理对象window<br>Math 对象包含辅助完成复杂计算的属性和方法,平时开发遇到的多的max ,min, ceil向上取整,floor向下取整,round四舍五入,random随机0-1</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>

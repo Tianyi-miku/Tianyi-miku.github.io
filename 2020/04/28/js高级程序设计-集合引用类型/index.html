@@ -1,0 +1,418 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>js高级程序设计-集合引用类型 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>js高级程序设计-集合引用类型</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2020/4/28
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/js/" style="color: #03a9f4">js</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><span id="more"></span>
+<p>创建对象</p>
+<pre><code>//new Object
+let person = new Object()
+person.name = &#39;skymiku&#39;
+person.age = 28
+
+//字面量创建
+let person1 = &#123;
+    name:&#39;skymiku&#39;,
+    age:28
+&#125;
+
+//读取
+console.log(person[&quot;name&quot;]); // &quot;skymiku&quot; 
+console.log(person.name); // &quot;skymiku&quot;
+</code></pre>
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><p>Array</p>
+<pre><code>let arr = new Array()
+let names = [];
+
+//转换 Array.from() 类数组, Array.of 转换为实例
+console.log(Array.from(&quot;Matt&quot;)); // [&quot;M&quot;, &quot;a&quot;, &quot;t&quot;, &quot;t&quot;]
+console.log(Array.of(1, 2, 3, 4)); // [1, 2, 3, 4] 
+console.log(Array.of(undefined)); // [undefined]
+
+//判断类型
+if (value instanceof Array)&#123; 
+ // 操作数组
+&#125;
+if (Array.isArray(value))&#123; 
+ // 操作数组
+&#125;
+
+//迭代方法 keys() values() entries()
+const aKeys = Array.from(a.keys()); 
+const aValues = Array.from(a.values()); 
+const aEntries = Array.from(a.entries()); 
+console.log(aKeys); // [0, 1, 2, 3] 
+console.log(aValues); // [&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;, &quot;qux&quot;] 
+console.log(aEntries); // [[0, &quot;foo&quot;], [1, &quot;bar&quot;], [2, &quot;baz&quot;], [3, &quot;qux&quot;]]
+
+//复制和填充 copyWithin() fill()
+let  ints = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+ints.copyWithin(5); // [0, 1, 2, 3, 4, 0, 1, 2, 3, 4]
+
+const zeroes = [0, 0, 0, 0, 0]; // 用 5 填充整个数组
+zeroes.fill(5); 
+console.log(zeroes); // [5, 5, 5, 5, 5]
+
+
+//toString()
+let colors = [&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;];
+colors.toString() //&quot;red&quot;, &quot;blue&quot;, &quot;green&quot;
+
+//栈方法 push() pop() 最后加入,最后弹出
+colors.push(&#39;red&#39;)
+colors.pop()
+//队列  push() shift() 最后加入,最先弹出
+colors.push(&#39;red&#39;)
+colors.shift()
+// 排序 sort与reverse反序
+let values = [1, 2, 3, 4, 5]; 
+values.reverse(); 
+alert(values); // 5,4,3,2,1
+let values = [0, 1, 5, 10, 15]; 
+values.sort(); 
+alert(values); // 0,1,10,15,5
+
+//数组常用方法
+//concat 链接数组 slice切割数组, splice删除或者替换新增
+//indexOf lastIndexOf includes 判断元素是否在其中
+//find findIndex 寻找某个元素
+//every 每一项都满足
+//filter 过滤
+//forEach 循环
+//map 返回想要的数据格式
+//some 某项满足
+//reduce 并归,会将上一次的结果作为第一个参数传入,通常用于累加或累减
+//reduceRight 从后面开始到第一项
+</code></pre>
+<p>ArrayBuffer,DataView了解</p>
+<pre><code>ArrayBuffer()普通的 JavaScript 构造函数，可用于在内存中分配特定数量的字节空间。
+const buf = new ArrayBuffer(16); // 在内存中分配 16 字节
+alert(buf.byteLength); // 16
+
+const fullDataView = new DataView(buf);
+</code></pre>
+<h2 id="Map-WeakMap-set-WeakSet"><a href="#Map-WeakMap-set-WeakSet" class="headerlink" title="Map WeakMap set WeakSet"></a>Map WeakMap set WeakSet</h2><p>Map键值对</p>
+<pre><code>const m = new Map();
+const m1 = new Map([ 
+ [&quot;key1&quot;, &quot;val1&quot;], 
+ [&quot;key2&quot;, &quot;val2&quot;], 
+ [&quot;key3&quot;, &quot;val3&quot;] 
+]);
+m1.has(&#39;key1&#39;) //true 判断是否存在
+m1.set(&quot;key4&quot;, &quot;val4&quot;) //添加
+m1.delete(&quot;key4&quot;) //删除
+m1.clear()//清除
+
+//迭代
+for (let pair of m1.entries()) &#123; 
+ alert(pair); 
+ // [key1,val1] 
+// [key2,val2] 
+// [key3,val3]
+&#125; 
+m1.forEach((val, key) =&gt; alert(`$&#123;key&#125; -&gt; $&#123;val&#125;`));
+</code></pre>
+<h2 id="WeakMap"><a href="#WeakMap" class="headerlink" title="WeakMap"></a>WeakMap</h2><p>弱映射中的键只能是 Object 或者继承自 Object 的类型</p>
+<pre><code>const key1 = &#123;id: 1&#125;, 
+ key2 = &#123;id: 2&#125;, 
+ key3 = &#123;id: 3&#125;; 
+// 使用嵌套数组初始化弱映射
+const wm1 = new WeakMap([ 
+ [key1, &quot;val1&quot;], 
+ [key2, &quot;val2&quot;], 
+ [key3, &quot;val3&quot;] 
+]);
+
+// 方法包括get()和 has(),delete()
+const wm = new WeakMap(); 
+const loginButton = document.querySelector(&#39;#login&#39;); 
+// 给这个节点关联一些元数据
+wm.set(loginButton, &#123;disabled: true&#125;);//当节点从 DOM 树中被删除后，垃圾回收程序就可以立即释放其内存
+</code></pre>
+<h2 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h2><p>Set 在很多方面都像是加强的 Map</p>
+<pre><code>const s = new Set(); 
+s.add(&#39;foo&#39;); 
+alert(s.size); // 1 
+s.add(&#39;foo&#39;); 
+alert(s.size); // 1
+
+//方法 用add()增加值,has()查寻,size数量,delete,clear 删除,keys(),values()拿值
+</code></pre>
+<h2 id="WeakSet"><a href="#WeakSet" class="headerlink" title="WeakSet"></a>WeakSet</h2><p>弱引用与weakMap相同,没有clear,不能添加相同key</p>
+<pre><code>const ws = new WeakSet()
+const val1 = &#123;id: 1&#125;, 
+ val2 = &#123;id: 2&#125;, 
+ val3 = &#123;id: 3&#125;; // 使用数组初始化弱集合
+const ws1 = new WeakSet([val1, val2, val3]); 
+alert(ws1.has(val1)); // true 
+alert(ws1.has(val2)); // true 
+alert(ws1.has(val3)); // true
+</code></pre>
+<p>总结:<br>Object 所有引用类型都是从它继承<br>Array 数组<br>定型数组包含一套不同的引用类型，用于管理数值在内存中的类型<br>Map、WeakMap、Set 和 WeakSet<br>set去重<br>Weak弱引用,随时可删除,没有clear方法,随时可回收,键为对象</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>

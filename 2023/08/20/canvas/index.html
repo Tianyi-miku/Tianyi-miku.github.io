@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>canvas基础 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>canvas基础</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/8/20
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/canvas/" style="color: #00bcd4">canvas</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>2D图像</p>
+<pre><code>const canvas = document.getElementById(&quot;id&quot;);
+const ctx = canvas.getContext(&quot;2d&quot;);
+</code></pre>
+<h1 id="绘制"><a href="#绘制" class="headerlink" title="绘制"></a>绘制</h1><p>fillRect(x, y, width, height) 绘制填充矩形<br>strokeRect(x, y, width, height) 矩形边框<br>clearRect(x, y, width, height) 清除指定区域</p>
+<pre><code>  const canvas = document.getElementById(&quot;canvas&quot;);
+  const ctx = canvas.getContext(&quot;2d&quot;);
+
+  ctx.fillRect(25, 25, 100, 100);
+  ctx.clearRect(45, 45, 60, 60);
+  ctx.strokeRect(50, 50, 50, 50);
+</code></pre>
+<p>beginPath() 新建路径<br>closePath() 关闭路径<br>lineTo() 连接<br>moveTo() 移动<br>fill() 填充<br>arc(x, y, radius, startAngle, endAngle, anticlockwise) &#x2F;&#x2F;圆弧<br>quadraticCurveTo(cp1x, cp1y, x, y) &#x2F;&#x2F;贝塞尔弧线</p>
+<pre><code>  const canvas = document.getElementById(&quot;canvas&quot;);
+  const ctx = canvas.getContext(&quot;2d&quot;);
+  ctx.beginPath();
+  ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // 绘制圆 anticlockwise 顺时针或者逆时针
+  ctx.stroke();
+</code></pre>
+<h2 id="color"><a href="#color" class="headerlink" title="color"></a>color</h2><p>填充颜色,项目中有时候会用到colormap 插件</p>
+<pre><code>ctx.fillStyle = &quot;orange&quot;; //具体值或者rgba
+ctx.fillRect(0, 37.5, 150, 37.5);
+
+ var ctx = document.getElementById(&quot;canvas&quot;).getContext(&quot;2d&quot;);
+  for (var i = 0; i &lt; 6; i++) &#123;
+    for (var j = 0; j &lt; 6; j++) &#123;
+      ctx.fillStyle =
+        &quot;rgb(&quot; +
+        Math.floor(255 - 42.5 * i) +
+        &quot;,&quot; +
+        Math.floor(255 - 42.5 * j) +
+        &quot;,0)&quot;;
+      ctx.fillRect(j * 25, i * 25, 25, 25);
+    &#125;
+  &#125;
+</code></pre>
+<p>globalAlpha 设置透明度</p>
+<pre><code>  ctx.globalAlpha = 0.2;
+</code></pre>
+<h1 id="line"><a href="#line" class="headerlink" title="line"></a>line</h1><p>lineWidth &#x2F;&#x2F;线宽度<br>lineCap &#x2F;&#x2F;线头样式 butt，round，square<br>lineJoin &#x2F;&#x2F;线链接样子 round,bevel,miter<br>miterLimit &#x2F;&#x2F;线限制<br>setLineDash &#x2F;&#x2F;虚线<br>Shadows &#x2F;&#x2F;阴影</p>
+<pre><code>ctx.shadowOffsetX = 2;
+ctx.shadowOffsetY = 2;
+ctx.shadowBlur = 2;
+ctx.shadowColor = &quot;rgba(0, 0, 0, 0.5)&quot;;
+</code></pre>
+<p>渐变 Gradients createLinearGradient(x1, y1, x2, y2) createRadialGradient(x1, y1, r1, x2, y2, r2) ….<br>Patterns</p>
+<pre><code>var img = new Image();
+img.src = &quot;someimage.png&quot;;
+var ptrn = ctx.createPattern(img, &quot;repeat&quot;);
+</code></pre>
+<h1 id="Text"><a href="#Text" class="headerlink" title="Text"></a>Text</h1><p>填充</p>
+<pre><code>var ctx = document.getElementById(&quot;canvas&quot;).getContext(&quot;2d&quot;);
+ctx.font = &quot;48px serif&quot;;
+ctx.fillText(&quot;Hello world&quot;, 10, 50);
+</code></pre>
+<h1 id="img"><a href="#img" class="headerlink" title="img"></a>img</h1><pre><code>function draw() &#123;
+  var ctx = document.getElementById(&quot;canvas&quot;).getContext(&quot;2d&quot;);
+  var img = new Image();
+  img.onload = function () &#123;
+    ctx.drawImage(img, 0, 0);
+    ctx.beginPath();
+    ctx.moveTo(30, 96);
+    ctx.lineTo(70, 66);
+    ctx.lineTo(103, 76);
+    ctx.lineTo(170, 15);
+    ctx.stroke();
+  &#125;;
+  img.src = &quot;backdrop.png&quot;;
+&#125;
+</code></pre>
+<h1 id="Transformations"><a href="#Transformations" class="headerlink" title="Transformations"></a>Transformations</h1><p>save restore<br>save 保存当前状态，restore返回上一步状态</p>
+<p>translat 移动 translate(x, y)<br>rotate 旋转 rotate(angle)<br>scale 缩放 scale(x, y)<br>矩阵变换transform(a, b, c, d, e, f)<br>clip 裁剪</p>
+<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><p>步骤 1.清空 canvas  2.保存 canvas 3.绘制动画 4.恢复 canvas 状态</p>
+<p>定时执行setInterval(function, delay),requestAnimationFrame(callback)</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>

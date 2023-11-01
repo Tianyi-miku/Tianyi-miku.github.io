@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>js高级程序设计-迭代器 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>js高级程序设计-迭代器</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2020/5/1
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/js/" style="color: #03a9f4">js</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>JS中最简单的迭代器就是循环</p>
+<pre><code>for (let i = 1; i &lt;= 10; ++i) &#123; 
+ console.log(i); 
+&#125;
+</code></pre>
+<span id="more"></span>
+
+<h2 id="Iterable"><a href="#Iterable" class="headerlink" title="Iterable"></a>Iterable</h2><p>内置Iterable的有 string Array map set arguments DOM 集合等</p>
+<pre><code>let num = 1; 
+let obj = &#123;&#125;; 
+// 这两种类型没有实现迭代器工厂函数
+console.log(num[Symbol.iterator]); // undefined 
+console.log(obj[Symbol.iterator]); // undefined 
+let str = &#39;abc&#39;; 
+let arr = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]; 
+let map = new Map().set(&#39;a&#39;, 1).set(&#39;b&#39;, 2).set(&#39;c&#39;, 3); 
+let set = new Set().add(&#39;a&#39;).add(&#39;b&#39;).add(&#39;c&#39;); 
+let els = document.querySelectorAll(&#39;div&#39;); 
+// 这些类型都实现了迭代器工厂函数
+console.log(str[Symbol.iterator]); // f values() &#123; [native code] &#125; 
+console.log(arr[Symbol.iterator]); // f values() &#123; [native code] &#125; 
+console.log(map[Symbol.iterator]); // f values() &#123; [native code] &#125; 
+console.log(set[Symbol.iterator]); // f values() &#123; [native code] &#125; 
+console.log(els[Symbol.iterator]); // f values() &#123; [native code] &#125;
+</code></pre>
+<p>接受可迭代对象的有,for of,数组解构,扩展操作符,Array.from,创建集合,创建映射,Promise.all Promise.race,yeild*</p>
+<pre><code>let arr = [&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;]; 
+// for-of 循环
+for (let el of arr) &#123; 
+ console.log(el); 
+&#125;
+let [a, b, c] = arr; // 数组解构
+console.log(a, b, c); // foo, bar, baz  // 扩展操作符
+let arr2 = [...arr]; // [&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;] 
+let arr3 = Array.from(arr); // [&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;] 
+let set = new Set(arr); // Set(3) &#123;&#39;foo&#39;, &#39;bar&#39;, &#39;baz&#39;&#125; 
+let pairs = arr.map((x, i) =&gt; [x, i]);  [[&#39;foo&#39;, 0], [&#39;bar&#39;, 1], [&#39;baz&#39;, 2]] 
+let map = new Map(pairs); // Map(3) &#123; &#39;foo&#39;=&gt;0, &#39;bar&#39;=&gt;1, &#39;baz&#39;=&gt;2 &#125;
+</code></pre>
+<h2 id="迭代器协议"><a href="#迭代器协议" class="headerlink" title="迭代器协议"></a>迭代器协议</h2><p>一次性对象,用来关联可迭代对象,调用next()方法返回一个IteratorResult 对象,包含下一个值,其中包含两个属性：done 和 value。done是false或者undefined为耗尽</p>
+<pre><code>let arr = [&#39;foo&#39;, &#39;bar&#39;]; // 可迭代对象
+console.log(arr[Symbol.iterator]); // f values() &#123; [native code] &#125;// 迭代器工厂函数
+let iter = arr[Symbol.iterator](); 
+console.log(iter); // ArrayIterator &#123;&#125;
+// 执行迭代
+console.log(iter.next()); // &#123; done: false, value: &#39;foo&#39; &#125; 
+console.log(iter.next()); // &#123; done: false, value: &#39;bar&#39; &#125; 
+console.log(iter.next()); // &#123; done: true, value: undefined &#125;
+</code></pre>
+<h2 id="自定义迭代器"><a href="#自定义迭代器" class="headerlink" title="自定义迭代器"></a>自定义迭代器</h2><pre><code>class Counter &#123; 
+ constructor(limit) &#123; 
+ this.limit = limit; 
+ &#125; 
+ [Symbol.iterator]() &#123; 
+ let count = 1, 
+ limit = this.limit; 
+ return &#123; 
+ next() &#123; 
+ if (count &lt;= limit) &#123; 
+ return &#123; done: false, value: count++ &#125;; 
+ &#125; else &#123; 
+ return &#123; done: true, value: undefined &#125;; 
+ &#125; 
+ &#125; 
+ &#125;; 
+ &#125; 
+&#125; 
+let counter = new Counter(3);
+for (let i of counter) &#123; console.log(i); &#125; // 1 2 3
+</code></pre>
+<p>提前终止return(),for-of 循环通过 break、continue、return 或 throw 或者解构操作并未消费所有值</p>
+<h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><pre><code>function* generatorFn() &#123;&#125;
+</code></pre>
+<p>调用生成器方法,会产生一个生成器对象,处于暂停执行状态,调用next(),恢复执行 ,通过yield,也可以中断执行</p>
+<pre><code>function* generatorFn() &#123;&#125; 
+let generatorObject = generatorFn(); 
+console.log(generatorObject); // generatorFn &#123;&lt;suspended&gt;&#125; 
+console.log(generatorObject.next()); // &#123; done: true, value: undefined &#125;
+</code></pre>
+<p>总结:</p>
+<p>迭代器是可以以任意对象实现的接口,可以循环获取对象的值 调用next后,返回done与value,done表示后面还有没有更多值访问,next执行下一个</p>
+<p>调用生成器,返回一个生成器对象,yeild可以暂停,next可以恢复,加上*后,可以序列化一系列值</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>

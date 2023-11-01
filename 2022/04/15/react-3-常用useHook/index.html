@@ -1,0 +1,565 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>react常用hook | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>react常用hook</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2022/4/15
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/react/" style="color: #00a596">react</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="react中useState"><a href="#react中useState" class="headerlink" title="react中useState"></a>react中useState</h1><p>重点：函数组件，每次更新的时候都会重新执行函数！</p>
+<p>首先声明一个usestate：</p>
+<span id="more"></span>
+
+<pre><code>import React, &#123; useState &#125; from &#39;react&#39;
+
+
+const Renewal = () =&gt; &#123;
+    const [user, setUser] = useState(&#123;
+        name: &#39;skymiku&#39;,
+        age: 28
+    &#125;)
+
+    function changeUser() &#123;
+        setUser(&#123;
+            ...user,
+            age: user.age + 1
+        &#125;)
+        setUser(&#123;
+            ...user,
+            age: user.age + 1
+        &#125;)
+    &#125;
+    return (
+        &lt;div&gt;
+            &lt;div&gt;姓名： &lt;span&gt;&#123;user.name&#125;&lt;/span&gt;&lt;/div&gt;
+            &lt;div&gt;年龄: &lt;span&gt;&#123;user.age&#125;&lt;/span&gt;&lt;/div&gt;
+            &lt;button onClick=&#123;() =&gt; changeUser()&#125;&gt;改变&lt;/button&gt;
+        &lt;/div&gt;
+    )
+&#125;
+export default Renewal
+</code></pre>
+<p>每次渲染完之后，函数产生一个全新的私有上下文。</p>
+<p>所以，在我们这样多次使用 age+1 的时候，点击一下age永远是29而不是30.</p>
+<p>当然如果我们非要让他执行两次，可以将上一次的执行返回传递给下一次。</p>
+<pre><code>    setUser(val =&gt; &#123;
+            return &#123;
+                ...val,
+                age: val.age + 1
+            &#125;
+        &#125;)
+        setUser(val =&gt; &#123;
+            return &#123;
+                ...val,
+                age: val.age + 1
+            &#125;
+        &#125;)
+</code></pre>
+<h1 id="useState方法大概思路"><a href="#useState方法大概思路" class="headerlink" title="useState方法大概思路"></a>useState方法大概思路</h1><pre><code>let val
+// function usestate(defaultValue) &#123;
+//     if (typeof defaultValue === &#39;undefined&#39;) &#123;
+//         state = defaultValue
+//     &#125;
+//     const setValue = (newValue) =&gt; &#123;
+//         val = newValue
+//         //更新视图
+//     &#125;
+//     return [val, setValue]
+// &#125;
+
+// let [num, setnum] = usestate(0)
+// setnum(100)  //val = 100
+// //组件更新之后再次执行函数
+// let [num1, setnum1] = usestate(0)
+// // num1 这时候是100
+</code></pre>
+<p>这样第一次执行usestate 后，初始值将赋值。当SetValue更新视图之后，再次触发函数的时候，val将不会再次赋值,而是将上次执行的结果,到第二次执行里面,这就实现了页面更新!</p>
+<h1 id="useEffect-使用"><a href="#useEffect-使用" class="headerlink" title="useEffect 使用"></a>useEffect 使用</h1><pre><code>   useEffect(() =&gt; &#123;
+        console.log(user.age);
+        return () =&gt; &#123;
+        &#125;
+    &#125;, [])
+</code></pre>
+<p>当依赖项为空数组的时候,只是第一次渲染时候执行!</p>
+<pre><code>  useEffect(() =&gt; &#123;
+        console.log(user.age);
+        return () =&gt; &#123;
+        &#125;
+    &#125;, [user.age])
+</code></pre>
+<p>当有依赖项的时候,依赖项改变的时候,执行effect函数</p>
+<p>在一个函数组件中,多个useEffect,将会呈链表调用.</p>
+<h1 id="useLayoutEffect-与-useEffect-区别"><a href="#useLayoutEffect-与-useEffect-区别" class="headerlink" title="useLayoutEffect 与 useEffect 区别"></a>useLayoutEffect 与 useEffect 区别</h1><p>useLayoutEffect 在虚拟Dom的时候就执行,还没有渲染真实DOM!</p>
+<p>useEffect 在渲染真实DOM后,组件更新,useEffect 又会渲染真实Dom.</p>
+<p>所以频繁更新渲染的时候,useEffect 可以看出一些闪烁!</p>
+<p>例如:</p>
+<pre><code>import React from &#39;react&#39;
+
+function Myuseeffect() &#123;
+    const [num, setNum] = React.useState(0)
+
+ 
+    // React.useEffect(() =&gt; &#123;
+    //     console.log(&#39;渲染&#39;);
+    //     if (num === 10) &#123;
+    //         setNum(0)
+    //     &#125;
+    // &#125;, [num])
+
+    
+    React.useLayoutEffect(() =&gt; &#123;
+        console.log(&#39;渲染&#39;);
+        if (num === 10) &#123;
+            setNum(0)
+        &#125;
+    &#125;, [num])
+
+    return (
+        &lt;div style=&#123;&#123; backgroundColor: num === 0 ? 'red' : 'green' &#125;&#125;&gt;
+            &lt;button onClick=&#123;() =&gt; setNum(10)&#125;&gt;改变&lt;/button&gt;
+        &lt;/div&gt;
+    )
+&#125;
+
+export default Myuseeffect
+</code></pre>
+<p>useLayoutEffect 真实DOM 渲染一次! 所以并没有闪烁! 而且useLayoutEffect比useEffect 先执行.因为在虚拟DOM那就执行!</p>
+<h1 id="Ref-使用"><a href="#Ref-使用" class="headerlink" title="Ref 使用"></a>Ref 使用</h1><p>通过useRef创建一个Ref对象</p>
+<pre><code>import React, &#123; useRef, useEffect, useState &#125; from &#39;react&#39;
+
+function MyRef() &#123;
+
+    const first = useRef(null)
+    const [num, setNum] = useState(0)
+    useEffect(() =&gt; &#123;
+        console.log(first);
+        return () =&gt; &#123;
+        &#125;
+    &#125;, [])
+
+    return (
+        &lt;div ref=&#123;first&#125;&gt;
+            这是&#123;num&#125;
+        &lt;/div&gt;
+    )
+&#125;
+
+export default MyRef
+</code></pre>
+<p>通过这种方式可以拿到dom元素! 在16中 creatRef 也可以创建Ref对象,但是在其中每次更新的时候,都会重新创建一个新的Ref对象.</p>
+<p>所以在函数组件中,还是是用useRef来获取!</p>
+<h1 id="useRef-搭配-useImperativeHandle-与-React-forwardRef-转发"><a href="#useRef-搭配-useImperativeHandle-与-React-forwardRef-转发" class="headerlink" title="useRef 搭配 useImperativeHandle 与 React.forwardRef 转发"></a>useRef 搭配 useImperativeHandle 与 React.forwardRef 转发</h1><p>在父组件中,声明一个Ref对象, 将ref对象传给子组件 .用React.forwardRef包裹函数子组件,并且 useImperativeHandle 在子组件中 可以自定义返回内容</p>
+<pre><code>import React, &#123; useRef, useEffect, useState, useImperativeHandle &#125; from &#39;react&#39;
+
+const MyRef = () =&gt; &#123;
+    const father = useRef(null)
+    useEffect(() =&gt; &#123;
+        console.log(father.current);
+        return () =&gt; &#123;
+        &#125;
+    &#125;, [])
+
+    return (
+        &lt;div&gt;
+            这是
+            &lt;Childern ref=&#123;father&#125;&gt;&lt;/Childern&gt;
+            &#123;father.current.name&#125;
+        &lt;/div&gt;
+    )
+&#125;
+
+export default MyRef
+
+
+const Childern = React.forwardRef(function Childern(prop, ref) &#123;
+    const [first, setfirst] = useState(1)
+    useImperativeHandle(ref, () =&gt; &#123;
+        return &#123;
+            age: first,
+            name: &#39;Childern&#39;
+        &#125;
+    &#125;)
+    return &lt;&gt;
+        &lt;div&gt;
+            &lt;p&gt;孩子&lt;/p&gt;
+            &lt;span ref=&#123;ref&#125;&gt;&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/&gt;
+
+&#125;) 
+</code></pre>
+<p>这样,子组件用useImperativeHandle,返回的属性就能被父组件Ref获取到!</p>
+<h1 id="usememo-计算缓存"><a href="#usememo-计算缓存" class="headerlink" title="usememo 计算缓存"></a>usememo 计算缓存</h1><p>usememo 是一个优化hook 与vue 中的computed 类似.</p>
+<p>当依赖的数据改变的时候,才会去重新执行useme里面的函数.</p>
+<pre><code>import React, &#123; useMemo, useState &#125; from &#39;react&#39;
+
+const Myusememo = () =&gt; &#123;
+
+    const [num, setnum] = React.useState(0)
+    const [x, setx] = useState(0)
+
+
+    const data = useMemo(() =&gt; &#123;
+        console.log(&#39;执行usememo&#39;);
+        return num + 1
+    &#125;, [num])
+
+
+    return (
+        &lt;div&gt;
+            usememo
+            &lt;div&gt;num:&#123;data&#125;&lt;/div&gt;
+            &lt;div&gt;x:&#123;x&#125;&lt;/div&gt;
+            &lt;button onClick=&#123;() =&gt; setnum(num + 1)&#125;&gt;改变num&lt;/button&gt;
+            &lt;button onClick=&#123;() =&gt; setx(x + 1)&#125;&gt;改变x&lt;/button&gt;
+        &lt;/div&gt;
+    )
+&#125;
+
+export default Myusememo
+</code></pre>
+<p>例子中,执行setx的时候,usememo里面的函数不会再次执行,因为没有添加x的依赖!</p>
+<h1 id="usecallback"><a href="#usecallback" class="headerlink" title="usecallback"></a>usecallback</h1><p>usecallback 包裹的函数,将会缓存起来.下次组件更新的时候,将调用缓存的函数地址.</p>
+<pre><code>import React, &#123; useCallback, useState &#125; from &#39;react&#39;
+
+let prev
+const Myusecallback = () =&gt; &#123;
+
+    const [x, setx] = useState(0)
+
+    const handle = useCallback(() =&gt; &#123;
+        if (!prev) &#123;
+            prev = handle
+        &#125; else &#123;
+            console.log(prev === handle);
+        &#125;
+    &#125;,
+        [],
+    )
+
+    handle()
+
+    return (
+        &lt;div&gt;
+            usecallback
+            &lt;button onClick=&#123;() =&gt; setx(x + 1)&#125;&gt;改变x&lt;/button&gt;
+        &lt;/div&gt;
+    )
+&#125;
+
+export default Myusecallback
+</code></pre>
+<p>像是上面的例子,每次改变X之后,重新渲染组件调用handle.第一次将handle缓存之后,每次的重新执行函数,handle总是第一次缓存的地址!</p>
+<p>通常这种用法: 父组件更新,传给子组件.子组件不需要重新渲染,这时候可以将父组件传给子组件的函数用 usecallback 包裹.子组件用usememo 来判断是否更改.</p>
+<p>但是usecallback也不是所有函数都需要,每次创建的时候也需要耗费时间和内存,所以要根据实际项目来判断是否需要缓存函数.</p>
+<h1 id="useContext-上下文对象"><a href="#useContext-上下文对象" class="headerlink" title="useContext 上下文对象"></a>useContext 上下文对象</h1><p>组件嵌套的时候,通过父组件一层层传递是很麻烦的,这时候可以用useContext来处理.</p>
+<p>在共同要用的地方新建一个context文件</p>
+<p>例如：</p>
+<pre><code>import React from &#39;react&#39;
+const Content = React.createContext()
+export default Content
+</code></pre>
+<p>在父组件中，用provider提供上下文context，value就是要传递给下面子组件用的方法或者属性。</p>
+<pre><code>import React, &#123; useState &#125; from &#39;react&#39;
+import Child from &#39;./childern&#39;
+import Content from &#39;./contex&#39;
+
+const MyContext = () =&gt; &#123;
+    const [first, setfirst] = useState(0)
+    return (
+        &lt;div&gt;
+            useContext
+            &lt;Content.Provider value=&#123;&#123;
+                setfirst,
+                num: first
+            &#125;&#125;&gt;
+                &lt;Child&gt;&lt;/Child&gt;
+            &lt;/Content.Provider&gt;
+
+        &lt;/div&gt;
+
+    )
+&#125;
+export default MyContext
+</code></pre>
+<p>在子组件中导入context并使用</p>
+<pre><code>import React, &#123; useContext, useState &#125; from &#39;react&#39;
+import Content from &#39;./contex&#39;
+
+const Child = () =&gt; &#123;
+    const &#123; setfirst, num &#125; = useContext(Content)
+    return (
+        &lt;div&gt;
+            first:&#123;num&#125;
+            &lt;button onClick=&#123;() =&gt; setfirst(num + 1)&#125;&gt;子&lt;/button&gt;
+        &lt;/div&gt;
+    )
+&#125;
+
+export default Child
+</code></pre>
+<p>这样，就实现了上下文传递.</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>

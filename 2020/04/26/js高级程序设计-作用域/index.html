@@ -1,0 +1,405 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>js高级程序设计-变量,作用域,内存 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>js高级程序设计-变量,作用域,内存</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2020/4/26
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/js/" style="color: #00bcd4">js</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>变量包含两种,初始值与引用值。</p>
+<span id="more"></span>
+
+<p>基本应用类型 string null undefined boolean number Symbol。 引用类型 Object Array Function </p>
+<pre><code>let num1 = 5; 
+let num2 = num1; //复制值,两个不同的内存地址。
+
+let obj1 = new Object(); 
+let obj2 = obj1; 
+obj1.name = &quot;Nicholas&quot;; 
+console.log(obj2.name); // &quot;Nicholas&quot; //引用值,两个指向的同一个内存地址,复制值只是将指针复制。
+</code></pre>
+<p>判断值类型,基本类型用typeOf,复杂用instanceof,由原型链决定</p>
+<pre><code>let s = &quot;Nicholas&quot;; 
+let b = true;
+console.log(typeof s); // string
+console.log(typeof b); // boolean
+
+console.log(person instanceof Object); // 变量 person 是 Object 吗？
+console.log(colors instanceof Array); // 变量 colors 是 Array 吗？
+</code></pre>
+<p>作用域包括局部与全局,在程序中,上下文可以通过作用域链访问外部的属性</p>
+<pre><code>var color = &quot;blue&quot;;  //全局
+function changeColor() &#123; 
+    let Mycolor = &quot;red&quot; //局部
+    console.log(color) //blue
+&#125; 
+</code></pre>
+<h2 id="作用域链增强"><a href="#作用域链增强" class="headerlink" title="作用域链增强"></a>作用域链增强</h2><p>try&#x2F;catch语句中的catch与with</p>
+<pre><code>//catch会创建一个新的变量对象,包含抛出的错误对象的声明
+//with 则指定一个对象作为作用域前端
+
+function buildUrl() &#123; 
+ let qs = &quot;?debug=true&quot;; 
+ with(location)&#123; 
+ let url = href + qs; 
+ &#125; 
+ return url; 
+&#125;
+</code></pre>
+<p>vue中模板编译的时候,就用过with function来更方便取值</p>
+<h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><p>1.标记清理</p>
+<p>指的是变量进入上下文中,变量会加上存在上下文的标记,当离开上下文后,会被加上离开上下文的标记</p>
+<p>垃圾回收的时候,会标记所有变量,然后将所有用到的或者引用的变量标记去掉,此后再加入的都是待删除的,最后内存清理,销毁带标记的值.</p>
+<p>2.引用计数</p>
+<p>声明变量并引用值时候,标记值的引用为1,如果又赋值给另一个变量,标记的引用+1,当引用值被覆盖的时候,标记的引用值-1,直到引用值为0的时候,垃圾回收下次运行的时候将会释放0的内存</p>
+<p>但是因为引用计数存在循环引用,和相互引用导致引用计数永远不为0,所以后来很少用到这个回收</p>
+<p>垃圾回收程序会周期的运行,如果有很多变量,可能造成性能问题</p>
+<h2 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h2><p>将内存维持在一个小的值可以让页面性能更好</p>
+<pre><code>function createPerson(name)&#123; 
+ let localPerson = new Object(); 
+ localPerson.name = name; 
+ return localPerson; 
+&#125; 
+let globalPerson = createPerson(&quot;Nicholas&quot;); 
+// 解除 globalPerson 对值的引用
+globalPerson = null;
+</code></pre>
+<p>设置值为null,可以释放其引用,下次垃圾回收的时候将会被回收</p>
+<p>当然在现代的框架中,大多数时候不需要自己去手动回收,像是Vue,离开页面的时候将自动销毁其引用,下次垃圾回收的时候会被回收</p>
+<p>在代码中,使用let const有助于改进垃圾回收,因为块级作用域通常比全局更早终止</p>
+<h2 id="内存泄漏"><a href="#内存泄漏" class="headerlink" title="内存泄漏"></a>内存泄漏</h2><ol>
+<li>意外的全局变量,挂载在window上,一旦创建将不会被销毁</li>
+</ol>
+<pre><code>function setName() &#123; 
+ name = &#39;Jake&#39;; 
+&#125;
+</code></pre>
+<ol start="2">
+<li>定时器</li>
+</ol>
+<pre><code>let name = &#39;Jake&#39;; 
+setInterval(() =&gt; &#123; 
+ console.log(name);  //包含外部变量,将不会被回收
+&#125;, 100);
+</code></pre>
+<ol start="3">
+<li>闭包</li>
+</ol>
+<pre><code>let outer = function() &#123;  //调用此函数返回一个变量,只要此变量存在,name将一直存在
+ let name = &#39;Jake&#39;; 
+ return function() &#123; 
+ return name; 
+ &#125;; 
+&#125;;
+</code></pre>
+<h2 id="静态分配与对象池"><a href="#静态分配与对象池" class="headerlink" title="静态分配与对象池"></a>静态分配与对象池</h2><p>这一般很少用到,只需要了解即可</p>
+<p>如果创建对象,立马又修改对象再返回调用者,它的生命周期很短,很快失去引用,而且被频繁调用,则会更频繁垃圾回收,比如</p>
+<pre><code>function addVector(a, b) &#123; 
+ let resultant = new Vector(); 
+ resultant.x = a.x + b.x; 
+ resultant.y = a.y + b.y; 
+ return resultant; 
+&#125;
+</code></pre>
+<p>这时候可以修改函数,使用一个已经知道的对象</p>
+<pre><code>function addVector(a, b, resultant) &#123; 
+ resultant.x = a.x + b.x; 
+ resultant.y = a.y + b.y; 
+ return resultant; 
+&#125;
+</code></pre>
+<p>或则伪对象池</p>
+<pre><code>// vectorPool 是已有的对象池 
+let v1 = vectorPool.allocate(); 
+let v2 = vectorPool.allocate(); 
+let v3 = vectorPool.allocate(); 
+v1.x = 10; 
+v1.y = 5; 
+v2.x = -3; 
+v2.y = -6; 
+addVector(v1, v2, v3); 
+console.log([v3.x, v3.y]); // [7, -1] 
+vectorPool.free(v1); 
+vectorPool.free(v2); 
+vectorPool.free(v3); 
+// 如果对象有属性引用了其他对象
+// 则这里也需要把这些属性设置为 null 
+v1 = null; 
+v2 = null; 
+v3 = null;
+</code></pre>
+<p>使用数组维护例子</p>
+<pre><code>let vectorList = new Array(100); 
+let vector = new Vector(); 
+vectorList.push(vector);
+</code></pre>
+<p>总结:</p>
+<p>原始值为6个基本数据类型,String number null undefined symbol boolean</p>
+<p>基本数据类型大小固定,保存在栈中,复制时候将会产生第二个副本</p>
+<p>而对象储存在堆内存中,引用值只是对象的指针,复制的时候,只是复制的指针</p>
+<p>垃圾回收机制是自动运行,离开作用域的值将会标记成可回收,下一次垃圾回收的时候将会删除</p>
+<p>主流的垃圾清理机制是标记清理,给离开作用域的值加上标记,下次回收,计数清理则要记录值被引用多少次,直到引用次数为0的时候才会被回收</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>

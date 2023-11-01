@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>js高级程序设计-对象,类与面向对象 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>js高级程序设计-对象,类与面向对象</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2020/5/2
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/js/" style="color: #00a596">js</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h2 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h2><p>面向对象编程,围绕具体的对象进行可抽象化的描述,还有面向过程,主要是通过过程描述事件</p>
+<span id="more"></span>
+<p>对象</p>
+<pre><code>let person = new Object(); 
+person.name = &quot;skymiku&quot;;
+
+let peson1=&#123;
+    name: &quot;skymiku&quot;
+&#125;
+</code></pre>
+<p>属性</p>
+<p>[[Configurable]] 表示属性是否可以删除</p>
+<p>[[Enumerable]] 表示属性是否可以通过for in循环列举</p>
+<p>[[Writable]] 表示属性是否可以被修改</p>
+<p>[[Value]] 属性的值</p>
+<p>[[Get]]：获取函数</p>
+<p>[[Set]]：设置函数</p>
+<pre><code>Object.definePorperty(person,&quot;name&quot;,&#123;
+     writable: false,
+     value: &#39;skymiku1&#39;
+&#125;)
+
+Object.defineProperty(person, &quot;name&quot;, &#123; 
+ get() &#123; 
+ return this.name; 
+ &#125;, 
+ set(newValue) &#123; 
+ this.name = newValue; 
+ &#125; 
+&#125;);
+//vue2中属性Set get劫持,就是用的这个
+</code></pre>
+<p>Object.getOwnPropertyDescriptors &#x2F;&#x2F;获得属性描述,是否可读,修改</p>
+<h2 id="合并"><a href="#合并" class="headerlink" title="合并"></a>合并</h2><pre><code>dest = &#123;&#125;; 
+src = &#123; a: &#123;&#125; &#125;; 
+Object.assign(dest, src);
+//浅拷贝
+</code></pre>
+<h2 id="解构"><a href="#解构" class="headerlink" title="解构"></a>解构</h2><pre><code>// 使用对象解构
+let person = &#123; 
+ name: &#39;skymiku&#39;, 
+ age: 27 
+&#125;; 
+let &#123; name, age &#125; = person;
+</code></pre>
+<h2 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h2><p>接受参数,返回对象</p>
+<pre><code>function createPerson(name, age, job) &#123; 
+ let o = new Object(); 
+ o.name = name; 
+ o.age = age; 
+ o.job = job; 
+ o.sayName = function() &#123; 
+ console.log(this.name); 
+ &#125;; 
+ return o; 
+&#125;
+</code></pre>
+<h2 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h2><p>没有显式创建函数,内部有this指向,没有retrun</p>
+<pre><code>function Person(name, age, job)&#123; 
+ this.name = name; 
+ this.age = age; 
+ this.job = job; 
+ this.sayName = function() &#123; 
+ console.log(this.name); 
+ &#125;; 
+&#125; 
+let person1 = new Person(&quot;Nicholas&quot;, 29, &quot;Software Engineer&quot;);
+</code></pre>
+<h2 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h2><p>每个函数都有prototype属性,对象中包含所有共享的属性和方法</p>
+<pre><code>function Person() &#123;&#125; 
+Person.prototype.name = &quot;Nicholas&quot;; 
+Person.prototype.age = 29;
+</code></pre>
+<p>只要创建一个函数,就会默认创建一个prototype指向它的原型对象,所有原型对象自动获得一个constructor属性,指回关联的构造函数</p>
+<p>在大多数浏览中,会暴露_proto_属性,访问对象原型</p>
+<pre><code>console.log(Person.prototype.__proto__ === Object.prototype); // true 
+console.log(Person.prototype.__proto__.constructor === Object); // true 
+console.log(Person.prototype.__proto__.__proto__ === null); // true
+</code></pre>
+<h2 id="对象属性"><a href="#对象属性" class="headerlink" title="对象属性"></a>对象属性</h2><p>for-in 循环、Object.keys()、Object.getOwnPropertyNames()、Object.getOwnPropertySymbols() Object.values()和 Object.entries</p>
+<h2 id="原型链"><a href="#原型链" class="headerlink" title="原型链"></a>原型链</h2><p>每个构造函数都有一个原型对象,prototype指向原型对象,原型对象中有一个constructor指回构造函数</p>
+<p>所有引用类型都继承自Object,任意函数默认原型都是Object实例,寻找属性会沿着原型链一值找,直到null</p>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>包括组合继承,寄生式继承,寄生式组合继承,原型继承,extend </p>
+<p>组合继承使用原型链继承原有的方法和属性,又可以让实例有自己的属性</p>
+<p>原型继承</p>
+<pre><code>let person = &#123; 
+ name: &quot;Nicholas&quot;, 
+ friends: [&quot;Shelby&quot;, &quot;Court&quot;, &quot;Van&quot;] 
+&#125;; 
+let anotherPerson = Object.create(person, &#123; 
+ name: &#123; 
+ value: &quot;Greg&quot; 
+ &#125; 
+&#125;); 
+console.log(anotherPerson.name); // &quot;Greg&quot;
+</code></pre>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><p>类是特殊的构造函数,super可以改变内部this指向</p>
+<pre><code>// 类声明
+class Person &#123;&#125;
+</code></pre>
+<p>总结: 继承主要靠原型链<br>     构造函数的原型赋值为另一个类型的实例<br>     对象中的prototype共用</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>
