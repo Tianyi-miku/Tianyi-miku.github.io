@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>canvas瀑布图 | Skymiku</title>
+        <title>pcm音频播放 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -163,14 +163,14 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>canvas瀑布图</h1>
+        <h1>pcm音频播放</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/8/22
+            2023/5/21
         </span>
         
         <span class="category">
@@ -191,7 +191,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/canvas/" style="color: #00a596">canvas</a>
+                <a href="/tags/%E9%9F%B3%E9%A2%91/" style="color: #00bcd4">音频</a>
             </span>
             
         </span>
@@ -199,260 +199,226 @@
     </div>
     
     <div class="content" v-pre>
-        <p><img src="/img/canvas1.gif" alt="Alt text"></p>
+        <h2 id="PCMPlayer"><a href="#PCMPlayer" class="headerlink" title="PCMPlayer"></a>PCMPlayer</h2><p>播放器用的PCMPlayer插件，yarn add pcm-player下载</p>
 <span id="more"></span>
-<p>界面</p>
-<pre><code> &lt;div className=&#39;waterfall&#39;&gt;
-      &lt;canvas className=&#39;legend&#39; ref=&#123;Ilegend&#125;&gt;&lt;/canvas&gt;
-      &lt;canvas className=&#39;canvas&#39; ref=&#123;waterFall&#125;&gt;&lt;/canvas&gt;
-  &lt;/div&gt;
+<pre><code>let player: any = new PCMPlayer(&#123;
+  inputCodec: &#39;Int16&#39;,
+  channels: 1,
+  sampleRate: 22050,
+  flushTime: 2000,
+&#125;)
 </code></pre>
-<p>全局变量</p>
-<pre><code>let getCtx: any = null;
-let waterFallWidth = 0
-let waterFallHeight = 0
-let waterFallCopyList: any = []
-let waterFallIndex = 0
+<p>音频展示的在网上搜了一个recorder-core wavesurfer用，这里随便用哪个都可以</p>
+<pre><code>   &lt;div id=&#39;wave_audio&#39; className=&#39;recwave&#39; style=&#123;&#123; height: '100px', width: '100%' &#125;&#125;&gt;
+    &lt;/div&gt;
 </code></pre>
-<p>颜色用colormap插件生成</p>
-<pre><code>  let Icolormap = colormap(&#123;
-    colormap: &#39;portland&#39;,
-    nshades: 150,
-    format: &#39;rba&#39;,
-    alpha: 1,
-  &#125;)
+<pre><code>let set: any = &#123;
+  elem: &quot;#wave_audio&quot;,
+  scale: 2, //缩放系数，应为正整数，使用2(3? no!)倍宽高进行绘制，避免移动端绘制模糊
+  fps: 50, //绘制帧率，不可过高，50-60fps运动性质动画明显会流畅舒适，实际显示帧率达不到这个值也并无太大影响
+  duration: 2500, //当前视图窗口内最大绘制的波形的持续时间，此处决定了移动速率
+  direction: 1, //波形前进方向，取值：1由左往右，-1由右往左
+  position: 0, //绘制位置，取值-1到1，-1为最底下，0为中间，1为最顶上，小数为百分比
+  // centerHeight: 0, //中线基础粗细，如果为0不绘制中线，position=±1时应当设为0
+  //波形颜色配置：[位置，css颜色，...] 位置: 取值0.0-1.0之间
+  keep: true,
+  centerHeight: 1,
+  linear: [
+    0,
+    &quot;rgba(14, 224, 238, 1)&quot;,
+    0.7,
+    &quot;rgba(255, 215, 0, 1)&quot;,
+    1,
+    &quot;rgba(255, 102, 0, 1)&quot;
+  ],
+  centerColor: &quot;#ddd5e9&quot; //中线css颜色，留空取波形第一个渐变颜色
+&#125;;
+  wave = Recorder.WaveSurferView(set);
 </code></pre>
-<p>左边柱状图</p>
-<pre><code>const Ilegend = useRef(null);
-
-function createLegendCanvas() &#123;
-    const legendRefs: any = Ilegend.current;
-    const legend = legendRefs.getContext(&#39;2d&#39;)
-    let legendCanvas = document.createElement(&#39;canvas&#39;)
-    legendCanvas.width = 1
-    let legendCanvasTemporary: any = legendCanvas.getContext(&#39;2d&#39;)
-    const imageData = legendCanvasTemporary.createImageData(1, Icolormap.length)
-    for (let i = 0; i &lt; Icolormap.length; i++) &#123;
-      const color = Icolormap[i]
-      imageData.data[imageData.data.length - i * 4 + 0] = color[0]
-      imageData.data[imageData.data.length - i * 4 + 1] = color[1]
-      imageData.data[imageData.data.length - i * 4 + 2] = color[2]
-      imageData.data[imageData.data.length - i * 4 + 3] = 255
+<p>数据来的时候是base64，要播放必须转成pcm音频格式</p>
+<pre><code> let bas = _base64ToArrayBuffer(prop.AudioData)
+ let arrayBuffer = addWavHeader(bas, 22050, 16, 1) //增加缺省
+ const dataAudio = new Uint8Array(arrayBuffer)
+ player &amp;&amp; player.feed(dataAudio) // 播放声音
+</code></pre>
+<pre><code>  function _base64ToArrayBuffer(base64: string) &#123;
+    if (!base64) &#123;
+      return
     &#125;
-    legendCanvasTemporary.putImageData(imageData, 0, 0)
-    legend.drawImage(legendCanvasTemporary.canvas,
-      0, 0, 1, Icolormap.length, 50, 0, 200, legend.canvas.height)
+    let binary_string = window.atob(base64);//解码使用base64编码的字符串
+    let len = binary_string.length;            //获取长度
+    let bytes = new Uint8Array(len);
+    for (let i = 0; i &lt; len; i++) &#123;
+      bytes[i] = binary_string.charCodeAt(i);
+    &#125;
+    return bytes.buffer;
   &#125;
 </code></pre>
-<p>频谱图做法是为颜色对应数值，数组进栈头部出栈，canvas清除</p>
-<pre><code>  function queryChartList() &#123;
-    if (prop.WaterfallData &amp;&amp; prop.WaterfallData.length) &#123;
-      let data: any[] = prop.WaterfallData.map((item: number) =&gt; &#123; return item / 10 &#125;)
-      //@ts-expect-error
-      waterFallWidth = waterFall.current?.width
-      waterFallHeight = 60 //默认
-      if (waterFall === null) &#123;
-        createWaterFallCanvas()
-      &#125;
-      rowToImageData(data)
-      waterFallCopyList.unshift(data)
-      waterFallIndex++
-      if (waterFallIndex &gt; waterFallHeight) &#123;
-        waterFallCopyList.pop()
-      &#125;
+<pre><code>const addWavHeader = (samples: any, sampleRateTmp: any, sampleBits: any, channelCount: any) =&gt; &#123;
+  var dataLength = samples.byteLength;
+  var buffer = new ArrayBuffer(44 + dataLength);
+  var view = new DataView(buffer);
+  function writeString(view: any, offset: any, string: any) &#123;
+    for (var i = 0; i &lt; string.length; i++) &#123;
+      view.setUint8(offset + i, string.charCodeAt(i));
     &#125;
   &#125;
-
-  function createWaterFallCanvas() &#123;
-    const canvasDimensions: any = waterFall.current;
-    getCtx = canvasDimensions?.getContext(&quot;2d&quot;);
-    getCtx.canvas.width = getCtx.canvas?.offsetWidth
-  &#125;
-
-
-    function rowToImageData(data: any[]) &#123;
-    if (getCtx) &#123;
-      const canvasWidth = getCtx.canvas.offsetWidth;
-      const scale = data.length / canvasWidth;
-      let canvasHeight = Math.floor(getCtx.canvas.offsetHeight / waterFallHeight);
-      let imgOld = getCtx.getImageData(0, 0, waterFallWidth, canvasHeight * waterFallIndex + 1);
-
-      const imageData = getCtx.createImageData(canvasWidth, 1);
-      for (let i = 0; i &lt; imageData.data.length; i += 4) &#123;
-        const index = Math.floor(i / 4 * scale);
-        const cindex = colorMapData(data[index], 0, 80);
-        const color = Icolormap[cindex];
-        imageData.data[i + 0] = color[0];
-        imageData.data[i + 1] = color[1];
-        imageData.data[i + 2] = color[2];
-        imageData.data[i + 3] = 255;
-      &#125;
-      for (let i = 0; i &lt; canvasHeight; i++) &#123;
-        getCtx.putImageData(imageData, 0, i);
-      &#125;
-      if (isClean) &#123;
-        getCtx.clearRect(0, 0, getCtx.canvas.width, getCtx.canvas.height);
-        setIsClean(false);
-      &#125; else &#123;
-        getCtx.putImageData(imgOld, 0, canvasHeight);
-      &#125;
+  var offset = 0;
+  /* 资源交换文件标识符 */
+  writeString(view, offset, &#39;RIFF&#39;); offset += 4;
+  /* 下个地址开始到文件尾总字节数,即文件大小-8 */
+  view.setUint32(offset, /*32*/ 36 + dataLength, true); offset += 4;
+  /* WAV文件标志 */
+  writeString(view, offset, &#39;WAVE&#39;); offset += 4;
+  /* 波形格式标志 */
+  writeString(view, offset, &#39;fmt &#39;); offset += 4;
+  /* 过滤字节,一般为 0x10 = 16 */
+  view.setUint32(offset, 16, true); offset += 4;
+  /* 格式类别 (PCM形式采样数据) */
+  view.setUint16(offset, 1, true); offset += 2;
+  /* 通道数 */
+  view.setUint16(offset, channelCount, true); offset += 2;
+  /* 采样率,每秒样本数,表示每个通道的播放速度 */
+  view.setUint32(offset, sampleRateTmp, true); offset += 4;
+  /* 波形数据传输率 (每秒平均字节数) 通道数×每秒数据位数×每样本数据位/8 */
+  view.setUint32(offset, sampleRateTmp * channelCount * (sampleBits / 8), true); offset += 4;
+  /* 快数据调整数 采样一次占用字节数 通道数×每样本的数据位数/8 */
+  view.setUint16(offset, channelCount * (sampleBits / 8), true); offset += 2;
+  /* 每样本数据位数 */
+  view.setUint16(offset, sampleBits, true); offset += 2;
+  /* 数据标识符 */
+  writeString(view, offset, &#39;data&#39;); offset += 4;
+  /* 采样数据总数,即数据总大小-44 */
+  view.setUint32(offset, dataLength, true); offset += 4;
+  function floatTo32BitPCM(output: any, offset: any, input: any) &#123;
+    input = new Int32Array(input);
+    for (var i = 0; i &lt; input.length; i++, offset += 4) &#123;
+      output.setInt32(offset, input[i], true);
     &#125;
   &#125;
+  function floatTo16BitPCM(output: any, offset: any, input: any) &#123;
+    input = new Int16Array(input);
+    for (var i = 0; i &lt; input.length; i++, offset += 2) &#123;
+      output.setInt16(offset, input[i], true);
+    &#125;
+  &#125;
+  function floatTo8BitPCM(output: any, offset: any, input: any) &#123;
+    input = new Int8Array(input);
+    for (var i = 0; i &lt; input.length; i++, offset++) &#123;
+      output.setInt8(offset, input[i], true);
+    &#125;
+  &#125;
+  if (sampleBits === 16) &#123;
+    floatTo16BitPCM(view, 44, samples);
+  &#125; else if (sampleBits === 8) &#123;
+    floatTo8BitPCM(view, 44, samples);
+  &#125; else &#123;
+    floatTo32BitPCM(view, 44, samples);
+  &#125;
+  return view.buffer;
+&#125;
+
+export default addWavHeader
 </code></pre>
-<p>全部代码</p>
-<pre><code>import React, &#123; useEffect, useMemo, useRef, useState &#125; from &#39;react&#39;
-import colormap from &#39;colormap&#39;
-import &quot;./waterfall.less&quot;
+<p>完整代码</p>
+<pre><code>import React, &#123; useEffect &#125; from &#39;react&#39;
+import PCMPlayer from &quot;pcm-player&quot;
+import Recorder from &#39;recorder-core&#39;
+import addWavHeader from &#39;./pcm&#39;
+import &#39;recorder-core/src/engine/wav&#39;
+// import &#39;recorder-core/src/extensions/waveview&#39;
+//需要使用到的音频格式编码引擎的js文件统统加载进来
+//可选的扩展支持项
+import &quot;recorder-core/src/extensions/wavesurfer.view&quot;;
 
-let getCtx: any = null;
-let waterFallWidth = 0
-let waterFallHeight = 0
-let waterFallCopyList: any = []
-let waterFallIndex = 0
+export enum playType &#123;
+  paused,//暂停
+  start, //开始
+  end, //传输完毕
+  resume //重新开始
+&#125;
+let wave: any
+//@ts-ignore
+let player: any = new PCMPlayer(&#123;
+  inputCodec: &#39;Int16&#39;,
+  channels: 1,
+  sampleRate: 22050,
+  flushTime: 2000,
+&#125;)
+let set: any = &#123;
+  elem: &quot;#wave_audio&quot;,
 
-const Waterfall = (prop: any) =&gt; &#123;
-  let waterFall = useRef(null);
-  const Ilegend = useRef(null);
-  let maxNum = 10
-  let minNum = 0
-  const [isClean, setIsClean] = useState(false)
-
-
-  let Icolormap = colormap(&#123;
-    colormap: &#39;portland&#39;,
-    nshades: 150,
-    format: &#39;rba&#39;,
-    alpha: 1,
-  &#125;)
+  scale: 2, //缩放系数，应为正整数，使用2(3? no!)倍宽高进行绘制，避免移动端绘制模糊
+  fps: 50, //绘制帧率，不可过高，50-60fps运动性质动画明显会流畅舒适，实际显示帧率达不到这个值也并无太大影响
+  duration: 2500, //当前视图窗口内最大绘制的波形的持续时间，此处决定了移动速率
+  direction: 1, //波形前进方向，取值：1由左往右，-1由右往左
+  position: 0, //绘制位置，取值-1到1，-1为最底下，0为中间，1为最顶上，小数为百分比
+  // centerHeight: 0, //中线基础粗细，如果为0不绘制中线，position=±1时应当设为0
+  //波形颜色配置：[位置，css颜色，...] 位置: 取值0.0-1.0之间
+  keep: true,
+  centerHeight: 1,
+  linear: [
+    0,
+    &quot;rgba(14, 224, 238, 1)&quot;,
+    0.7,
+    &quot;rgba(255, 215, 0, 1)&quot;,
+    1,
+    &quot;rgba(255, 102, 0, 1)&quot;
+  ],
+  centerColor: &quot;#ddd5e9&quot; //中线css颜色，留空取波形第一个渐变颜色
+&#125;;
+const IAudio = (prop: any) =&gt; &#123;
+  const &#123; isOnlyAudio &#125; = prop
 
   useEffect(() =&gt; &#123;
-    createLegendCanvas()
-    createWaterFallCanvas()
-    return () =&gt; &#123;
-    &#125;
-    // eslint-disable-next-line
-  &#125;, [])
-
-  useEffect(() =&gt; &#123;
-    setIsClean(true)
-    return () =&gt; &#123;
-    &#125;
-  &#125;, [prop.zoom])
-
-
-  useEffect(() =&gt; &#123;
-    if (prop.WaterfallData) &#123;
-      queryChartList()
-    &#125;
-    return () =&gt; &#123;
-    &#125;
-    // eslint-disable-next-line
-  &#125;, [prop.WaterfallData])
-
-  useEffect(() =&gt; &#123;
-    if (prop.clean) &#123;
-      getCtx.clearRect(0, 0, getCtx.canvas.width, getCtx.canvas.height)
-    &#125;
+    wave = Recorder.WaveSurferView(set);
     return () =&gt; &#123;
     &#125;
   &#125;, [prop.clean])
 
-
-  function createLegendCanvas() &#123;
-    const legendRefs: any = Ilegend.current;
-    const legend = legendRefs.getContext(&#39;2d&#39;)
-    let legendCanvas = document.createElement(&#39;canvas&#39;)
-    legendCanvas.width = 1
-    let legendCanvasTemporary: any = legendCanvas.getContext(&#39;2d&#39;)
-    const imageData = legendCanvasTemporary.createImageData(1, Icolormap.length)
-    for (let i = 0; i &lt; Icolormap.length; i++) &#123;
-      const color = Icolormap[i]
-      imageData.data[imageData.data.length - i * 4 + 0] = color[0]
-      imageData.data[imageData.data.length - i * 4 + 1] = color[1]
-      imageData.data[imageData.data.length - i * 4 + 2] = color[2]
-      imageData.data[imageData.data.length - i * 4 + 3] = 255
-    &#125;
-    legendCanvasTemporary.putImageData(imageData, 0, 0)
-    legend.drawImage(legendCanvasTemporary.canvas,
-      0, 0, 1, Icolormap.length, 50, 0, 200, legend.canvas.height)
-  &#125;
-
-
-  function createWaterFallCanvas() &#123;
-    const canvasDimensions: any = waterFall.current;
-    getCtx = canvasDimensions?.getContext(&quot;2d&quot;);
-    getCtx.canvas.width = getCtx.canvas?.offsetWidth
-  &#125;
-
-
-  //单行图像
-  function rowToImageData(data: any[]) &#123;
-    if (getCtx) &#123;
-      const canvasWidth = getCtx.canvas.offsetWidth;
-      const scale = data.length / canvasWidth;
-      let canvasHeight = Math.floor(getCtx.canvas.offsetHeight / waterFallHeight);
-      let imgOld = getCtx.getImageData(0, 0, waterFallWidth, canvasHeight * waterFallIndex + 1);
-
-      const imageData = getCtx.createImageData(canvasWidth, 1);
-      for (let i = 0; i &lt; imageData.data.length; i += 4) &#123;
-        const index = Math.floor(i / 4 * scale);
-        const cindex = colorMapData(data[index], 0, 80);
-        const color = Icolormap[cindex];
-        imageData.data[i + 0] = color[0];
-        imageData.data[i + 1] = color[1];
-        imageData.data[i + 2] = color[2];
-        imageData.data[i + 3] = 255;
-      &#125;
-      for (let i = 0; i &lt; canvasHeight; i++) &#123;
-        getCtx.putImageData(imageData, 0, i);
-      &#125;
-      if (isClean) &#123;
-        getCtx.clearRect(0, 0, getCtx.canvas.width, getCtx.canvas.height);
-        setIsClean(false);
+  useEffect(() =&gt; &#123;
+    if (prop.AudioData) &#123;
+      if (prop.playType === playType.start) &#123;
+        player.continue()
       &#125; else &#123;
-        getCtx.putImageData(imgOld, 0, canvasHeight);
+        player.pause()
+      &#125;
+      let bas = _base64ToArrayBuffer(prop.AudioData)
+      let arrayBuffer = addWavHeader(bas, 22050, 16, 1)
+      const dataAudio = new Uint8Array(arrayBuffer)
+      player &amp;&amp; player.feed(dataAudio) // 播放声音
+      if (!isOnlyAudio) &#123;
+        const data = new Uint16Array(arrayBuffer)
+        wave &amp;&amp; wave.input(data, 20, 22050) // 添加波形数据
       &#125;
     &#125;
-  &#125;
 
-
-  //返回对于颜色库
-  function colorMapData(data: number, outMin: number, outMax: number) &#123;
-    if (data &lt;= minNum) &#123;
-      return outMin
-    &#125; else if (data &gt;= maxNum) &#123;
-      return outMax
+    return () =&gt; &#123;
+      player.pause()
     &#125;
-    return Math.round(((data - minNum) / (maxNum - minNum)) * outMax)
-  &#125;
+    // eslint-disable-next-line
+  &#125;, [prop.AudioData])
 
-  function queryChartList() &#123;
-    if (prop.WaterfallData &amp;&amp; prop.WaterfallData.length) &#123;
-      let data: any[] = prop.WaterfallData.map((item: number) =&gt; &#123; return item / 10 &#125;)
-      //@ts-expect-error
-      waterFallWidth = waterFall.current?.width
-      waterFallHeight = 60 //默认
-      if (waterFall === null) &#123;
-        createWaterFallCanvas()
-      &#125;
-      rowToImageData(data)
-      waterFallCopyList.unshift(data)
-      waterFallIndex++
-      if (waterFallIndex &gt; waterFallHeight) &#123;
-        waterFallCopyList.pop()
-      &#125;
+
+  function _base64ToArrayBuffer(base64: string) &#123;
+    if (!base64) &#123;
+      return
     &#125;
+    let binary_string = window.atob(base64);//解码使用base64编码的字符串
+    let len = binary_string.length;            //获取长度
+    let bytes = new Uint8Array(len);
+    for (let i = 0; i &lt; len; i++) &#123;
+      bytes[i] = binary_string.charCodeAt(i);
+    &#125;
+    return bytes.buffer;
   &#125;
 
   return (
-    &lt;div className=&#39;waterfall&#39;&gt;
-      &lt;canvas className=&#39;legend&#39; ref=&#123;Ilegend&#125;&gt;&lt;/canvas&gt;
-      &lt;canvas className=&#39;canvas&#39; ref=&#123;waterFall&#125;&gt;&lt;/canvas&gt;
+    &lt;div id=&#39;wave_audio&#39; className=&#39;recwave&#39; style=&#123;&#123; height: '100px', width: '100%' &#125;&#125;&gt;
     &lt;/div&gt;
   )
 &#125;
-
-export default Waterfall
+export default IAudio
 </code></pre>
 
     </div>

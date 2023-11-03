@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>vue3渲染优化 | Skymiku</title>
+        <title>vue3优化 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -163,7 +163,7 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>vue3渲染优化</h1>
+        <h1>vue3优化</h1>
     </div>
     <div class="info">
         <span class="date">
@@ -191,12 +191,12 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue3/" style="color: #03a9f4">vue3</a>
+                <a href="/tags/vue3/" style="color: #ffa2c4">vue3</a>
             </span>
             
             <span class="tag">
                 
-                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #00bcd4">源码</a>
+                <a href="/tags/%E6%BA%90%E7%A0%81/" style="color: #03a9f4">源码</a>
             </span>
             
         </span>
@@ -204,10 +204,20 @@
     </div>
     
     <div class="content" v-pre>
-        <h2 id="render升级"><a href="#render升级" class="headerlink" title="render升级"></a>render升级</h2><p>在vue2中，知道了是将template模板转换为ast树。然后通过with function 生成render函数，最后转换为真实dom。</p>
+        <h2 id="多根节点"><a href="#多根节点" class="headerlink" title="多根节点"></a>多根节点</h2><p>Vue3 支持多个根节点，也就是 fragment</p>
 <span id="more"></span>
-<p>在vue3中，同样是这样的流程，但是做了许多优化。</p>
-<h2 id="静态标记"><a href="#静态标记" class="headerlink" title="静态标记"></a>静态标记</h2><p>vue2与vue3 同样对静态节点进行了表记，保证了diff算法中不会去替换更新静态节点。</p>
+<pre><code>&lt;template&gt;
+  &lt;header&gt;&lt;/header&gt;
+  &lt;main&gt;&lt;/main&gt;
+  &lt;footer&gt;&lt;/footer&gt;
+&lt;/template&gt;
+</code></pre>
+<h2 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h2><p>这个就不多说,组合式Api</p>
+<h2 id="Suspense"><a href="#Suspense" class="headerlink" title="Suspense"></a>Suspense</h2><p>渲染前展示的内容,于react中的差不多</p>
+<h1 id="Teleport"><a href="#Teleport" class="headerlink" title="Teleport"></a>Teleport</h1><p>用的不多,只是一个DOM移动到外层</p>
+<h2 id="静态标记"><a href="#静态标记" class="headerlink" title="静态标记"></a>静态标记</h2><p>vue3对静态节点进行了表记，保证了diff算法中不会去替换更新静态节点。</p>
+<h2 id="cacheHandler"><a href="#cacheHandler" class="headerlink" title="cacheHandler"></a>cacheHandler</h2><p>事件缓存,不用每次去新建函数</p>
+<h2 id="打包"><a href="#打包" class="headerlink" title="打包"></a>打包</h2><p>Tree-shaking模块化打包,vue3源码中大多数文件夹都是一个模块 </p>
 
     </div>
     
