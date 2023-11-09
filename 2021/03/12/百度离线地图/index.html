@@ -191,7 +191,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/baidumap/" style="color: #03a9f4">baidumap</a>
+                <a href="/tags/baidumap/" style="color: #00a596">baidumap</a>
             </span>
             
         </span>
@@ -200,15 +200,19 @@
     
     <div class="content" v-pre>
         <h1 id="baiduOfflineMap"><a href="#baiduOfflineMap" class="headerlink" title="baiduOfflineMap"></a>baiduOfflineMap</h1><p>百度离线地图</p>
-<h1 id="在项目中使用"><a href="#在项目中使用" class="headerlink" title="在项目中使用"></a>在项目中使用</h1><p>将文件夹复制到项目中 <a target="_blank" rel="noopener" href="https://github.com/Tianyi-miku/baiduOfflineMap">文件地址</a></p>
-<span id="more"></span>
-
+<h1 id="在项目中使用"><a href="#在项目中使用" class="headerlink" title="在项目中使用"></a>在项目中使用</h1><p>将文件夹复制到项目中</p>
+<p>第一种：</p>
 <pre><code>  &lt;script type=&quot;text/javascript&quot; src=&quot;./map/webgl.js&quot;&gt;&lt;/script&gt;
   &lt;link type=&quot;text/css&quot; rel=&quot;stylesheet&quot; href=&quot;./map/bmap.css&quot;&gt;
 </code></pre>
 <p>将map中的webgl.js 与 bmap.css 引入项目html</p>
 <h1 id="pvd"><a href="#pvd" class="headerlink" title="pvd"></a>pvd</h1><p>瓦片地址放置位置，这里是矢量地图，可以在网上下载所需要的地图，放入其中。</p>
 <h1 id="custom"><a href="#custom" class="headerlink" title="custom"></a>custom</h1><p>mapstyle 地图样式自定义。</p>
+<p>第二种比较全面：</p>
+<pre><code>  &lt;script src=&quot;/offlinemap/map_load.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;/offlinemap/customstyle/stylejson.js&quot;&gt;&lt;/script&gt; 
+</code></pre>
+<p>具体配置查看[链接]<a target="_blank" rel="noopener" href="http://www.wmksj.com/">http://www.wmksj.com</a></p>
 <h1 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h1><p>一般使用nginx代理。将项目中的nginx目录下html文件夹中新建一个baidumap，将map文件夹放进去。</p>
 <pre><code> proxy: &#123; 
   &quot;/map&quot;: &#123;
