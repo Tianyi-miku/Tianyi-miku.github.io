@@ -1,0 +1,545 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>做一个高级的echarts图表 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>做一个高级的echarts图表</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/11/15
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                业务
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/echarts/" style="color: #00bcd4">echarts</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>做一个不同于官网基础的大屏可视化echarts,用到extendShape<br><img src="/img/echarts1.png" alt="Alt text"></p>
+<span id="more"></span>
+<p>用到的api shape class。<a target="_blank" rel="noopener" href="https://ecomfe.github.io/zrender-doc/public/api.html#zrender-api">zrender</a></p>
+<pre><code>(
+    opts: Object
+) =&gt; zrender.graphic.Path
+</code></pre>
+<p>页面</p>
+<pre><code>&lt;div id=&#123;props.keys || &quot;column&quot;&#125; style=&#123;&#123; height: "100%" &#125;&#125;&gt;&lt;/div&gt;
+</code></pre>
+<p>创建Echarts</p>
+<pre><code>const chartDom = document.getElementById(props.keys || &quot;column&quot;) as HTMLElement;
+let myChart = echarts.getInstanceByDom(chartDom);
+if (!myChart) // 如果不存在则创建
+&#123;
+  myChart = echarts.init(chartDom);
+&#125;
+</code></pre>
+<p>自定义柱状图上下环</p>
+<pre><code>      let isAuto = false;
+      if (lables.length &gt; 10) &#123;
+        isAuto = true;
+      &#125;
+      let width = (chartDom.clientWidth - 90) / values.length / 3;
+      const CubeLeft = echarts.graphic.extendShape(&#123;
+        shape: &#123;
+          x: 0,
+          y: 0,
+        &#125;,
+        buildPath: function (ctx, shape) &#123;
+          const xAxisPoint = shape.xAxisPoint;
+          const c0 = [shape.x, shape.y];
+          const c1 = isAuto
+            ? [shape.x - width, shape.y - 4]
+            : [shape.x - 20, shape.y - 4];
+          const c2 = isAuto
+            ? [xAxisPoint[0] - width, xAxisPoint[1] - 4]
+            : [xAxisPoint[0] - 20, xAxisPoint[1] - 4];
+          const c3 = [xAxisPoint[0], xAxisPoint[1]];
+          (ctx as CanvasRenderingContext2D | any)
+            .moveTo(c0[0], c0[1])
+            .lineTo(c1[0], c1[1])
+            .lineTo(c2[0], c2[1])
+            .lineTo(c3[0], c3[1])
+            .closePath();
+        &#125;,
+      &#125;);
+      const CubeRight = echarts.graphic.extendShape(&#123;
+        shape: &#123;
+          x: 0,
+          y: 0,
+        &#125;,
+        buildPath: function (ctx, shape) &#123;
+          const xAxisPoint = shape.xAxisPoint;
+          const c1 = [shape.x, shape.y];
+          const c2 = isAuto
+            ? [shape.x + width, shape.y - 4]
+            : [shape.x + 20, shape.y - 4];
+          const c3 = isAuto
+            ? [xAxisPoint[0] + width, xAxisPoint[1] - 4]
+            : [xAxisPoint[0] + 20, xAxisPoint[1] - 4];
+          const c4 = [xAxisPoint[0], xAxisPoint[1]];
+          (ctx as CanvasRenderingContext2D | any)
+            .moveTo(c1[0], c1[1])
+            .lineTo(c2[0], c2[1])
+            .lineTo(c3[0], c3[1])
+            .lineTo(c4[0], c4[1])
+            .closePath();
+        &#125;,
+      &#125;);
+      const CubeTop = echarts.graphic.extendShape(&#123;
+        shape: &#123;
+          x: 0,
+          y: 0,
+        &#125;,
+        buildPath: function (ctx, shape) &#123;
+          const c1 = [shape.x, shape.y + 4];
+          const c2 = isAuto
+            ? [shape.x + width, shape.y - 4]
+            : [shape.x + 20, shape.y - 4];
+          const c3 = [shape.x, shape.y - 13];
+          const c4 = isAuto
+            ? [shape.x - width, shape.y - 4]
+            : [shape.x - 20, shape.y - 4];
+          (ctx as CanvasRenderingContext2D | any)
+            .moveTo(c1[0], c1[1])
+            .lineTo(c2[0], c2[1])
+            .lineTo(c3[0], c3[1])
+            .lineTo(c4[0], c4[1])
+            .closePath();
+        &#125;,
+      &#125;);
+      echarts.graphic.registerShape(&quot;CubeLeft&quot;, CubeLeft);
+      echarts.graphic.registerShape(&quot;CubeRight&quot;, CubeRight);
+      echarts.graphic.registerShape(&quot;CubeTop&quot;, CubeTop);
+</code></pre>
+<p>设置option</p>
+<pre><code>  const option = &#123;
+        backgroundColor: &#39;#0C2849&#39;,
+        grid: &#123;
+          top: &#39;5%&#39;,
+          left: &#39;2%&#39;,
+          bottom: &#39;5%&#39;,
+          right: &#39;5%&#39;,
+          containLabel: true,
+        &#125;,
+        tooltip: &#123;
+          trigger: &#39;item&#39;,
+          show: true,
+          padding: 1,
+          formatter: function (param: any) &#123;
+            return &quot;&lt;div style=&#39;background:#222853;color:#fff;border:1px solid rgba(255,255,255,.2);padding:5px;border-radius:3px;&#39;&gt;&quot; +
+              &quot;&lt;div style=&#39;padding-top:5px;&#39;&gt;&quot; +
+              &quot;&lt;span style=&#39;&#39;&gt; &quot; + param.name + &quot;: &lt;/span&gt;&quot; +
+              // &quot;&lt;span style=&#39;&#39;&gt;&quot; + param.value + &quot;&lt;/span&gt;&lt;span&gt;&quot; + `$&#123;props.keys ===1?&#39;分&#39;:&#39;%&#39;&#125;`+&quot;&lt;/span&gt;&quot; +
+              &quot;&lt;span style=&#39;&#39;&gt;&quot; + param.value + (props.keys === 1 ? &#39;分&#39; : &#39;%&#39;) +
+              &quot;&lt;/div&gt;&quot; +
+              &quot;&lt;/div&gt;&quot;
+          &#125;
+        &#125;,
+        animation: true,
+        xAxis: [
+          &#123;
+            data: lables,
+            axisLabel: &#123;
+              textStyle: &#123;
+                color: &#39;#aaaaaa&#39;,
+                fontSize: 14
+              &#125;,
+              margin: 30, //刻度标签与轴线之间的距离。
+            &#125;,
+
+            axisLine: &#123;
+              show: false //不显示x轴
+            &#125;,
+            axisTick: &#123;
+              alignWithLabel: true //不显示刻度
+            &#125;,
+            boundaryGap: true,
+            splitLine: &#123;
+              show: false,
+              width: 0.08,
+              lineStyle: &#123;
+                type: &quot;solid&quot;,
+                color: &quot;#03202E&quot;
+              &#125;
+            &#125;
+          &#125;
+        ],
+        yAxis: [
+          &#123;
+            splitLine: &#123;
+              show: true,
+              lineStyle: &#123;
+                color: &#39;#14375E&#39;,
+                type: &#39;solid&#39;
+              &#125;
+            &#125;,
+            axisTick: &#123;
+              show: false
+            &#125;,
+            axisLine: &#123;
+              show: false
+            &#125;,
+            axisLabel: &#123;
+              textStyle: &#123;
+                color: &#39;#888&#39;
+              &#125;,
+            &#125;,
+            max: 100,
+            min: 0,
+            interval: 20,
+          &#125;,
+        ],
+        series: [
+          &#123;
+            name: &#39;&#39;,
+            type: &#39;pictorialBar&#39;,
+            symbolSize: [40, 10],
+            symbolOffset: [0, -6], // 上部椭圆
+            symbolPosition: &#39;end&#39;,
+            z: 12,
+            // &quot;barWidth&quot;: &quot;0&quot;,
+            label: &#123;
+              normal: &#123;
+                show: true,
+                position: &#39;top&#39;,
+                // &quot;formatter&quot;: &quot;&#123;c&#125;%&quot;
+                fontSize: 15,
+                fontWeight: &#39;bold&#39;,
+                color: &#39;#34DCFF&#39;,
+              &#125;,
+            &#125;,
+            color: &#39;#2DB1EF&#39;,
+            data: values,
+          &#125;,
+          &#123;
+            name: &#39;&#39;,
+            type: &#39;pictorialBar&#39;,
+            symbolSize: [40, 10],
+            symbolOffset: [0, 7], // 下部椭圆
+            // &quot;barWidth&quot;: &quot;20&quot;,
+            z: 12,
+            color: &#39;#2DB1EF&#39;,
+            data: values,
+          &#125;,
+          &#123;
+            name: &#39;&#39;,
+            type: &#39;pictorialBar&#39;,
+            symbolSize: function (d: any) &#123;
+              return d &gt; 0 ? [50, 15] : [0, 0]
+            &#125;,
+            symbolOffset: [0, 12], // 下部内环
+            z: 10,
+            itemStyle: &#123;
+              &quot;normal&quot;: &#123;
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [&#123;
+                  offset: 0,
+                  color: &quot;rgba(89,211,255,1)&quot;
+                &#125;,
+                &#123;
+                  offset: 1,
+                  color: &quot;rgba(23,237,194,1)&quot;
+                &#125;
+                ])
+              &#125;
+            &#125;,
+            data: values,
+          &#125;,
+          &#123;
+            name: &#39;&#39;,
+            type: &#39;pictorialBar&#39;,
+            symbolSize: [40, 10],
+            symbolOffset: [0, 18], // 下部外环
+            z: 10,
+            itemStyle: &#123;
+              normal: &#123;
+                color: &#39;transparent&#39;,
+                borderColor: &#39;#19465D&#39;,
+                borderType: &#39;solid&#39;,
+                borderWidth: 2,
+              &#125;,
+            &#125;,
+            data: values,
+          &#125;,
+          &#123;
+            type: &#39;bar&#39;,
+            //silent: true,
+            barWidth: &#39;40&#39;,
+            barGap: &#39;10%&#39;,
+            barCateGoryGap: &#39;10%&#39;,
+            itemStyle: &#123;
+              normal: &#123;
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 0.7, [
+                  &#123;
+                    offset: 0,
+                    color: &#39;#38B2E6&#39;,
+                  &#125;,
+                  &#123;
+                    offset: 1,
+                    color: &#39;#0B3147&#39;,
+                  &#125;,
+                ]),
+                opacity: 0.8,
+              &#125;,
+            &#125;,
+            data: values,
+          &#125;
+        ],
+      &#125;;
+      myChart.setOption(option);
+</code></pre>
+<p>如果说这种觉得不好看，可以参考Echart<a target="_blank" rel="noopener" href="https://www.isqqw.com/">社区</a></p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>
