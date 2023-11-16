@@ -1,12 +1,12 @@
 ---
-title: typescript基础使用
+title: typescript基础类型
 date: 2023-11-14 19:44:10
 tags:
     - typescript
 categories: [学习,typescript]
 ---
 
-总结typescript基础使用
+总结typescript基础类型
 <!-- more -->
 # 布尔值
 ```
