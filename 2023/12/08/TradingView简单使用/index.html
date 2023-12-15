@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>TradingView简单使用 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>TradingView简单使用</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/12/8
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                业务
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/tradingView/" style="color: #ff7d73">tradingView</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p>使用的高级表格tradingView，官网需要公司资质下载专用的charting_library,datafeeds，这里在网上下载一个不是最新版本的<br><img src="/img/trad_image.png" alt="Alt text"></p>
+<span id="more"></span>
+<p>index.html</p>
+<pre><code>  &lt;script src=&quot;/public/charting_library/charting_library.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;/public/datafeeds/udf/dist/bundle.js&quot;&gt;&lt;/script&gt;
+  &lt;script src=&quot;/public/datafeeds/udf/dist/polyfills.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+<p>画布</p>
+<pre><code>&lt;template&gt;
+  &lt;div id=&quot;chart_container&quot;&gt;&lt;/div&gt;
+&lt;/template&gt;
+</code></pre>
+<p>配置,DataFeeds可以直接用线上的，也可以自定义</p>
+<pre><code>  new window.TradingView.widget(&#123;
+    fullscreen: true, //全屏
+    symbol: &#39;000001&#39;,
+    interval: &#39;D&#39;,  // 时间间隔
+    timeframe: &#39;48M&#39;, //时间范围 默认查询4年的
+    container_id: &quot;chart_container&quot;,
+    timezone: &quot;America/New_York&quot;,
+
+    //	BEWARE: no trailing slash is expected in feed URL
+    // datafeed: new window.Datafeeds.UDFCompatibleDatafeed(&quot;https://demo-feed-data.tradingview.com&quot;),
+    datafeed: DataFeeds,
+    library_path: &quot;charting_library/&quot;,
+    locale: getParameterByName(&#39;lang&#39;) || &quot;zh&quot;,
+    theme: getParameterByName(&#39;theme&#39;),
+  &#125;);
+
+  //本地语言环境，配色环境
+function getParameterByName(name: string) &#123;
+  name = name.replace(/[\[]/, &quot;\\[&quot;).replace(/[\]]/, &quot;\\]&quot;);
+  var regex = new RegExp(&quot;[\\?&amp;]&quot; + name + &quot;=([^&amp;#]*)&quot;),
+    results = regex.exec(location.search);
+  return results === null ? &quot;&quot; : decodeURIComponent(results[1].replace(/\+/g, &quot; &quot;));
+&#125;
+</code></pre>
+<p>datafeed配置主要方法configurationData，onReady，searchSymbols，getBars，subscribeBars，unsubscribeBars</p>
+<p>举一个例子，makeApiRequest为获取数据的接口</p>
+<pre><code>import dayjs from &#39;dayjs&#39;
+import &#123; makeApiRequest &#125; from &#39;./helpers&#39;
+
+// DatafeedConfiguration implementation
+const configurationData = &#123;
+  // Represents the resolutions for bars supported by your datafeed
+  supported_resolutions: [&#39;D&#39;, &#39;2D&#39;, &#39;3D&#39;, &#39;W&#39;, &#39;3W&#39;, &#39;M&#39;, &#39;6M&#39;],
+  exchanges: [&#123; value: &#39;000001&#39;, name: &#39;股票代码&#39;, desc: &#39;000001&#39; &#125;],
+  symbols_types: [&#123; name: &#39;stock&#39;, value: &#39;stock&#39; &#125;]
+&#125;
+
+// Obtains all symbols for all exchanges supported by CryptoCompare API
+async function getAllSymbols() &#123;
+  const data = await makeApiRequest(&#39;getStockList&#39;)
+  data.forEach((item) =&gt; &#123;
+    item.type = &#39;stock&#39;
+    item.description = item.name
+  &#125;)
+  return data
+&#125;
+
+export default &#123;
+  onReady: (callback) =&gt; &#123;
+    console.log(&#39;[onReady]: Method call&#39;)
+    setTimeout(() =&gt; callback(configurationData))
+  &#125;,
+
+  searchSymbols: async (userInput, ts_code, symbolType, onResultReadyCallback) =&gt; &#123;
+    console.log(&#39;[searchSymbols]: Method call&#39;)
+    const symbols = await getAllSymbols()
+    const newSymbols = symbols.filter((symbol) =&gt; &#123;
+      const isExchangeValid = ts_code === &#39;&#39; || symbol.symbol === ts_code
+      const isFullSymbolContainsInput =
+        symbol.ts_code.toLowerCase().indexOf(userInput.toLowerCase()) !== -1
+      return isExchangeValid &amp;&amp; isFullSymbolContainsInput
+    &#125;)
+    onResultReadyCallback(newSymbols)
+  &#125;,
+
+  resolveSymbol: async (
+    symbolName,
+    onSymbolResolvedCallback,
+    onResolveErrorCallback,
+    extension
+  ) =&gt; &#123;
+    console.log(&#39;[resolveSymbol]: Method call&#39;, symbolName)
+    const symbols = await getAllSymbols()
+    const symbolItem = symbols.find((&#123; symbol &#125;) =&gt; symbol === symbolName)
+    if (!symbolItem) &#123;
+      console.log(&#39;[resolveSymbol]: Cannot resolve symbol&#39;, symbolName)
+      onResolveErrorCallback(&#39;Cannot resolve symbol&#39;)
+      return
+    &#125;
+    // Symbol information object
+    const symbolInfo = &#123;
+      ticker: symbolItem.ts_code,
+      name: symbolItem.symbol,
+      description: symbolItem.area + symbolItem.name,
+      type: &#39;stock&#39;,
+      session: &#39;24x7&#39;,
+      timezone: &#39;Etc/UTC&#39;,
+      minmov: 1,
+      pricescale: 100,
+      has_intraday: false,
+      visible_plots_set: &#39;ohlc&#39;,
+      has_weekly_and_monthly: false,
+      supported_resolutions: configurationData.supported_resolutions,
+      volume_precision: 2,
+      data_status: &#39;streaming&#39;,
+      ts_code: symbolItem.ts_code
+    &#125;
+    console.log(&#39;[resolveSymbol]: Symbol resolved&#39;, symbolName)
+    onSymbolResolvedCallback(symbolInfo)
+  &#125;,
+
+  getBars: async (
+    symbolInfo,
+    resolution,
+    rangeStartDate,
+    rangeEndDate,
+    onHistoryCallback,
+    onErrorCallback,
+    firstDataRequest
+  ) =&gt; &#123;
+    //版本原因修改getBars
+    // getBars: async (symbolInfo, resolution, periodParams, onHistoryCallback, onErrorCallback) =&gt; &#123;
+    const from = rangeStartDate
+    const to = rangeEndDate
+    // const &#123; from, to, firstDataRequest &#125; = periodParams
+    console.log(&#39;[getBars]: Method call&#39;, symbolInfo, resolution, from, to)
+
+    const urlParameters = &#123;
+      ts_code: symbolInfo.ts_code,
+      start_date: dayjs(from * 1000).format(&#39;YYYYMMDD&#39;),
+      end_date: dayjs(to * 1000).format(&#39;YYYYMMDD&#39;)
+    &#125;
+    const query = Object.keys(urlParameters)
+      .map((name) =&gt; `$&#123;name&#125;=$&#123;encodeURIComponent(urlParameters[name])&#125;`)
+      .join(&#39;&amp;&#39;)
+    try &#123;
+      const data = await makeApiRequest(`getHistaryData?$&#123;query&#125;`)
+
+      if (data.length === 0) &#123;
+        onHistoryCallback([], &#123; noData: true &#125;)
+        return
+      &#125;
+      let bars = []
+      data.forEach((bar) =&gt; &#123;
+        if (
+          (dayjs(bar.trade_date).unix() &gt;= from &amp;&amp; dayjs(bar.trade_date).unix() &lt; to) ||
+          firstDataRequest
+        ) &#123;
+          bars = [
+            ...bars,
+            &#123;
+              time: dayjs(bar.trade_date).unix() * 1000,
+              low: bar.low,
+              high: bar.high,
+              open: bar.open,
+              close: bar.close
+            &#125;
+          ]
+        &#125;
+      &#125;)
+
+      console.log(`[getBars]: returned $&#123;bars.length&#125; bar(s)`)
+      onHistoryCallback(bars, &#123; noData: false &#125;)
+    &#125; catch (error) &#123;
+      console.log(&#39;[getBars]: Get error&#39;, error)
+      onErrorCallback(error)
+    &#125;
+  &#125;,
+
+  subscribeBars: (
+    symbolInfo,
+    resolution,
+    onRealtimeCallback,
+    subscriberUID,
+    onResetCacheNeededCallback
+  ) =&gt; &#123;
+    console.log(&#39;[subscribeBars]: Method call with subscriberUID:&#39;, subscriberUID)
+  &#125;,
+  unsubscribeBars: (subscriberUID) =&gt; &#123;
+    console.log(&#39;[unsubscribeBars]: Method call with subscriberUID:&#39;, subscriberUID)
+  &#125;
+&#125;
+
+</code></pre>
+<p>这里后端用python + 开源的数据写的,具体启动查看源码：</p>
+<p>具体源码[链接]<a target="_blank" rel="noopener" href="https://github.com/Tianyi-miku/tradingview-demo">https://github.com/Tianyi-miku/tradingview-demo</a></p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2023 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>
