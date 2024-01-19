@@ -1,12 +1,14 @@
 ---
 title: canvas瀑布图
-date: 2023-08-22 15:22:35
+date: 2023-12-22 15:22:35
 tags:
     - canvas
 categories: [业务]
 ---
 ![Alt text](/img/canvas1.gif)
 <!-- more -->
+业务预览图
+![Alt text](/img/canvas2.gif)
 界面
 ```
  <div className='waterfall'>
