@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>canvas瀑布图 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>canvas瀑布图</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2023/12/22
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                业务
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/canvas/" style="color: #ff7d73">canvas</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <p><img src="/img/canvas1.gif" alt="Alt text"></p>
+<span id="more"></span>
+<p>业务预览图<br><img src="/img/canvas2.gif" alt="Alt text"><br>界面</p>
+<pre><code> &lt;div className=&#39;waterfall&#39;&gt;
+      &lt;canvas className=&#39;legend&#39; ref=&#123;Ilegend&#125;&gt;&lt;/canvas&gt;
+      &lt;canvas className=&#39;canvas&#39; ref=&#123;waterFall&#125;&gt;&lt;/canvas&gt;
+  &lt;/div&gt;
+</code></pre>
+<p>全局变量</p>
+<pre><code>let getCtx: any = null;
+let waterFallWidth = 0
+let waterFallHeight = 0
+let waterFallCopyList: any = []
+let waterFallIndex = 0
+</code></pre>
+<p>颜色用colormap插件生成</p>
+<pre><code>  let Icolormap = colormap(&#123;
+    colormap: &#39;portland&#39;,
+    nshades: 150,
+    format: &#39;rba&#39;,
+    alpha: 1,
+  &#125;)
+</code></pre>
+<p>左边柱状图</p>
+<pre><code>const Ilegend = useRef(null);
+
+function createLegendCanvas() &#123;
+    const legendRefs: any = Ilegend.current;
+    const legend = legendRefs.getContext(&#39;2d&#39;)
+    let legendCanvas = document.createElement(&#39;canvas&#39;)
+    legendCanvas.width = 1
+    let legendCanvasTemporary: any = legendCanvas.getContext(&#39;2d&#39;)
+    const imageData = legendCanvasTemporary.createImageData(1, Icolormap.length)
+    for (let i = 0; i &lt; Icolormap.length; i++) &#123;
+      const color = Icolormap[i]
+      imageData.data[imageData.data.length - i * 4 + 0] = color[0]
+      imageData.data[imageData.data.length - i * 4 + 1] = color[1]
+      imageData.data[imageData.data.length - i * 4 + 2] = color[2]
+      imageData.data[imageData.data.length - i * 4 + 3] = 255
+    &#125;
+    legendCanvasTemporary.putImageData(imageData, 0, 0)
+    legend.drawImage(legendCanvasTemporary.canvas,
+      0, 0, 1, Icolormap.length, 50, 0, 200, legend.canvas.height)
+  &#125;
+</code></pre>
+<p>频谱图做法是为颜色对应数值，数组进栈头部出栈，canvas清除</p>
+<pre><code>  function queryChartList() &#123;
+    if (prop.WaterfallData &amp;&amp; prop.WaterfallData.length) &#123;
+      let data: any[] = prop.WaterfallData.map((item: number) =&gt; &#123; return item / 10 &#125;)
+      //@ts-expect-error
+      waterFallWidth = waterFall.current?.width
+      waterFallHeight = 60 //默认
+      if (waterFall === null) &#123;
+        createWaterFallCanvas()
+      &#125;
+      rowToImageData(data)
+      waterFallCopyList.unshift(data)
+      waterFallIndex++
+      if (waterFallIndex &gt; waterFallHeight) &#123;
+        waterFallCopyList.pop()
+      &#125;
+    &#125;
+  &#125;
+
+  function createWaterFallCanvas() &#123;
+    const canvasDimensions: any = waterFall.current;
+    getCtx = canvasDimensions?.getContext(&quot;2d&quot;);
+    getCtx.canvas.width = getCtx.canvas?.offsetWidth
+  &#125;
+
+
+    function rowToImageData(data: any[]) &#123;
+    if (getCtx) &#123;
+      const canvasWidth = getCtx.canvas.offsetWidth;
+      const scale = data.length / canvasWidth;
+      let canvasHeight = Math.floor(getCtx.canvas.offsetHeight / waterFallHeight);
+      let imgOld = getCtx.getImageData(0, 0, waterFallWidth, canvasHeight * waterFallIndex + 1);
+
+      const imageData = getCtx.createImageData(canvasWidth, 1);
+      for (let i = 0; i &lt; imageData.data.length; i += 4) &#123;
+        const index = Math.floor(i / 4 * scale);
+        const cindex = colorMapData(data[index], 0, 80);
+        const color = Icolormap[cindex];
+        imageData.data[i + 0] = color[0];
+        imageData.data[i + 1] = color[1];
+        imageData.data[i + 2] = color[2];
+        imageData.data[i + 3] = 255;
+      &#125;
+      for (let i = 0; i &lt; canvasHeight; i++) &#123;
+        getCtx.putImageData(imageData, 0, i);
+      &#125;
+      if (isClean) &#123;
+        getCtx.clearRect(0, 0, getCtx.canvas.width, getCtx.canvas.height);
+        setIsClean(false);
+      &#125; else &#123;
+        getCtx.putImageData(imgOld, 0, canvasHeight);
+      &#125;
+    &#125;
+  &#125;
+</code></pre>
+<p>全部代码</p>
+<pre><code>import React, &#123; useEffect, useMemo, useRef, useState &#125; from &#39;react&#39;
+import colormap from &#39;colormap&#39;
+import &quot;./waterfall.less&quot;
+
+let getCtx: any = null;
+let waterFallWidth = 0
+let waterFallHeight = 0
+let waterFallCopyList: any = []
+let waterFallIndex = 0
+
+const Waterfall = (prop: any) =&gt; &#123;
+  let waterFall = useRef(null);
+  const Ilegend = useRef(null);
+  let maxNum = 10
+  let minNum = 0
+  const [isClean, setIsClean] = useState(false)
+
+
+  let Icolormap = colormap(&#123;
+    colormap: &#39;portland&#39;,
+    nshades: 150,
+    format: &#39;rba&#39;,
+    alpha: 1,
+  &#125;)
+
+  useEffect(() =&gt; &#123;
+    createLegendCanvas()
+    createWaterFallCanvas()
+    return () =&gt; &#123;
+    &#125;
+    // eslint-disable-next-line
+  &#125;, [])
+
+  useEffect(() =&gt; &#123;
+    setIsClean(true)
+    return () =&gt; &#123;
+    &#125;
+  &#125;, [prop.zoom])
+
+
+  useEffect(() =&gt; &#123;
+    if (prop.WaterfallData) &#123;
+      queryChartList()
+    &#125;
+    return () =&gt; &#123;
+    &#125;
+    // eslint-disable-next-line
+  &#125;, [prop.WaterfallData])
+
+  useEffect(() =&gt; &#123;
+    if (prop.clean) &#123;
+      getCtx.clearRect(0, 0, getCtx.canvas.width, getCtx.canvas.height)
+    &#125;
+    return () =&gt; &#123;
+    &#125;
+  &#125;, [prop.clean])
+
+
+  function createLegendCanvas() &#123;
+    const legendRefs: any = Ilegend.current;
+    const legend = legendRefs.getContext(&#39;2d&#39;)
+    let legendCanvas = document.createElement(&#39;canvas&#39;)
+    legendCanvas.width = 1
+    let legendCanvasTemporary: any = legendCanvas.getContext(&#39;2d&#39;)
+    const imageData = legendCanvasTemporary.createImageData(1, Icolormap.length)
+    for (let i = 0; i &lt; Icolormap.length; i++) &#123;
+      const color = Icolormap[i]
+      imageData.data[imageData.data.length - i * 4 + 0] = color[0]
+      imageData.data[imageData.data.length - i * 4 + 1] = color[1]
+      imageData.data[imageData.data.length - i * 4 + 2] = color[2]
+      imageData.data[imageData.data.length - i * 4 + 3] = 255
+    &#125;
+    legendCanvasTemporary.putImageData(imageData, 0, 0)
+    legend.drawImage(legendCanvasTemporary.canvas,
+      0, 0, 1, Icolormap.length, 50, 0, 200, legend.canvas.height)
+  &#125;
+
+
+  function createWaterFallCanvas() &#123;
+    const canvasDimensions: any = waterFall.current;
+    getCtx = canvasDimensions?.getContext(&quot;2d&quot;);
+    getCtx.canvas.width = getCtx.canvas?.offsetWidth
+  &#125;
+
+
+  //单行图像
+  function rowToImageData(data: any[]) &#123;
+    if (getCtx) &#123;
+      const canvasWidth = getCtx.canvas.offsetWidth;
+      const scale = data.length / canvasWidth;
+      let canvasHeight = Math.floor(getCtx.canvas.offsetHeight / waterFallHeight);
+      let imgOld = getCtx.getImageData(0, 0, waterFallWidth, canvasHeight * waterFallIndex + 1);
+
+      const imageData = getCtx.createImageData(canvasWidth, 1);
+      for (let i = 0; i &lt; imageData.data.length; i += 4) &#123;
+        const index = Math.floor(i / 4 * scale);
+        const cindex = colorMapData(data[index], 0, 80);
+        const color = Icolormap[cindex];
+        imageData.data[i + 0] = color[0];
+        imageData.data[i + 1] = color[1];
+        imageData.data[i + 2] = color[2];
+        imageData.data[i + 3] = 255;
+      &#125;
+      for (let i = 0; i &lt; canvasHeight; i++) &#123;
+        getCtx.putImageData(imageData, 0, i);
+      &#125;
+      if (isClean) &#123;
+        getCtx.clearRect(0, 0, getCtx.canvas.width, getCtx.canvas.height);
+        setIsClean(false);
+      &#125; else &#123;
+        getCtx.putImageData(imgOld, 0, canvasHeight);
+      &#125;
+    &#125;
+  &#125;
+
+
+  //返回对于颜色库
+  function colorMapData(data: number, outMin: number, outMax: number) &#123;
+    if (data &lt;= minNum) &#123;
+      return outMin
+    &#125; else if (data &gt;= maxNum) &#123;
+      return outMax
+    &#125;
+    return Math.round(((data - minNum) / (maxNum - minNum)) * outMax)
+  &#125;
+
+  function queryChartList() &#123;
+    if (prop.WaterfallData &amp;&amp; prop.WaterfallData.length) &#123;
+      let data: any[] = prop.WaterfallData.map((item: number) =&gt; &#123; return item / 10 &#125;)
+      //@ts-expect-error
+      waterFallWidth = waterFall.current?.width
+      waterFallHeight = 60 //默认
+      if (waterFall === null) &#123;
+        createWaterFallCanvas()
+      &#125;
+      rowToImageData(data)
+      waterFallCopyList.unshift(data)
+      waterFallIndex++
+      if (waterFallIndex &gt; waterFallHeight) &#123;
+        waterFallCopyList.pop()
+      &#125;
+    &#125;
+  &#125;
+
+  return (
+    &lt;div className=&#39;waterfall&#39;&gt;
+      &lt;canvas className=&#39;legend&#39; ref=&#123;Ilegend&#125;&gt;&lt;/canvas&gt;
+      &lt;canvas className=&#39;canvas&#39; ref=&#123;waterFall&#125;&gt;&lt;/canvas&gt;
+    &lt;/div&gt;
+  )
+&#125;
+
+export default Waterfall
+</code></pre>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2024 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>
