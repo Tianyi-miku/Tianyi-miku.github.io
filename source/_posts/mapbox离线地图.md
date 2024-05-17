@@ -8,6 +8,7 @@ categories: [业务,mapbox]
 
 # mapbox
 mapbox离线地图
+![Alt text](/img/mapbox1.png)
 <!-- more -->
 
 离线使用mapbox 先初始化地图，主要配置style
@@ -39,12 +40,13 @@ mapbox离线地图
 
 ```
 
-需要准备离线资源：包括字体sprite，精灵图glyphs，这里我们将Proxymapbox作为代理，转到nginx资源目录下。roadmap则为地图文件，这里暂时使用png
+需要准备离线资源：包括字体sprite，精灵图glyphs,可以在官网上下载也可以找资源。
+这里我们将Proxymapbox作为代理，转到nginx资源目录下。roadmap则为地图文件，这里暂时使用png
 ```
 const style: any = {
   version: 8,
-  sprite: '/Proxymapbox/style/sprite',
-  glyphs: "/Proxymapbox/glyphs/mapbox/{fontstack}/{range}.pbf",
+  sprite: 'http://localhost:3000/Proxymapbox/style/sprite',
+  glyphs: "http://localhost:3000/Proxymapbox/glyphs/mapbox/{fontstack}/{range}.pbf",
   "sources": {
     "osm-tiles": {
       "type": "raster",
@@ -64,3 +66,13 @@ const style: any = {
 }
 ```
 ​
+代理
+```
+  "/Proxymapbox": {
+        target: `http://127.0.0.1:9100`, //资源所在地址
+        changeOrigin: true,
+        pathRewrite: { '^/Proxymapbox': '' },
+        changeOrign: true,
+        logLevel: 'debug'
+      },
+```
