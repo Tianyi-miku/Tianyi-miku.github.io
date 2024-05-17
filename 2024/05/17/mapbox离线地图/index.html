@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>ethers.js基础操作 | Skymiku</title>
+        <title>百度离线地图 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -163,22 +163,22 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>ethers.js基础操作</h1>
+        <h1>百度离线地图</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2022/12/21
+            2024/5/17
         </span>
         
         <span class="category">
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
-                学习
+                业务
             </a>
         </span>
         
@@ -191,7 +191,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/web3/" style="color: #ffa2c4">web3</a>
+                <a href="/tags/mapbox/" style="color: #00bcd4">mapbox</a>
             </span>
             
         </span>
@@ -199,68 +199,66 @@
     </div>
     
     <div class="content" v-pre>
-        <p>ethers基础操作</p>
+        <h1 id="mapbox"><a href="#mapbox" class="headerlink" title="mapbox"></a>mapbox</h1><p>mapbox离线地图<br><img src="/img/mapbox1.png" alt="Alt text"></p>
 <span id="more"></span>
-<p>Provider链接网络</p>
-<pre><code>// 利用ethers默认的Provider连接以太坊网络
-// const provider = new ethers.getDefaultProvider();
-const ALCHEMY_MAINNET_URL = &#39;https://eth-mainnet.g.alchemy.com/v2/oKmOQKbneVkxgHZfibs-iFhIlIAl6HDN&#39;;
-const provider = new ethers.JsonRpcProvider(ALCHEMY_MAINNET_URL)
-</code></pre>
-<p>获取余额、网络等基础信息</p>
-<pre><code> const balance = await provider.getBalance(`user`);
- const network = await provider.getNetwork();
- ....
-</code></pre>
-<p>发送币</p>
-<pre><code>    const tx = &#123;
-        to: address1,
-        value: ethers.parseEther(&quot;0.001&quot;)
-    &#125;
-    const address2 = await wallet2.getAddress() 
-    const receipt = await wallet2.sendTransaction(tx)
-    await receipt.wait() // 等待链上确认交易
-    console.log(receipt) // 打印交易详情
-</code></pre>
-<p>调用合约</p>
-<pre><code>// WETH的ABI
-const abiWETH = [
-    &quot;function balanceOf(address) public view returns(uint)&quot;,
-    &quot;function deposit() public payable&quot;,
-    &quot;function transfer(address, uint) public returns (bool)&quot;,
-    &quot;function withdraw(uint) public&quot;,
-];
-// 声明可写合约
-const contractWETH = new ethers.Contract(addressWETH, abiWETH, wallet)
-const tx = await contractWETH.deposit(&#123;value: ethers.parseEther(&quot;0.001&quot;)&#125;)
-// 等待交易上链
-await tx.wait()
-console.log(`交易详情：`)
-</code></pre>
-<p>监听事件</p>
-<pre><code>   contractUSDT.once(&#39;Transfer&#39;, (from, to, value)=&gt;&#123;
-      // 打印结果
-      console.log(
-        `$&#123;from&#125; -&gt; $&#123;to&#125; $&#123;ethers.formatUnits(ethers.getBigInt(value),6)&#125;`
-      )
-    &#125;)
-</code></pre>
-<p>事件过滤</p>
-<pre><code>    console.log(&quot;\n1. 读取币安热钱包USDT余额&quot;)
-    const balanceUSDT = await contractUSDT.balanceOf(accountBinance)
-    console.log(`USDT余额: $&#123;ethers.formatUnits(balanceUSDT,6)&#125;\n`)
 
-    // 2. 创建过滤器，监听转移USDT进交易所
-    console.log(&quot;\n2. 创建过滤器，监听USDT转进交易所&quot;)
-    let filterBinanceIn = contractUSDT.filters.Transfer(null, accountBinance);
-    console.log(&quot;过滤器详情：&quot;)
-    console.log(filterBinanceIn);
-    contractUSDT.on(filterBinanceIn, (res) =&gt; &#123;
-      console.log(&#39;---------监听USDT进入交易所--------&#39;);
-      console.log(
-        `$&#123;res.args[0]&#125; -&gt; $&#123;res.args[1]&#125; $&#123;ethers.formatUnits(res.args[2],6)&#125;`
-      )
+<p>离线使用mapbox 先初始化地图，主要配置style</p>
+<pre><code>  useEffect(() =&gt; &#123;
+    if (mapboxMap.current) return
+    const isOnline = config.isOnline
+    // 初始化threebox
+    mapboxMap.current = new mapboxgl.Map(&#123;
+      container: &quot;mapbox-map&quot;, // container id
+      style: style, // style URL
+      //@ts-ignore
+      projection: &#39;globe&#39;,
+      center: center, // starting position [lng, lat]
+      zoom: zoom, // starting zoom
+      accessToken: &#39;xxx&#39;,
     &#125;)
+    mapboxMap.current.on(&#39;style.load&#39;, function () &#123;
+      setloading(true)
+    &#125;)
+    /*删除mapbox自带logo*/
+    mapboxMap.current._logoControl &amp;&amp; mapboxMap.current.removeControl(mapboxMap.current._logoControl);
+    return () =&gt; &#123;
+      setloading(false)
+      mapboxMap.current = null
+    &#125;
+    //eslint-disable-next-line
+  &#125;, [])
+</code></pre>
+<p>需要准备离线资源：包括字体sprite，精灵图glyphs,可以在官网上下载也可以找资源。<br>这里我们将Proxymapbox作为代理，转到nginx资源目录下。roadmap则为地图文件，这里暂时使用png</p>
+<pre><code>const style: any = &#123;
+  version: 8,
+  sprite: &#39;http://localhost:3000/Proxymapbox/style/sprite&#39;,
+  glyphs: &quot;http://localhost:3000/Proxymapbox/glyphs/mapbox/&#123;fontstack&#125;/&#123;range&#125;.pbf&quot;,
+  &quot;sources&quot;: &#123;
+    &quot;osm-tiles&quot;: &#123;
+      &quot;type&quot;: &quot;raster&quot;,
+      &#39;tiles&#39;: [
+        &quot;/Proxymapbox/roadmap/&#123;z&#125;/&#123;x&#125;/&#123;y&#125;.png&quot;
+      ],
+      &#39;tileSize&#39;: 256
+    &#125;
+  &#125;,
+  &quot;layers&quot;: [&#123;
+    &quot;id&quot;: &quot;simple-tiles&quot;,
+    &quot;type&quot;: &quot;raster&quot;,
+    &quot;source&quot;: &quot;osm-tiles&quot;,
+    &quot;minzoom&quot;: 0,
+    &quot;maxzoom&quot;: 22
+  &#125;]
+&#125;
+</code></pre>
+<p>​<br>代理</p>
+<pre><code>  &quot;/Proxymapbox&quot;: &#123;
+        target: `http://127.0.0.1:9100`, //资源所在地址
+        changeOrigin: true,
+        pathRewrite: &#123; &#39;^/Proxymapbox&#39;: &#39;&#39; &#125;,
+        changeOrign: true,
+        logLevel: &#39;debug&#39;
+      &#125;,
 </code></pre>
 
     </div>
