@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>qiankun框架简单使用 | Skymiku</title>
+        <title>mapbox自定义标注卡顿问题 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -163,22 +163,22 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>qiankun框架简单使用</h1>
+        <h1>mapbox自定义标注卡顿问题</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2021/9/16
+            2024/5/31
         </span>
         
         <span class="category">
-            <a href="/categories/%E5%BE%AE%E5%89%8D%E7%AB%AF/">
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
-                微前端
+                业务
             </a>
         </span>
         
@@ -191,22 +191,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/vue3/" style="color: #00bcd4">vue3</a>
-            </span>
-            
-            <span class="tag">
-                
-                <a href="/tags/vue2/" style="color: #03a9f4">vue2</a>
-            </span>
-            
-            <span class="tag">
-                
-                <a href="/tags/react/" style="color: #ff7d73">react</a>
-            </span>
-            
-            <span class="tag">
-                
-                <a href="/tags/qiankun/" style="color: #00bcd4">qiankun</a>
+                <a href="/tags/mapbox/" style="color: #00bcd4">mapbox</a>
             </span>
             
         </span>
@@ -214,172 +199,88 @@
     </div>
     
     <div class="content" v-pre>
-        <p>用的是vue3做的基座项目。主应用：</p>
+        <h1 id="mapbox"><a href="#mapbox" class="headerlink" title="mapbox"></a>mapbox</h1><p>mapbox自定义标注，一般是通过Mark来添加，但是数量过多后会明显卡顿，这里通过自定义标注，和新增图层来将所有标注合成一个图层<br><img src="/img/mapbox2.png" alt="Alt text"></p>
 <span id="more"></span>
 
-<pre><code>
-import &#123; createApp &#125; from &quot;vue&quot;;
-import App from &quot;./App.vue&quot;;
-import router from &quot;./router&quot;;
-import store from &quot;./store&quot;;
-import &#123; registerMicroApps, start, setDefaultMountApp &#125; from &quot;qiankun&quot;;
-
-createApp(App)
-  .use(store)
-  .use(router)
-  .mount(&quot;#app&quot;);
-
-registerMicroApps([
-  &#123;
-    name: &quot;vue2 app&quot;, // app name registered
-    entry: &quot;//localhost:7101&quot;, // 子应用入口
-    container: &quot;#yourContainer&quot;,
-    activeRule: &quot;/vue2&quot;,
-  &#125;,
-]);
-
-// 启动默认应用
-setDefaultMountApp(&quot;/vue2&quot;);
-
-start();
+<p>首先自定义标注的时候，用自己的图标。mapbox不支持svg，可以手动转成img对象</p>
+<pre><code>//element.type.value为类型
+   function addImage(url: any, element: any) &#123;
+    return new Promise((resolve, reject) =&gt; &#123;
+      mapboxMap.loadImage(url, function (error: any, image: any) &#123;
+        if (error) reject(error);;
+        mapboxMap.addImage(element.type.value, image);
+        resolve(true);
+      &#125;);
+    &#125;);
+  &#125;
 </code></pre>
-<p>子应用</p>
-<pre><code>import Vue from &quot;vue&quot;;
-import VueRouter from &quot;vue-router&quot;;
-import App from &quot;./App.vue&quot;;
-import routes from &quot;./router&quot;;
-import ElementUI from &#39;element-ui&#39;;
-import &#39;element-ui/lib/theme-chalk/index.css&#39;;
-// import &#39;./public-path&#39;;
+<p>将所有需要标注的数据，合成一个Layer</p>
+<pre><code> let featureslist = []
+   for (let index = 0; index &lt; station.length; index++) &#123;
+    featureslist.push(
+            &#123;
+              &quot;type&quot;: &quot;Feature&quot;,
+              &quot;geometry&quot;: &#123;
+                &quot;type&quot;: &quot;Point&quot;,
+                // 图片和文字在地图中的坐标
+                &quot;coordinates&quot;: [element.position.longitude, element.position.latitude]
+              &#125;,
+              &quot;properties&quot;: &#123;
+                element: element,
+                icon: element.type.value,
+              &#125;,
+            &#125;
+       )
+   &#125;
 
-Vue.config.productionTip = false;
+    const featuresObj = &#123;
+      &quot;type&quot;: &quot;FeatureCollection&quot;,
+      &quot;features&quot;: features,
+    &#125;
+      mapboxMap.addSource(&#39;pointSouce&#39;, &#123;
+        &quot;type&quot;: &quot;geojson&quot;,
+        &quot;data&quot;: featuresObj,
+      &#125;)
+     // 更新pointSouce数据为
+      mapboxMap.getSource(&#39;pointSouce&#39;).setData(featuresObj)
 
-
-Vue.use(ElementUI)
-
-let router = null;
-let instance = null;
-
-function render(props = &#123;&#125;) &#123;
-  const &#123; container &#125; = props;
-  router = new VueRouter(&#123;
-    base: &quot;/vue2&quot;,
-    mode: &quot;history&quot;,
-    routes,
-  &#125;);
-
-  instance = new Vue(&#123;
-    router,
-    render: (h) =&gt; h(App),
-  &#125;).$mount(container ? container.querySelector(&quot;#app&quot;) : &quot;#app&quot;);
-&#125;
-
-// webpack打包公共文件路径
-if (window.__POWERED_BY_QIANKUN__) &#123;
-  // eslint-disable-next-line no-undef
-  __webpack_public_path__ = window.__INJECTED_PUBLIC_PATH_BY_QIANKUN__;
-&#125;else&#123;
-    // 独立运行
-  render();
-&#125;
-
-// 生命周期
-export async function bootstrap() &#123;
-  console.log(&quot;[vue] vue app bootstraped&quot;);
-&#125;
-export async function mount(props) &#123;
-  console.log(&quot;[vue] props from main framework&quot;, props);
-  // storeTest(props);
-  render(props);
-&#125;
-export async function unmount() &#123;
-  instance.$destroy();
-  instance.$el.innerHTML = &quot;&quot;;
-  instance = null;
-  router = null;
-&#125;
+    mapboxMap.addLayer(&#123;
+      id: &#39;points&#39;,
+      type: &quot;symbol&quot;,
+      source: &#39;pointSouce&#39;,
+      layout: &#123;
+        // 加载图片的id
+        &quot;icon-image&quot;: [&#39;get&#39;, &#39;icon&#39;],
+        // 图片大小
+        &quot;icon-size&quot;: 0.8
+      &#125;,
+    &#125;);
 </code></pre>
-<p>主应用入口</p>
-<pre><code>&lt;template&gt;
-  &lt;div id=&quot;nav&quot;&gt;
-    &lt;!-- 子应用容器 --&gt;
-    &lt;router-link to=&quot;/&quot;&gt;Home&lt;/router-link&gt; |
-    &lt;router-link to=&quot;/about&quot;&gt;About&lt;/router-link&gt; |
-    &lt;a href=&quot;/vue2&quot;&gt;vue&lt;/a&gt;
-    &lt;div id=&quot;yourContainer&quot; style=&quot;width: 100%; border: 1px solid #ccc&quot;&gt;&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;router-view /&gt;
-&lt;/template&gt;
-
-&lt;style&gt;
-#app &#123;
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-&#125;
-
-#nav &#123;
-  padding: 30px;
-&#125;
-
-#nav a &#123;
-  font-weight: bold;
-  color: #2c3e50;
-&#125;
-
-#nav a.router-link-exact-active &#123;
-  color: #42b983;
-&#125;
-&lt;/style&gt;
+<p>​<br>给点标注添加点击事件，显示不同详情</p>
+<pre><code>   mapboxMap.on(&#39;mouseenter&#39;, &#39;points&#39;, function () &#123;
+      mapboxMap.getCanvas().style.cursor = &#39;pointer&#39;;
+    &#125;);
+    // // 鼠标在离开标注时恢复鼠标样式
+    mapboxMap.on(&#39;mouseleave&#39;, &#39;points&#39;, function () &#123;
+      mapboxMap.getCanvas().style.cursor = &#39;&#39;;
+    &#125;);
+    // 标注要素添加点击事件
+    mapboxMap.on(&#39;click&#39;, &#39;points&#39;, async function (e: any) &#123;
+      // 标注的坐标
+      let coordinates = e.features[0].geometry.coordinates.slice();
+      const element = JSON.parse(e.features[0].properties.element)
+      const info: any = await getInfo(element.type.value, element.code)
+      // 弹出框展示的内容
+      let description = info || `&lt;div&gt;$&#123;element.name&#125;&lt;/div&gt;`;
+      // 如果有重复的地图，保证在重复的标注上正常显示
+      while (Math.abs(e.lngLat.lng - coordinates[0]) &gt; 180) &#123;
+        coordinates[0] += e.lngLat.lng &gt; coordinates[0] ? 360 : -360;
+      &#125;
+      // 标注绑定弹出框
+      mapPopup = new mapboxgl.Popup(&#123; offset: [0, -40], className: &#39;mapboxglpopup&#39; &#125;).setLngLat(coordinates).setHTML(description).addTo(mapboxMap);
+    &#125;);
 </code></pre>
-<p>子应用添加打包配置vue.config.js</p>
-<pre><code>const path = require(&#39;path&#39;);
-const &#123; name &#125; = require(&#39;./package&#39;);
-
-function resolve(dir) &#123;
-    return path.join(__dirname, dir);
-&#125;
-
-const port = 7101; // dev port
-
-module.exports = &#123;
-    outputDir: &#39;dist&#39;,
-    assetsDir: &#39;static&#39;,
-    filenameHashing: true,
-    devServer: &#123;
-        // host: &#39;0.0.0.0&#39;,
-        hot: true,
-        disableHostCheck: true,
-        port,
-        overlay: &#123;
-            warnings: false,
-            errors: true,
-        &#125;,
-        // 跨域
-        headers: &#123;
-            &#39;Access-Control-Allow-Origin&#39;: &#39;*&#39;,
-        &#125;,
-    &#125;,
-    // 自定义webpack配置
-    configureWebpack: &#123;
-        resolve: &#123;
-            alias: &#123;
-                &#39;@&#39;: resolve(&#39;src&#39;),
-            &#125;,
-        &#125;,
-        output: &#123;
-            // 把子应用打包成 umd 库格式(必须)
-            library: `$&#123;name&#125;-[name]`,
-            libraryTarget: &#39;umd&#39;,
-            jsonpFunction: `webpackJsonp_$&#123;name&#125;`,
-        &#125;,
-    &#125;,
-&#125;;
-</code></pre>
-<p>简单使用了一下阿里的微前端，但是一般在业务项目中还是很少用到，这里只是简单的实现了一下，还没有做到Css隔离，需要用的时候可以参考qiankun官网。</p>
-<p>​</p>
+<p>当前地图收缩放大会聚合图标，如果有不同类型聚合的，可以分类型添加不同layer，通过过滤layer api来轻松显示不同类型标注。</p>
 
     </div>
     
