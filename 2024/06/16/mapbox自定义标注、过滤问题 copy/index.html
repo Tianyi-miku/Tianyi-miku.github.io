@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>typescript基础类型 | Skymiku</title>
+        <title>mapbox基础配置 | Skymiku</title>
         <meta name="author" content="skymiku" />
         <meta name="description" content="梦想暴富" />
         <meta name="keywords" content="" />
@@ -163,22 +163,22 @@
             <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
                 <div class="article">
     <div>
-        <h1>typescript基础类型</h1>
+        <h1>mapbox基础配置</h1>
     </div>
     <div class="info">
         <span class="date">
             <span class="icon">
                 <i class="fa-solid fa-calendar fa-fw"></i>
             </span>
-            2023/11/14
+            2024/6/16
         </span>
         
         <span class="category">
-            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+            <a href="/categories/%E4%B8%9A%E5%8A%A1/">
                 <span class="icon">
                     <i class="fa-solid fa-bookmark fa-fw"></i>
                 </span>
-                学习
+                业务
             </a>
         </span>
         
@@ -191,7 +191,7 @@
             
             <span class="tag">
                 
-                <a href="/tags/typescript/" style="color: #03a9f4">typescript</a>
+                <a href="/tags/mapbox/" style="color: #ff7d73">mapbox</a>
             </span>
             
         </span>
@@ -199,50 +199,34 @@
     </div>
     
     <div class="content" v-pre>
-        <p>总结typescript基础类型</p>
+        <h1 id="mapbox"><a href="#mapbox" class="headerlink" title="mapbox"></a>mapbox</h1><p>mapbox基本配置,包含mark点,线,热力图,自定义图标,切换图标,带动画的点等<br><img src="/img/mapbox3.png" alt="Alt text"></p>
 <span id="more"></span>
-<h1 id="布尔值"><a href="#布尔值" class="headerlink" title="布尔值"></a>布尔值</h1><pre><code>let a : boolean = false;
+
+<p>点</p>
+<pre><code>new mapboxgl.Marker().setLngLat(intersection.features[0].geometry.coordinates).addTo(mapboxMap);
 </code></pre>
-<h1 id="数字"><a href="#数字" class="headerlink" title="数字"></a>数字</h1><pre><code>let a :number = 1;
-let b :number = 1.0;
+<p>热力图需要注意模式,可以通过点胡总和或者插值算法等配置</p>
+<pre><code>      mapboxMap.addSource(&#39;earthquakes&#39;, &#123;
+        &#39;type&#39;: &#39;geojson&#39;,
+        &#39;data&#39;: heatMapgeojson
+      &#125;);
+  mapboxMap.addLayer(
+        &#123;
+          &#39;id&#39;: &#39;earthquakes-heat&#39;,
+          &#39;type&#39;: &#39;heatmap&#39;,
+          &#39;source&#39;: &#39;earthquakes&#39;,
+          &#39;paint&#39;: &#123;
+            // // Increase the heatmap weight based on frequency and property magnitude
+            &#39;heatmap-weight&#39;: 0.1,
+          &#125;
+        &#125;,
+      );
 </code></pre>
-<h1 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h1><pre><code>let a :string = &#39;string&#39;;
+<p>​<br>切换显示与否</p>
+<pre><code>  mapboxMap.setLayoutProperty(&#39;layer-with-pulsing-dot&#39;, &#39;visibility&#39;, &#39;visible&#39;);
+  mapboxMap.setLayoutProperty(&#39;layer-with-pulsing-dot&#39;, &#39;visibility&#39;, &#39;none&#39;);
 </code></pre>
-<h1 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h1><pre><code>let list:[] = [1];
-let arr: Array&lt;number&gt; = [1];
-</code></pre>
-<h1 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h1><pre><code>let a : [string, number] = [&#39;string&#39;, 1];
-</code></pre>
-<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><pre><code>enum Color &#123;
-    red,
-    green,
-    bule
-&#125;
-let a: Color = Color.bule;
-</code></pre>
-<h1 id="any"><a href="#any" class="headerlink" title="any"></a>any</h1><pre><code>let notSure: any = 4;
-</code></pre>
-<h1 id="void-没有返回值"><a href="#void-没有返回值" class="headerlink" title="void 没有返回值"></a>void 没有返回值</h1><pre><code>function warnUser(): void &#123;
-    console.log(&quot;This is my warning message&quot;);
-&#125;
-</code></pre>
-<h1 id="Null-和-Undefined"><a href="#Null-和-Undefined" class="headerlink" title="Null 和 Undefined"></a>Null 和 Undefined</h1><p>没什么太大用</p>
-<pre><code>let a:null = null;
-let b:undefined = undefined;
-</code></pre>
-<h1 id="never"><a href="#never" class="headerlink" title="never"></a>never</h1><p> 返回never的函数必须存在无法达到的终点</p>
-<pre><code>function infiniteLoop(): never &#123;
-    while (true) &#123;
-    &#125;
-&#125;
-</code></pre>
-<h1 id="object"><a href="#object" class="headerlink" title="object"></a>object</h1><p> 非基础类型</p>
-<pre><code>declare function create(o: object | null): void;
-create(&#123; prop: 0 &#125;); // OK
-</code></pre>
-<h2 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h2><pre><code>let strLength: number = (&lt;string&gt;someValue).length;
-let strLength: number = (someValue as string).length;
-</code></pre>
+<p>动画点在官网上有例子,用canvas实现的</p>
 
     </div>
     
