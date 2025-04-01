@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>总结一下2024年收获 | Skymiku</title>
+        <meta name="author" content="skymiku" />
+        <meta name="description" content="梦想暴富" />
+        <meta name="keywords" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="icon" href="/images/avatar.jpg" />
+        <script src="https://cdn.staticfile.org/vue/3.3.4/vue.global.prod.min.js"></script>
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" />
+<link rel="stylesheet" href="/css/fonts.min.css" />
+<script> const mixins = {}; </script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+
+<script src="https://cdn.staticfile.org/highlight.js/11.8.0/highlight.min.js"></script>
+<script src="https://cdn.staticfile.org/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+<link
+    rel="stylesheet"
+    href="https://cdn.staticfile.org/highlight.js/11.8.0/styles/github.min.css"
+/>
+<script src="/js/lib/highlight.js"></script>
+
+
+
+<script src="/js/lib/preview.js"></script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css" />
+
+    <meta name="generator" content="Hexo 6.3.0"></head>
+    <body>
+        <canvas
+        id="fireworks"
+        style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 32767"
+    >
+    </canvas>
+    <script src="https://cdn.staticfile.org/animejs/3.2.1/anime.min.js"></script>
+    <script src="/js/fireworks.min.js"></script>
+    <!-- <canvas
+    id="background"
+    style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: -1"
+    ></canvas>
+    <script src="/js/background.min.js"></script>
+    <div id="cursor"></div> -->
+    <!-- <link rel="stylesheet" href="/css/cursor.min.css" />
+    <script src="/js/cursor.min.js"></script> -->
+        <div id="layout">
+            <transition name="fade">
+                <div id="loading" v-show="loading">
+                    <div id="loading-circle">
+                        <h2>LOADING</h2>
+                        <p>加载过慢请开启缓存 浏览器默认开启</p>
+                        <img src="/images/loading.gif" />
+                    </div>
+                </div>
+            </transition>
+            <div id="menu" :class="{ hidden: hiddenMenu, 'menu-color': menuColor}">
+    <nav id="desktop-menu">
+        <a class="title" href="/">
+            <span>SKYMIKU</span>
+        </a>
+        
+        <a href="/">
+            <i class="fa-solid fa-house fa-fw"></i>
+            <span>&ensp;Home</span>
+        </a>
+        
+        <a href="/about">
+            <i class="fa-solid fa-id-card fa-fw"></i>
+            <span>&ensp;About</span>
+        </a>
+        
+        <a href="/archives">
+            <i class="fa-solid fa-box-archive fa-fw"></i>
+            <span>&ensp;Archives</span>
+        </a>
+        
+        <a href="/categories">
+            <i class="fa-solid fa-bookmark fa-fw"></i>
+            <span>&ensp;Categories</span>
+        </a>
+        
+        <a href="/tags">
+            <i class="fa-solid fa-tags fa-fw"></i>
+            <span>&ensp;Tags</span>
+        </a>
+        
+    </nav>
+    <nav id="mobile-menu">
+        <div class="title" @click="showMenuItems = !showMenuItems">
+            <i class="fa-solid fa-bars fa-fw"></i>
+            <span>&emsp;SKYMIKU</span>
+        </div>
+        <transition name="slide">
+            <div class="items" v-show="showMenuItems">
+                
+                <a href="/">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-house fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Home</div>
+                    </div>
+                </a>
+                
+                <a href="/about">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-id-card fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">About</div>
+                    </div>
+                </a>
+                
+                <a href="/archives">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-box-archive fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Archives</div>
+                    </div>
+                </a>
+                
+                <a href="/categories">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-bookmark fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Categories</div>
+                    </div>
+                </a>
+                
+                <a href="/tags">
+                    <div class="item">
+                        <div style="min-width: 20px; max-width: 50px; width: 10%">
+                            <i class="fa-solid fa-tags fa-fw"></i>
+                        </div>
+                        <div style="min-width: 100px; max-width: 150%; width: 20%">Tags</div>
+                    </div>
+                </a>
+                
+            </div>
+        </transition>
+    </nav>
+</div>
+<transition name="fade">
+    <div id="menu-curtain" @click="showMenuItems = !showMenuItems" v-show="showMenuItems"></div>
+</transition>
+
+            <div id="main" :class="loading ? 'into-enter-from': 'into-enter-active'">
+                <div class="article">
+    <div>
+        <h1>总结一下2024年收获</h1>
+    </div>
+    <div class="info">
+        <span class="date">
+            <span class="icon">
+                <i class="fa-solid fa-calendar fa-fw"></i>
+            </span>
+            2024/12/21
+        </span>
+        
+        <span class="category">
+            <a href="/categories/%E5%AD%A6%E4%B9%A0/">
+                <span class="icon">
+                    <i class="fa-solid fa-bookmark fa-fw"></i>
+                </span>
+                学习
+            </a>
+        </span>
+        
+        
+        <span class="tags">
+            <span class="icon">
+                <i class="fa-solid fa-tags fa-fw"></i>
+            </span>
+            
+            
+            <span class="tag">
+                
+                <a href="/tags/react/" style="color: #ffa2c4">react</a>
+            </span>
+            
+        </span>
+        
+    </div>
+    
+    <div class="content" v-pre>
+        <h1 id="公司项目总结"><a href="#公司项目总结" class="headerlink" title="公司项目总结"></a>公司项目总结</h1><p>2024年成功交付了两个项目,一个是二期模拟训练项目,另一个是控制系统项目</p>
+<p>其中有点成就感的是控制系统,其中完成了公司业务中使用的一套组件,包含了动态参数表单,自定义图形化组件,离线mapbox<br><img src="/img/2024-12.gif" alt="Alt text"></p>
+<span id="more"></span>
+<h2 id="mapbox"><a href="#mapbox" class="headerlink" title="mapbox"></a>mapbox</h2><p>因为mapbox和cesium路线不同,结合公司业务,所以选择了比较轻量的mapbox,除了地图基础热力图之外,还集成了克里金插值算法</p>
+<p><img src="/img/2024-12-1.gif" alt="Alt text"></p>
+<p>另外修改了开源克里金算法里面的颜色插值,让他支持自定义数字对应颜色</p>
+<p><img src="/img/2024-12-2.png" alt="Alt text"></p>
+<pre><code>import kriging from &#39;@sakitam-gis/kriging&#39;;
+
+  const plot = function (canvas: any, grid: any, xlim: any, ylim: any, colors: any) &#123;
+    // Clear screen
+    let ctx: any = canvas.getContext(&quot;2d&quot;);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Starting boundaries
+    let range = [xlim[1] - xlim[0], ylim[1] - ylim[0], grid.zlim[1] - grid.zlim[0]];
+    let i, j, x, y, z;
+    let n = grid.data.length;
+    let m = grid.data[0].length;
+    let wx = Math.ceil(grid.width * canvas.width / (xlim[1] - xlim[0]));
+    let wy = Math.ceil(grid.width * canvas.height / (ylim[1] - ylim[0]));
+    for (i = 0; i &lt; n; i++) &#123;
+      for (j = 0; j &lt; m; j++) &#123;
+        if (grid.data[i][j] == undefined) continue;
+        x = canvas.width * (i * grid.width + grid.xlim[0] - xlim[0]) / range[0];
+        y = canvas.height * (1 - (j * grid.width + grid.ylim[0] - ylim[0]) / range[1]);
+        z = (grid.data[i][j] - grid.zlim[0]) / range[2];
+        if (z &lt; 0.0) z = 0.0;
+        if (z &gt; 1.0) z = 1.0;
+        if (allEqual(lvmap)) &#123;
+          ctx.fillStyle = getColor(colors, lvmap[0]);
+        &#125; else &#123;
+          ctx.fillStyle = getColor(colors, grid.data[i][j]);
+        &#125;
+        ctx.fillRect(Math.round(x - wx / 2), Math.round(y - wy / 2), wx, wy);
+      &#125;
+    &#125;
+  &#125;;
+  //自定义色彩
+  const getColor = function (colors: string | any[], z: number) &#123;
+    var l = colors.length;
+    for (var i = 0; i &lt; l; i++) &#123;
+      if (z &gt;= colors[i].min &amp;&amp; z &lt;= colors[i].max) return colors[i].color;
+    &#125;
+    if (z &lt; 0) &#123;
+      return colors[0].color;
+    &#125;
+  &#125;;
+
+  //因为克里金算法原因，判断是否全等
+  function allEqual(arr: any[]) &#123;
+    if (arr.length === 0) return true;
+    const first = arr[0];
+    return arr.every(item =&gt; &#123;
+      // 显式处理 NaN 的特殊情况
+      if (typeof item === &#39;number&#39; &amp;&amp; isNaN(item) &amp;&amp; typeof first === &#39;number&#39; &amp;&amp; isNaN(first)) &#123;
+        return true;
+      &#125;
+      return item === first;
+    &#125;);
+  &#125;
+</code></pre>
+<h2 id="自定义表单"><a href="#自定义表单" class="headerlink" title="自定义表单"></a>自定义表单</h2><p>这块就不多回顾了,之前就写过很多次动态表单</p>
+<p>但是这些年封装下来,除了固定参数结构之外,后续在需求改动,和版本更新后,往往导致之前定义的有所改动,越是维护越是感觉冗余,回头一看,原来并不是各大开源团队做不到,而是没有必要</p>
+<p>所以后续项目中,只会用到动态参数生成表单中的某一项,其余的表单操作都在各自单组件中使用</p>
+<h2 id="自定义图形化"><a href="#自定义图形化" class="headerlink" title="自定义图形化"></a>自定义图形化</h2><p>今年因为项目原因,图形化组件选择了最熟悉的echarts</p>
+<p>后续封装下来,也发现了echarts中的不足之处,在高度定制化的图形上还是有所欠缺,而实现Echarts 的zrender,文档api也太过简单,要完全满足未来公司图形界面的需求,将会付出更大的代价</p>
+<p>所以后续待到时间充裕之后,会将高度定制化的echarts组件换成原生canvans或者d3.js来实现</p>
+<h1 id="学习总结"><a href="#学习总结" class="headerlink" title="学习总结"></a>学习总结</h1><h2 id="小程序项目-饱饱成长"><a href="#小程序项目-饱饱成长" class="headerlink" title="小程序项目(饱饱成长)"></a>小程序项目(饱饱成长)</h2><p>这个和朋友一起做了一个实验项目,用的字节的tarojs,整体做下来没有什么大坑,不论是react还是vue,以后的趋势肯定是一套代码能在各个端中运行</p>
+<p>链接:微信小程序搜索(饱饱成长)</p>
+<h2 id="AI"><a href="#AI" class="headerlink" title="AI"></a>AI</h2><p>记得大概是在2021年的时候,试用过网上的AI生成代码,当时网络上都在吹嘘说将来要替代很多程序员 当时试用之后,给我的第一反应就是不可能,因为它太过稚嫩</p>
+<p>现在2024年了,AI的发展真的让人感受到了惊讶,之前我老是刷不动的算法题目,还有之前项目中往往需要研究好几天的用到的算法,统统在几秒钟之内给你生成完毕,只需要修改即可使用</p>
+<p>这才几年时间,AI已经发展到了让人震惊的地步了.</p>
+<p>虽然现在AI还做不到自主思考,大量需要沟通理解的东西还是需要我们的,但是说不定只要再有十年,我就要失业了,当然可能也等不到那时候了,haha</p>
+<p>今年看了看deepseek大模型本地部署和训练,这一套下来简直是零门槛,只要针对公司所在的行业进行训练,以后就能省去很多重复性的东西,现在的公司还没有这些想法,不知道有没有机会能用到</p>
+<h2 id="web3-0和web4-0"><a href="#web3-0和web4-0" class="headerlink" title="web3.0和web4.0"></a>web3.0和web4.0</h2><p>当初刚毕业的我参与了web3.0一些项目,但是因为国情原因,后续再也没有从事过相关工作.</p>
+<p>但是一直以来都关注其发展,也做过一些模拟项目</p>
+<p>[链接]<a target="_blank" rel="noopener" href="https://tianyi-miku.github.io/Tianyi-miku.github.io-web3demo/dashboard/mintNFT">https://tianyi-miku.github.io/Tianyi-miku.github.io-web3demo/dashboard/mintNFT</a></p>
+<p>虽然很久没有更新了,但是也在关注它在金融上的应用慢慢在发展壮大</p>
+<p>而web4.0,目前还比较吃硬件和AI,还在发展初期阶段,但是目前各大公司国家都在布局Allin AI,希望能在有生之年实现吧.</p>
+<h2 id="感悟"><a href="#感悟" class="headerlink" title="感悟"></a>感悟</h2><p>2024整年,虽然看了很多技术,什么大模型 区块链 还把之前忘记的nodejs,python java都捡起来看了看,但都是走马观花, 总之,总结下来是迷茫的一年.</p>
+<p>虽然目前公司我在的项目组中大型项目交付了两个,总价值在两千多万,但是因为公司大环境原因,还是开始了裁员</p>
+<p>当初刚来的小伙伴们都陆陆续续都走了,又陆陆续续的来,虽然我目前还没有被毕业的风险,但是加上公司的降本增效,各种管理开始严格起来,不可免的也开始焦虑起来.</p>
+<p>时代的灰尘,到个人就是一座大山,当我费劲巴拉考过英语,拿到本科学位之后,却发现这东西也再不值钱了,就连来公司实习生,都是研究生毕业了….</p>
+<p>哈哈,话又说回来,没被毕业的原因,可能也是因为我和另外一个哥们比较便宜,而且就算拖工资,我们也不会说什么</p>
+<p>希望新的2025年,在35岁之前,能稳定找个班上,haha!</p>
+
+    </div>
+    
+    
+    
+    
+    <div id="comment">
+        <div id="giscus-container" class="giscus"></div>
+    </div>
+    
+    
+    
+    
+</div>
+
+                <footer id="footer">
+    <div id="footer-wrap">
+        <div>
+            &copy;
+            2022 - 2025 Skymiku
+            <span id="footer-icon">
+                <i class="fa-solid fa-font-awesome fa-fw"></i>
+            </span>
+            &commat;skymiku
+        </div>
+        <!-- <div>
+            Based on the <a target="_blank" rel="noopener" href="https://hexo.io">Hexo Engine</a> &amp;
+            <a target="_blank" rel="noopener" href="https://github.com/theme-particlex/hexo-theme-particlex">ParticleX Theme</a>
+        </div> -->
+        
+    </div>
+</footer>
+
+            </div>
+            
+            <transition name="fade">
+                <div id="preview" ref="preview" v-show="previewShow">
+                    <img id="preview-content" ref="previewContent" />
+                </div>
+            </transition>
+            
+        </div>
+        <script src="/js/main.js"></script>
+        
+        
+<script
+    src="https://giscus.app/client.js"
+    data-repo="Tianyi-miku/Tianyi-miku.github.io"
+    data-repo-id="R_kgDOKX9otQ"
+    data-category="Announcements"
+    data-category-id="DIC_kwDOKX9otc4CZpex"
+    data-mapping="pathname"
+    data-strict="0"
+    data-reactions-enabled="1"
+    data-emit-metadata="0"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
+    data-lang="zh-CN"
+    crossorigin
+    async
+></script>
+
+
+
+
+
+        
+     
+          
+    </body>
+</html>
